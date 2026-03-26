@@ -89,8 +89,9 @@ export function Contact() {
             className="bg-[#e8ede4] rounded-3xl p-8 flex flex-col gap-4"
           >
             <div className="flex flex-col gap-1">
-              <label className="text-[#1e3020] text-sm font-medium">Ihr Name</label>
+              <label htmlFor="contact-name" className="text-[#1e3020] text-sm font-medium">Ihr Name</label>
               <input
+                id="contact-name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -99,8 +100,9 @@ export function Contact() {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-[#1e3020] text-sm font-medium">Nachricht</label>
+              <label htmlFor="contact-message" className="text-[#1e3020] text-sm font-medium">Nachricht</label>
               <textarea
+                id="contact-message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 rows={4}
