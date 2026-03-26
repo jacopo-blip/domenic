@@ -59,7 +59,7 @@ export function Navbar() {
         <button
           className="md:hidden text-[#1e3020]"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menü öffnen"
+          aria-label={menuOpen ? "Menü schließen" : "Menü öffnen"}
         >
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
@@ -84,7 +84,7 @@ export function Navbar() {
           ))}
           <a
             href="#kontakt"
-            className="bg-[#4a7c59] text-white text-sm px-5 py-2 rounded-full text-center"
+            className="bg-[#4a7c59] hover:bg-[#3a6347] text-white text-sm px-5 py-2 rounded-full text-center transition-colors"
             onClick={() => setMenuOpen(false)}
           >
             Termin buchen
