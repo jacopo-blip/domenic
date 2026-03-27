@@ -1,67 +1,162 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { CheckCircle } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import {
+  Award,
+  Flower2,
+  Footprints,
+  Activity,
+  Target,
+  Zap,
+  CircleDot,
+  Hand,
+  Waves,
+  BatteryCharging,
+} from "lucide-react";
+import Image from "next/image";
 
 const credentials = [
-  "Diplomierter Heilmasseur",
-  "Thai-Massage (Watpo, Thailand)",
-  "Manuelle Lymphdrainage",
-  "Sporttherapie & Triggerpunkttherapie",
-  "Dorn-Breuss Methode",
-  "Reflexzonenmassage",
-  "Akupunkturmassage nach Penzel",
+  { icon: Award, label: "Diplomierter Heilmasseur" },
+  { icon: Flower2, label: "Nuad Thai Massage (Watpo-Stil)" },
+  { icon: Flower2, label: "Thai Tisch Massage" },
+  { icon: Footprints, label: "Manuelle Lymphdrainage (Dr. Vodder)" },
+  { icon: Hand, label: "Bindegewebs-Massage" },
+  { icon: Activity, label: "Sportbetreuer" },
+  { icon: Target, label: "Dorn-Breuss Wirbelsäulenbehandlung" },
+  { icon: Zap, label: "Fußreflexzonen-Massage" },
+  { icon: CircleDot, label: "Akupunktur Massage (Penzel)" },
+  { icon: Waves, label: "Schröpfen" },
+  { icon: BatteryCharging, label: "Elektrotherapie" },
 ];
 
 export function About() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section id="ueber-domenic" className="bg-[#d4e0ce] py-24">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row gap-16 items-center">
-        {/* Organic image shape */}
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="flex-shrink-0"
-        >
-          <div className="w-64 h-64 md:w-80 md:h-80 rounded-[45%_55%_60%_40%/55%_45%_55%_45%] bg-gradient-to-br from-[#c8d9bf] to-[#4a7c59] flex items-center justify-center">
-            <div className="w-44 h-44 md:w-56 md:h-56 rounded-[45%_55%_60%_40%/55%_45%_55%_45%] bg-white/25 flex items-center justify-center">
-              <span className="text-white/60 text-sm text-center px-4">Foto<br />Domenic Hacker</span>
-            </div>
-          </div>
-        </motion.div>
+    <section
+      id="ueber-mich"
+      className="relative py-24 sm:py-32 bg-[#0d4f4f] overflow-hidden"
+    >
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#e8654a] via-[#f2a93b] to-[#0d4f4f]" />
+      <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-[#e8654a]/8" />
+      <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-[#f2a93b]/5" />
 
-        {/* Text */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="flex-1"
-        >
-          <p className="text-[#4a7c59] text-xs font-semibold tracking-[0.15em] uppercase mb-3">
-            Über mich
-          </p>
-          <h2 className="text-[#1e3020] text-4xl font-bold mb-5">
-            Heilmassage ist meine Berufung
-          </h2>
-          <p className="text-[#4a5945] text-base leading-relaxed mb-4">
-            Als diplomierter Heilmasseur bringe ich nicht nur handwerkliches Können, sondern auch ein tiefes Verständnis für den menschlichen Körper mit. Meine Leidenschaft für Bewegung — geprägt durch Jahre des Breakdancings — hat mir ein einzigartiges Körperbewusstsein gegeben, das ich täglich in meiner Arbeit einsetze.
-          </p>
-          <p className="text-[#4a5945] text-base leading-relaxed mb-8">
-            Ich habe meine Ausbildung durch zahlreiche Spezialisierungen vertieft — von Thai-Massage in Thailand bis hin zu Lymphdrainage und Sporttherapie. Ihr Wohlbefinden und Ihre Gesundheit stehen bei mir immer im Mittelpunkt.
-          </p>
-
-          <div className="grid sm:grid-cols-2 gap-2">
-            {credentials.map((c) => (
-              <div key={c} className="flex items-center gap-2">
-                <CheckCircle size={15} className="text-[#4a7c59] flex-shrink-0" />
-                <span className="text-[#4a5945] text-sm">{c}</span>
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8" ref={ref}>
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          {/* Left — Image */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7 }}
+            className="relative"
+          >
+            <div className="relative">
+              <div className="absolute -top-6 -left-6 w-full h-full rounded-3xl bg-[#e8654a]/20 -rotate-3" />
+              <div className="absolute -top-3 -left-3 w-full h-full rounded-3xl bg-[#f2a93b]/15 -rotate-1" />
+              <div className="relative rounded-3xl bg-white/10 backdrop-blur-sm border border-white/15 overflow-hidden aspect-[4/5]">
+                <Image
+                  src="/images/domenic-wien.webp"
+                  alt="Domenic Hacker - Heilmasseur in Wien"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0d4f4f] to-transparent pt-20 p-8">
+                  <div className="grid grid-cols-3 gap-4">
+                    {[
+                      { value: "15+", label: "Jahre Erfahrung" },
+                      { value: "11", label: "Qualifikationen" },
+                      { value: "1080", label: "Wien" },
+                    ].map((stat) => (
+                      <div key={stat.label} className="text-center">
+                        <span className="block text-2xl sm:text-3xl font-extrabold text-[#f2a93b]">
+                          {stat.value}
+                        </span>
+                        <span className="block mt-1 text-xs text-white/50">
+                          {stat.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            ))}
+            </div>
+          </motion.div>
+
+          {/* Right — text */}
+          <div>
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-bold text-white/80"
+            >
+              Über Domenic Hacker
+            </motion.span>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-white"
+            >
+              Von der Bewegung{" "}
+              <span className="text-[#f2a93b]">zur Heilung</span>
+            </motion.h2>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mt-6 space-y-4 text-base text-white/70 leading-relaxed"
+            >
+              <p>
+                Ich verbinde fundiertes Fachwissen mit einem feinen Gespür für
+                den Körper. Bewegung prägt mein Leben — sowohl in der Therapie
+                als auch im Breakdance, der meine Körperwahrnehmung nachhaltig
+                geschult hat.
+              </p>
+              <p>
+                Durch meine Erfahrung in Rehabilitationsinstituten behandle ich
+                Beschwerden gezielt und unterstütze Sie dabei, wieder mehr
+                Bewegungsfreiheit zu gewinnen. Heilmasseur ist meine Berufung —
+                Ihre Entspannung mein Ziel.
+              </p>
+              <p>
+                Ich habe meine Ausbildung mit ausgezeichnetem Erfolg
+                abgeschlossen. Eine ständige Fortbildung steht für mich an
+                oberster Stelle.
+              </p>
+            </motion.div>
+
+            {/* Credentials grid */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3"
+            >
+              {credentials.map((cred, i) => (
+                <motion.div
+                  key={cred.label}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.4, delay: 0.4 + i * 0.05 }}
+                  className="flex items-center gap-3 rounded-2xl bg-white/[0.06] border border-white/[0.08] px-4 py-3"
+                >
+                  <cred.icon
+                    size={18}
+                    className="text-[#f2a93b] shrink-0"
+                  />
+                  <span className="text-sm font-semibold text-white/80">
+                    {cred.label}
+                  </span>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
