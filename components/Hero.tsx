@@ -7,18 +7,23 @@ import Image from "next/image";
 export function Hero() {
   return (
     <section
-      className="relative min-h-screen flex items-center overflow-hidden"
-      style={{
-        backgroundImage: "url('/images/domenic-1080.webp')",
-        backgroundAttachment: "fixed",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-      }}
+      className="relative min-h-screen flex items-center"
+      style={{ clipPath: "inset(0)" }}
     >
+      {/* Parallax background — position:fixed inside clip-path for mobile compatibility */}
+      <div
+        className="fixed inset-0"
+        style={{
+          backgroundImage: "url('/images/domenic-1080.webp')",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          zIndex: 0,
+        }}
+      />
       {/* Dark teal overlay for readability */}
-      <div className="absolute inset-0 bg-[#0d4f4f]/80" />
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 bg-[#0d4f4f]/80" style={{ zIndex: 1 }} />
+      <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 2 }}>
         <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-[#e8654a]/15" />
         <div className="absolute bottom-20 -left-20 w-[400px] h-[400px] rounded-full bg-[#f2a93b]/10" />
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-bl from-[#e8654a]/8 to-transparent" />
@@ -32,7 +37,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 w-full py-32 sm:py-40">
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 w-full py-32 sm:py-40" style={{ zIndex: 3 }}>
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div>
             <motion.div
@@ -148,7 +153,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0">
+      <div className="absolute bottom-0 left-0 right-0" style={{ zIndex: 3 }}>
         <svg
           viewBox="0 0 1440 80"
           fill="none"
