@@ -13,10 +13,12 @@ import {
   Hand,
   Waves,
   BatteryCharging,
+  CheckCircle2,
 } from "lucide-react";
 import Image from "next/image";
+import type { SanityAbout } from "@/sanity/lib/queries";
 
-const credentials = [
+const FALLBACK_CREDENTIALS = [
   { icon: Award, label: "Diplomierter Heilmasseur" },
   { icon: Flower2, label: "Nuad Thai Massage (Watpo-Stil)" },
   { icon: Flower2, label: "Thai Tisch Massage" },
@@ -30,9 +32,37 @@ const credentials = [
   { icon: BatteryCharging, label: "Elektrotherapie" },
 ];
 
-export function About() {
+const FALLBACK_BIO = [
+  "Ich verbinde fundiertes Fachwissen mit einem feinen Gespür für den Körper. Bewegung prägt mein Leben — sowohl in der Therapie als auch im Breakdance, der meine Körperwahrnehmung nachhaltig geschult hat.",
+  "Durch meine Erfahrung in Rehabilitationsinstituten behandle ich Beschwerden gezielt und unterstütze Sie dabei, wieder mehr Bewegungsfreiheit zu gewinnen. Heilmasseur ist meine Berufung — Ihre Entspannung mein Ziel.",
+  "Ich habe meine Ausbildung mit ausgezeichnetem Erfolg abgeschlossen. Eine ständige Fortbildung steht für mich an oberster Stelle.",
+];
+
+export function About({ sanityAbout }: { sanityAbout?: SanityAbout | null }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  const bio =
+    sanityAbout?.bio && sanityAbout.bio.length > 0
+      ? sanityAbout.bio
+      : FALLBACK_BIO;
+
+  const credentialItems =
+    sanityAbout?.credentials && sanityAbout.credentials.length > 0
+      ? sanityAbout.credentials.map((label) => ({ icon: CheckCircle2, label }))
+      : FALLBACK_CREDENTIALS;
+
+  const stats = [
+    {
+      value: sanityAbout?.yearsExperience ?? "15+",
+      label: "Jahre Erfahrung",
+    },
+    {
+      value: sanityAbout?.qualificationsCount ?? "11",
+      label: "Qualifikationen",
+    },
+    { value: sanityAbout?.location ?? "1080", label: "Wien" },
+  ];
 
   return (
     <section
@@ -64,11 +94,7 @@ export function About() {
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0d4f4f] to-transparent pt-20 p-8">
                   <div className="grid grid-cols-3 gap-4">
-                    {[
-                      { value: "15+", label: "Jahre Erfahrung" },
-                      { value: "11", label: "Qualifikationen" },
-                      { value: "1080", label: "Wien" },
-                    ].map((stat) => (
+                    {stats.map((stat) => (
                       <div key={stat.label} className="text-center">
                         <span className="block text-2xl sm:text-3xl font-extrabold text-[#f2a93b]">
                           {stat.value}
@@ -111,23 +137,9 @@ export function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-6 space-y-4 text-base text-white/70 leading-relaxed"
             >
-              <p>
-                Ich verbinde fundiertes Fachwissen mit einem feinen Gespür für
-                den Körper. Bewegung prägt mein Leben — sowohl in der Therapie
-                als auch im Breakdance, der meine Körperwahrnehmung nachhaltig
-                geschult hat.
-              </p>
-              <p>
-                Durch meine Erfahrung in Rehabilitationsinstituten behandle ich
-                Beschwerden gezielt und unterstütze Sie dabei, wieder mehr
-                Bewegungsfreiheit zu gewinnen. Heilmasseur ist meine Berufung —
-                Ihre Entspannung mein Ziel.
-              </p>
-              <p>
-                Ich habe meine Ausbildung mit ausgezeichnetem Erfolg
-                abgeschlossen. Eine ständige Fortbildung steht für mich an
-                oberster Stelle.
-              </p>
+              {bio.map((paragraph, i) => (
+                <p key={i}>{paragraph}</p>
+              ))}
             </motion.div>
 
             {/* Credentials grid */}
@@ -137,7 +149,7 @@ export function About() {
               transition={{ duration: 0.6, delay: 0.35 }}
               className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3"
             >
-              {credentials.map((cred, i) => (
+              {credentialItems.map((cred, i) => (
                 <motion.div
                   key={cred.label}
                   initial={{ opacity: 0, x: 20 }}

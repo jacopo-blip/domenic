@@ -3,16 +3,41 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Check, Info, ExternalLink } from "lucide-react";
+import type { SanityPricingItem, SanitySettings } from "@/sanity/lib/queries";
 
-const rows = [
+const FALLBACK_ROWS = [
   { service: "Heilmassage", p30: "\u20ac55", p45: "\u20ac70", p60: "\u20ac85" },
   { service: "Lymphdrainage", p30: "\u20ac55", p45: "\u20ac70", p60: "\u20ac85" },
   { service: "Klassische Massage", p30: "\u20ac55", p45: "\u20ac70", p60: "\u20ac85" },
 ];
 
-export function Pricing() {
+const FALLBACK_INSURANCE_TEXT =
+  "Je nach Krankenkasse bekommen Sie einen Teil Ihrer Massagekosten zurück. Sie haben auch die Möglichkeit, einen Teil der Therapiekosten bei einer Zusatzversicherung einzureichen. Privatversicherungen erstatten bis zu 100% der Therapiekosten zurück. Informieren Sie sich jetzt — es lohnt sich!";
+
+type PricingRow = { service: string; p30: string; p45: string; p60: string };
+
+export function Pricing({
+  sanityPricing,
+  sanitySettings,
+}: {
+  sanityPricing?: SanityPricingItem[] | null;
+  sanitySettings?: SanitySettings | null;
+}) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  const rows: PricingRow[] =
+    sanityPricing && sanityPricing.length > 0
+      ? sanityPricing.map((item) => ({
+          service: item.serviceName,
+          p30: item.price30 ? `\u20ac${item.price30}` : "—",
+          p45: item.price45 ? `\u20ac${item.price45}` : "—",
+          p60: item.price60 ? `\u20ac${item.price60}` : "—",
+        }))
+      : FALLBACK_ROWS;
+
+  const insuranceText =
+    sanitySettings?.insuranceText ?? FALLBACK_INSURANCE_TEXT;
 
   return (
     <section
@@ -127,11 +152,7 @@ export function Pricing() {
                 Zuschüsse von Krankenkassen & Versicherungen
               </p>
               <p className="mt-1 text-sm text-[#555] leading-relaxed">
-                Je nach Krankenkasse bekommen Sie einen Teil Ihrer Massagekosten
-                zurück. Sie haben auch die Möglichkeit, einen Teil der
-                Therapiekosten bei einer Zusatzversicherung einzureichen.
-                Privatversicherungen erstatten bis zu 100% der Therapiekosten
-                zurück. Informieren Sie sich jetzt — es lohnt sich!
+                {insuranceText}
               </p>
               <a
                 href="https://www.heilmasseur-domenic.at/#heilmasseur-zuschüsse"
