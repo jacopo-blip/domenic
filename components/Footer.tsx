@@ -9,6 +9,7 @@ const navLinks = [
   { label: "Preise", href: "#preise" },
   { label: "FAQ", href: "#faq" },
   { label: "Kontakt", href: "#kontakt" },
+  { label: "Heilmassage Wien", href: "/heilmassage-wien-1080" },
   { label: "Termin buchen", href: "/buchen" },
   { label: "Impressum", href: "/impressum" },
   { label: "Datenschutz", href: "/datenschutz" },

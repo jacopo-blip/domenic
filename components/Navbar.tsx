@@ -12,6 +12,7 @@ const navLinks = [
   { label: "Preise", href: "#preise", sectionId: "preise" },
   { label: "FAQ", href: "#faq", sectionId: "faq" },
   { label: "Kontakt", href: "#kontakt", sectionId: "kontakt" },
+  { label: "Heilmassage Wien", href: "/heilmassage-wien-1080", sectionId: "heilmassage-wien-1080" },
 ];
 
 export function Navbar() {
@@ -19,9 +20,10 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = usePathname();
+  const isHomePage = pathname === "/";
   const isBookingPage = pathname === "/buchen";
   const getHref = (href: string) =>
-    isBookingPage && href.startsWith("#") ? `/${href}` : href;
+    !isHomePage && href.startsWith("#") ? `/${href}` : href;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -31,7 +33,7 @@ export function Navbar() {
 
   // Track active section via IntersectionObserver
   useEffect(() => {
-    if (isBookingPage) return;
+    if (!isHomePage) return;
 
     const sectionIds = navLinks.map((l) => l.sectionId);
     const observers: IntersectionObserver[] = [];
@@ -120,6 +122,7 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <a
                   key={link.href}
+<<<<<<< HEAD
                   href={getHref(link.href)}
                   className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${getLinkClass(link.sectionId)}`}
                 >
@@ -171,6 +174,7 @@ export function Navbar() {
               {navLinks.map((link, i) => (
                 <motion.a
                   key={link.href}
+<<<<<<< HEAD
                   href={getHref(link.href)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
