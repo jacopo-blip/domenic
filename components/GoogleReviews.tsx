@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Star } from "lucide-react";
 import type { SanityTestimonial } from "@/sanity/lib/queries";
@@ -123,7 +122,6 @@ export function GoogleReviews({
   sanityTestimonials?: SanityTestimonial[] | null;
 }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
 
   const reviews =
     sanityTestimonials && sanityTestimonials.length > 0
@@ -143,42 +141,30 @@ export function GoogleReviews({
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8">
           <div className="max-w-xl">
-            <motion.span
-              initial={{ opacity: 0, y: 10 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
+            <span
               className="inline-flex items-center gap-2 rounded-full bg-[#0d4f4f]/8 px-4 py-1.5 text-sm font-bold text-[#0d4f4f]"
             >
               Kundenstimmen
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 }}
+            </span>
+            <h2
               className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]"
             >
               Das sagen{" "}
               <span className="text-[#e8654a]">meine Klienten</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
+            </h2>
+            <p
               className="mt-4 text-lg text-[#555] leading-relaxed"
             >
               Echte Erfahrungen meiner Klienten — unbearbeitet und direkt von
               Google.
-            </motion.p>
+            </p>
           </div>
 
           {/* Google rating badge */}
-          <motion.a
+          <a
             href={GOOGLE_MAPS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.3 }}
             className="group flex-shrink-0 inline-flex items-center gap-4 rounded-2xl bg-white border border-gray-100 px-6 py-4 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5"
           >
             <GoogleLogo size={28} />
@@ -193,17 +179,14 @@ export function GoogleReviews({
                 Basierend auf {REVIEW_COUNT} Bewertungen
               </p>
             </div>
-          </motion.a>
+          </a>
         </div>
 
         {/* Review cards */}
         <div className="mt-12 sm:mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-          {reviews.map((review, i) => (
-            <motion.div
+          {reviews.map((review) => (
+            <div
               key={review.id}
-              initial={{ opacity: 0, y: 40 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
               className="relative flex flex-col rounded-3xl bg-white border border-gray-100 p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1"
               style={{ boxShadow: "0 4px 24px rgba(13,79,79,0.06)" }}
             >
@@ -241,15 +224,12 @@ export function GoogleReviews({
                   )}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* CTA link */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.6 }}
+        <div
           className="mt-10 text-center"
         >
           <a
@@ -261,7 +241,7 @@ export function GoogleReviews({
             <GoogleLogo size={16} />
             Alle Bewertungen auf Google ansehen
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
