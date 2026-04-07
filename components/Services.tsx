@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Heart, Droplets, Hand } from "lucide-react";
 import type { SanityService } from "@/sanity/lib/queries";
 
@@ -13,6 +14,8 @@ const FALLBACK_SERVICES = [
     color: "#e8654a",
     bgColor: "#e8654a",
     number: "01",
+    image: "/images/heilmassage-wien.webp",
+    imageAlt: "Heilmassage Behandlung – gezielte Entspannung und Schmerzlinderung",
   },
   {
     icon: Droplets,
@@ -23,6 +26,8 @@ const FALLBACK_SERVICES = [
     color: "#0d4f4f",
     bgColor: "#0d4f4f",
     number: "02",
+    image: "/images/lymphdrainage.webp",
+    imageAlt: "Manuelle Lymphdrainage – sanfte Entstauung und Immunsystem-Förderung",
   },
   {
     icon: Hand,
@@ -33,6 +38,8 @@ const FALLBACK_SERVICES = [
     color: "#f2a93b",
     bgColor: "#f2a93b",
     number: "03",
+    image: "/images/klassische-massage.webp",
+    imageAlt: "Klassische Massage – Entspannung und Wohlbefinden für Körper und Geist",
   },
 ];
 
@@ -51,6 +58,8 @@ type ServiceDisplay = {
   color: string;
   bgColor: string;
   number: string;
+  image?: string;
+  imageAlt?: string;
 };
 
 function toDisplayServices(sanityServices: SanityService[]): ServiceDisplay[] {
@@ -103,11 +112,30 @@ export function Services({
           {services.map((service) => (
             <div
               key={service.title}
-              className="group relative rounded-3xl bg-white border border-gray-100 p-8 sm:p-10 transition-all duration-300 hover:-translate-y-2"
+              className="group relative rounded-3xl bg-white border border-gray-100 overflow-hidden transition-all duration-300 hover:-translate-y-2"
               style={{
                 boxShadow: `0 4px 30px ${service.bgColor}10`,
               }}
             >
+              {/* Card image */}
+              {service.image && (
+                <div className="relative w-full h-44 overflow-hidden">
+                  <Image
+                    src={service.image}
+                    alt={service.imageAlt ?? service.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    quality={75}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: `linear-gradient(to bottom, transparent 50%, ${service.bgColor}22)` }}
+                  />
+                </div>
+              )}
+
+              <div className="p-8 sm:p-10">
               <span className="absolute top-6 right-8 text-[5rem] font-extrabold leading-none opacity-[0.04] select-none">
                 {service.number}
               </span>
@@ -146,6 +174,7 @@ export function Services({
                 >
                   Termin buchen &rarr;
                 </a>
+              </div>
               </div>
             </div>
           ))}

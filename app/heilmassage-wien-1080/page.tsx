@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2, ArrowRight, Check } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
@@ -68,30 +69,50 @@ export default function HeilmassageWien() {
               backgroundSize: "32px 32px",
             }}
           />
-          <div className="relative mx-auto max-w-4xl px-5 sm:px-8 pt-36 pb-24 sm:pt-44 sm:pb-32 text-center">
-            <p className="mb-4 inline-block rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white/70">
-              Wien 1080 · Josefstadt
-            </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight">
-              Heilmassage in 1080 Wien
-            </h1>
-            <p className="mt-5 text-lg sm:text-xl text-white/70 max-w-xl mx-auto leading-relaxed">
-              gezielt, wirksam und in der richtigen Intensität
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/buchen"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-8 py-4 text-base font-bold text-white shadow-lg shadow-[#e8654a]/30 transition-all duration-200 hover:shadow-xl hover:shadow-[#e8654a]/40 hover:scale-[1.03]"
-              >
-                Termin buchen
-                <ArrowRight size={18} strokeWidth={2.5} />
-              </Link>
-              <a
-                href="/#kontakt"
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-8 py-4 text-base font-semibold text-white/80 transition-all duration-200 hover:bg-white/10 hover:text-white"
-              >
-                Kontakt
-              </a>
+          <div className="relative mx-auto max-w-7xl px-5 sm:px-8 pt-28 pb-0 sm:pt-36">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-end">
+              {/* Text */}
+              <div className="pb-16 lg:pb-24">
+                <p className="mb-4 inline-block rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white/70">
+                  Wien 1080 · Josefstadt
+                </p>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight">
+                  Heilmassage in 1080 Wien
+                </h1>
+                <p className="mt-5 text-lg sm:text-xl text-white/70 max-w-xl leading-relaxed">
+                  gezielt, wirksam und in der richtigen Intensität
+                </p>
+                <div className="mt-10 flex flex-col sm:flex-row items-start gap-4">
+                  <Link
+                    href="/buchen"
+                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-8 py-4 text-base font-bold text-white shadow-lg shadow-[#e8654a]/30 transition-all duration-200 hover:shadow-xl hover:shadow-[#e8654a]/40 hover:scale-[1.03]"
+                  >
+                    Termin buchen
+                    <ArrowRight size={18} strokeWidth={2.5} />
+                  </Link>
+                  <a
+                    href="/#kontakt"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/25 px-8 py-4 text-base font-semibold text-white/80 transition-all duration-200 hover:bg-white/10 hover:text-white"
+                  >
+                    Kontakt
+                  </a>
+                </div>
+              </div>
+
+              {/* Hero image */}
+              <div className="relative lg:self-end">
+                <div className="absolute -top-4 -right-4 w-full h-full rounded-t-3xl bg-[#f2a93b]/15 rotate-1 pointer-events-none" />
+                <div className="relative rounded-t-3xl overflow-hidden aspect-[4/3] max-w-lg mx-auto lg:mx-0 lg:ml-auto">
+                  <Image
+                    src="/images/heilmassage-wien.webp"
+                    alt="Heilmassage Behandlung in Wien 1080 – Praxis Domenic Hacker"
+                    fill
+                    className="object-cover"
+                    priority
+                    quality={75}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -123,8 +144,8 @@ export default function HeilmassageWien() {
 
         {/* ── USP / WIE ICH ARBEITE ─────────────────────────────────── */}
         <section className="py-16 sm:py-24 bg-[#f0f7f7]">
-          <div className="mx-auto max-w-4xl px-5 sm:px-8">
-            <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <div className="grid lg:grid-cols-3 gap-12 lg:gap-16 items-start">
               <div>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0d4f4f] mb-4">
                   Mein Schwerpunkt
@@ -158,6 +179,17 @@ export default function HeilmassageWien() {
                     </li>
                   ))}
                 </ul>
+              </div>
+
+              {/* Praxis-Interieur */}
+              <div className="relative rounded-3xl overflow-hidden aspect-[3/4]">
+                <Image
+                  src="/images/praxis-interior.png"
+                  alt="Praxis-Interieur der Heilmassage Wien 1080 – Domenic Hacker"
+                  fill
+                  className="object-cover"
+                  quality={75}
+                />
               </div>
             </div>
           </div>

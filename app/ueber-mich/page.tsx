@@ -181,13 +181,16 @@ export default async function UeberMichPage() {
                   />
                 </div>
 
-                {/*
-                  TODO: Breakdance-Bild
-                  Hier könnte ein zweites Bild von Domenic beim Breakdance
-                  eingebaut werden — z.B. als kleines überlagerndes Bild
-                  (absolute positioned, bottom-right corner) oder als
-                  separates Bild unterhalb. Domenic schickt das Foto nach.
-                */}
+                {/* Breakdance overlay */}
+                <div className="absolute -bottom-4 -right-4 w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden border-4 border-white shadow-xl">
+                  <Image
+                    src="/images/breakdance.jpg"
+                    alt="Domenic Hacker beim Breakdance – Körpergefühl und Bewegung"
+                    fill
+                    className="object-cover"
+                    quality={75}
+                  />
+                </div>
               </div>
 
               {/* Text column */}
@@ -237,34 +240,70 @@ export default async function UeberMichPage() {
           <div className="absolute -bottom-32 -right-32 w-[450px] h-[450px] rounded-full bg-[#f2a93b]/5 pointer-events-none" />
 
           <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-            <div className="max-w-2xl">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-bold text-white/80">
-                Ausbildungen &amp; Qualifikationen
-              </span>
-              <h2 className="mt-4 text-[clamp(1.8rem,3.5vw,2.8rem)] font-extrabold leading-[1.1] tracking-tight text-white">
-                {qualificationsCount} anerkannte{" "}
-                <span className="text-[#f2a93b]">Zertifizierungen</span>
-              </h2>
-              <p className="mt-4 text-white/60 leading-relaxed">
-                Stetige Weiterbildung ist für mich keine Pflicht, sondern
-                Überzeugung — damit Sie stets von den wirksamsten Methoden
-                profitieren.
-              </p>
-            </div>
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-bold text-white/80">
+                  Ausbildungen &amp; Qualifikationen
+                </span>
+                <h2 className="mt-4 text-[clamp(1.8rem,3.5vw,2.8rem)] font-extrabold leading-[1.1] tracking-tight text-white">
+                  {qualificationsCount} anerkannte{" "}
+                  <span className="text-[#f2a93b]">Zertifizierungen</span>
+                </h2>
+                <p className="mt-4 text-white/60 leading-relaxed">
+                  Stetige Weiterbildung ist für mich keine Pflicht, sondern
+                  Überzeugung — damit Sie stets von den wirksamsten Methoden
+                  profitieren.
+                </p>
 
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {credentials.map((cred) => (
-                <div
-                  key={cred.label}
-                  className="flex items-center gap-3 rounded-2xl bg-white/[0.06] border border-white/[0.08] px-4 py-3.5 hover:bg-white/[0.1] transition-colors duration-200"
-                >
-                  <cred.icon size={18} className="text-[#f2a93b] shrink-0" />
-                  <span className="text-sm font-semibold text-white/85">
-                    {cred.label}
+                <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {credentials.map((cred) => (
+                    <div
+                      key={cred.label}
+                      className="flex items-center gap-3 rounded-2xl bg-white/[0.06] border border-white/[0.08] px-4 py-3.5 hover:bg-white/[0.1] transition-colors duration-200"
+                    >
+                      <cred.icon size={18} className="text-[#f2a93b] shrink-0" />
+                      <span className="text-sm font-semibold text-white/85">
+                        {cred.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Zertifikate-Bild */}
+              <div className="relative rounded-3xl overflow-hidden aspect-[3/4] max-w-sm mx-auto lg:mx-0">
+                <Image
+                  src="/images/zertifikate.jpg"
+                  alt="Zertifikate und Ausbildungsnachweise von Domenic Hacker, Heilmasseur Wien"
+                  fill
+                  className="object-cover"
+                  quality={75}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0d4f4f]/60 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6">
+                  <span className="inline-block rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 text-sm font-semibold text-white">
+                    Alle Qualifikationen staatlich anerkannt
                   </span>
                 </div>
-              ))}
+              </div>
             </div>
+          </div>
+        </section>
+
+        {/* ── Behandlungsraum ───────────────────────────────────────── */}
+        <section className="relative h-64 sm:h-80 overflow-hidden">
+          <Image
+            src="/images/behandlungsraum.webp"
+            alt="Behandlungsraum der Heilmassage-Praxis von Domenic Hacker in Wien 1080"
+            fill
+            className="object-cover"
+            quality={75}
+          />
+          <div className="absolute inset-0 bg-[#0d4f4f]/50" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <p className="text-xl sm:text-2xl font-bold text-white/90 tracking-wide text-center px-4">
+              Eine Atmosphäre, in der Sie sich wohlfühlen
+            </p>
           </div>
         </section>
 
