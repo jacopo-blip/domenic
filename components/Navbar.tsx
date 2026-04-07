@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Check } from "lucide-react";
 import Image from "next/image";
 
@@ -84,10 +83,7 @@ export function Navbar() {
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ type: "spring", stiffness: 200, damping: 30 }}
+      <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
             ? "bg-white/95 backdrop-blur-md shadow-lg shadow-black/5"
@@ -122,7 +118,6 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <a
                   key={link.href}
-<<<<<<< HEAD
                   href={getHref(link.href)}
                   className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${getLinkClass(link.sectionId)}`}
                 >
@@ -158,59 +153,39 @@ export function Navbar() {
             </button>
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile menu overlay */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-white"
-          >
-            <div className="flex flex-col items-center justify-center h-full gap-6">
-              {navLinks.map((link, i) => (
-                <motion.a
-                  key={link.href}
-<<<<<<< HEAD
-                  href={getHref(link.href)}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                  onClick={() => setMobileOpen(false)}
-                  className={`text-2xl font-extrabold transition-colors ${getMobileLinkClass(link.sectionId)}`}
-                >
-                  {link.label}
-                </motion.a>
-              ))}
-              {isBookingPage ? (
-                <motion.span
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.45 }}
-                  className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#0d4f4f] px-8 py-3.5 text-lg font-bold text-white"
-                >
-                  <Check size={20} strokeWidth={3} />
-                  Termin buchen
-                </motion.span>
-              ) : (
-                <motion.a
-                  href="/buchen"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.45 }}
-                  onClick={() => setMobileOpen(false)}
-                  className="mt-4 inline-flex rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-8 py-3.5 text-lg font-bold text-white shadow-lg"
-                >
-                  Termin buchen
-                </motion.a>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 bg-white">
+          <div className="flex flex-col items-center justify-center h-full gap-6">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={getHref(link.href)}
+                onClick={() => setMobileOpen(false)}
+                className={`text-2xl font-extrabold transition-colors ${getMobileLinkClass(link.sectionId)}`}
+              >
+                {link.label}
+              </a>
+            ))}
+            {isBookingPage ? (
+              <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#0d4f4f] px-8 py-3.5 text-lg font-bold text-white">
+                <Check size={20} strokeWidth={3} />
+                Termin buchen
+              </span>
+            ) : (
+              <a
+                href="/buchen"
+                onClick={() => setMobileOpen(false)}
+                className="mt-4 inline-flex rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-8 py-3.5 text-lg font-bold text-white shadow-lg"
+              >
+                Termin buchen
+              </a>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }

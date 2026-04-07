@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useEffect, useState, useCallback } from "react";
 import {
   MapPin,
@@ -55,12 +54,7 @@ export function BookingContent() {
         </div>
 
         <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-2xl mx-auto"
-          >
+          <div className="text-center max-w-2xl mx-auto">
             <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-white">
               Termin online buchen —{" "}
               <span className="text-[#f2a93b]">schnell & unkompliziert</span>
@@ -71,13 +65,7 @@ export function BookingContent() {
 
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
               {steps.map((s, i) => (
-                <motion.div
-                  key={s.step}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
-                  className="flex items-center gap-3"
-                >
+                <div key={s.step} className="flex items-center gap-3">
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#f2a93b] text-[#111] font-extrabold text-base aspect-square">
                     {s.step}
                   </span>
@@ -89,10 +77,10 @@ export function BookingContent() {
                       →
                     </span>
                   )}
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -106,11 +94,7 @@ export function BookingContent() {
         </div>
 
         {booked ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="mx-auto max-w-2xl px-5 sm:px-8 py-20 text-center"
-          >
+          <div className="mx-auto max-w-2xl px-5 sm:px-8 py-20 text-center">
             <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-[#0d4f4f]/10 mb-6">
               <CalendarCheck size={40} className="text-[#0d4f4f]" />
             </div>
@@ -127,7 +111,7 @@ export function BookingContent() {
               <RotateCcw size={18} />
               Weiteren Termin buchen
             </button>
-          </motion.div>
+          </div>
         ) : (
           // TODO: Calendly Cookie-Banner sitzt links unten im iFrame (position: fixed).
           // Kann nur in Domenics Calendly Account Settings > Cookie Consent
@@ -152,12 +136,7 @@ export function BookingContent() {
       <section className="bg-gray-50 py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
+            <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#111]">
                 So finden Sie{" "}
                 <span className="text-[#0d4f4f]">die Praxis</span>
@@ -257,15 +236,9 @@ export function BookingContent() {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="rounded-3xl overflow-hidden shadow-xl shadow-black/5 border border-gray-100"
-            >
+            <div className="rounded-3xl overflow-hidden shadow-xl shadow-black/5 border border-gray-100">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2658.6!2d16.349!3d48.211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sFeldgasse+3%2C+1080+Wien!5e0!3m2!1sde!2sat!4v1"
                 className="w-full h-[400px] lg:h-full min-h-[400px] border-0"
@@ -274,7 +247,7 @@ export function BookingContent() {
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Praxis Standort - Feldgasse 3/20, 1080 Wien"
               />
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>

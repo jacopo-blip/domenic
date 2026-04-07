@@ -1,13 +1,9 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { MapPin, Phone, Mail, Send, Clock } from "lucide-react";
 
 export function Contact() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -30,44 +26,24 @@ export function Contact() {
       <div className="absolute top-20 -right-40 w-[500px] h-[500px] rounded-full bg-[#e8654a]/5" />
       <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-[#0d4f4f]/10" />
 
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8" ref={ref}>
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div className="text-center max-w-2xl mx-auto">
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-bold text-white/70"
-          >
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-bold text-white/70">
             Kontakt
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-white"
-          >
+          </span>
+          <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-white">
             Bereit für Ihre{" "}
             <span className="text-[#f2a93b]">Behandlung?</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-4 text-lg text-white/50"
-          >
+          </h2>
+          <p className="mt-4 text-lg text-white/50">
             Schreiben Sie mir oder rufen Sie einfach an — ich freue mich auf
             Sie.
-          </motion.p>
+          </p>
         </div>
 
         <div className="mt-14 sm:mt-20 grid lg:grid-cols-5 gap-10 lg:gap-16">
           {/* Contact info cards */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="lg:col-span-2 flex flex-col gap-4"
-          >
+          <div className="lg:col-span-2 flex flex-col gap-4">
             {[
               {
                 icon: MapPin,
@@ -96,12 +72,9 @@ export function Contact() {
                 value: "Nach Vereinbarung",
                 color: "#e8654a",
               },
-            ].map((item, i) => (
-              <motion.div
+            ].map((item) => (
+              <div
                 key={item.label}
-                initial={{ opacity: 0, x: -20 }}
-                animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.4, delay: 0.35 + i * 0.08 }}
                 className="flex items-start gap-4 rounded-2xl bg-white/[0.05] border border-white/[0.08] p-5"
               >
                 <div
@@ -129,7 +102,7 @@ export function Contact() {
                     </p>
                   )}
                 </div>
-              </motion.div>
+              </div>
             ))}
 
             {/* CTA to booking page */}
@@ -139,14 +112,11 @@ export function Contact() {
             >
               Online Termin buchen
             </a>
-          </motion.div>
+          </div>
 
           {/* Contact form */}
-          <motion.form
+          <form
             onSubmit={handleSubmit}
-            initial={{ opacity: 0, x: 30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.35 }}
             className="lg:col-span-3 rounded-3xl bg-white/[0.05] border border-white/[0.08] p-8 sm:p-10"
           >
             <div className="grid sm:grid-cols-2 gap-5">
@@ -212,7 +182,7 @@ export function Contact() {
             <p className="mt-3 text-xs text-white/30">
               Öffnet Ihr E-Mail-Programm mit vorausgefüllter Nachricht
             </p>
-          </motion.form>
+          </form>
         </div>
       </div>
     </section>

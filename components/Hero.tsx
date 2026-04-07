@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArrowDown, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import type { SanitySettings } from "@/sanity/lib/queries";
@@ -49,43 +48,24 @@ export function Hero({ sanitySettings }: { sanitySettings?: SanitySettings | nul
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8 w-full py-32 sm:py-40" style={{ zIndex: 3 }}>
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
+            <div>
               <span className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 px-4 py-2 text-sm font-semibold text-white/90">
                 <span className="h-2 w-2 rounded-full bg-[#f2a93b] animate-pulse" />
                 Diplomierter Heilmasseur in Wien
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              className="mt-6 sm:mt-8 text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[0.95] tracking-tight text-white"
-            >
+            <h1 className="mt-6 sm:mt-8 text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[0.95] tracking-tight text-white">
               {headline}
               <br />
               <span className="text-[#f2a93b]">{headlineAccent}</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="mt-6 max-w-lg text-lg sm:text-xl text-white/75 leading-relaxed"
-            >
+            <p className="mt-6 max-w-lg text-lg sm:text-xl text-white/75 leading-relaxed">
               {subheading}
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.45 }}
-              className="mt-8 sm:mt-10 flex flex-wrap gap-4"
-            >
+            <div className="mt-8 sm:mt-10 flex flex-wrap gap-4">
               <a
                 href="/buchen"
                 className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-7 py-3.5 text-base font-bold text-white shadow-xl shadow-[#e8654a]/30 transition-all duration-300 hover:shadow-2xl hover:shadow-[#e8654a]/40 hover:scale-105"
@@ -99,14 +79,9 @@ export function Hero({ sanitySettings }: { sanitySettings?: SanitySettings | nul
                 Zum Angebot
                 <ArrowDown size={18} />
               </a>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="mt-10 sm:mt-14 flex flex-wrap gap-x-6 gap-y-3 text-sm text-white/60"
-            >
+            <div className="mt-10 sm:mt-14 flex flex-wrap gap-x-6 gap-y-3 text-sm text-white/60">
               <span className="inline-flex items-center gap-1.5">
                 <MapPin size={14} className="text-[#f2a93b]" />
                 {address}
@@ -115,15 +90,10 @@ export function Hero({ sanitySettings }: { sanitySettings?: SanitySettings | nul
                 <Phone size={14} className="text-[#f2a93b]" />
                 {phone}
               </span>
-            </motion.div>
+            </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, x: 60 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.3 }}
-            className="hidden lg:flex relative items-center justify-center"
-          >
+          <div className="hidden lg:flex relative items-center justify-center">
             <div className="relative w-full max-w-md">
               <div className="absolute -top-4 -left-4 w-full h-[420px] rounded-3xl bg-[#e8654a]/20 rotate-3" />
               <div className="absolute -top-2 -left-2 w-full h-[420px] rounded-3xl bg-[#f2a93b]/20 rotate-1" />
@@ -156,7 +126,7 @@ export function Hero({ sanitySettings }: { sanitySettings?: SanitySettings | nul
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 
