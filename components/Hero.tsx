@@ -3,8 +3,17 @@
 import { motion } from "framer-motion";
 import { ArrowDown, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
+import type { SanitySettings } from "@/sanity/lib/queries";
 
-export function Hero() {
+export function Hero({ sanitySettings }: { sanitySettings?: SanitySettings | null }) {
+  const headline = sanitySettings?.heroHeadline ?? "Weniger Schmerzen.";
+  const headlineAccent = sanitySettings?.heroHeadlineAccent ?? "Tiefe Entspannung.";
+  const subheading =
+    sanitySettings?.heroSubheading ??
+    "Gezielte Heilmassage bei Verspannungen, Stress und Rückenbeschwerden. Ihr Raum für Entspannung und Heilung in Wien 1080.";
+  const address = sanitySettings?.address ?? "Feldgasse 3/20, 1080 Wien";
+  const phone = sanitySettings?.phone ?? "+43 670 189 52 56";
+
   return (
     <section
       className="relative min-h-screen flex items-center"
@@ -57,9 +66,9 @@ export function Hero() {
               transition={{ duration: 0.7, delay: 0.15 }}
               className="mt-6 sm:mt-8 text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[0.95] tracking-tight text-white"
             >
-              Weniger Schmerzen.
+              {headline}
               <br />
-              <span className="text-[#f2a93b]">Tiefe Entspannung.</span>
+              <span className="text-[#f2a93b]">{headlineAccent}</span>
             </motion.h1>
 
             <motion.p
@@ -68,9 +77,7 @@ export function Hero() {
               transition={{ duration: 0.7, delay: 0.3 }}
               className="mt-6 max-w-lg text-lg sm:text-xl text-white/75 leading-relaxed"
             >
-              Gezielte Heilmassage bei Verspannungen, Stress und
-              Rückenbeschwerden. Ihr Raum für Entspannung und Heilung in Wien
-              1080.
+              {subheading}
             </motion.p>
 
             <motion.div
@@ -102,11 +109,11 @@ export function Hero() {
             >
               <span className="inline-flex items-center gap-1.5">
                 <MapPin size={14} className="text-[#f2a93b]" />
-                Feldgasse 3/20, 1080 Wien
+                {address}
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Phone size={14} className="text-[#f2a93b]" />
-                +43 670 189 52 56
+                {phone}
               </span>
             </motion.div>
           </div>

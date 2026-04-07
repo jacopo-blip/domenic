@@ -3,8 +3,9 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Heart, Droplets, Hand } from "lucide-react";
+import type { SanityService } from "@/sanity/lib/queries";
 
-const services = [
+const FALLBACK_SERVICES = [
   {
     icon: Heart,
     title: "Heilmassage",
@@ -37,9 +38,47 @@ const services = [
   },
 ];
 
-export function Services() {
+const COLORS = [
+  { color: "#e8654a", bgColor: "#e8654a" },
+  { color: "#0d4f4f", bgColor: "#0d4f4f" },
+  { color: "#f2a93b", bgColor: "#f2a93b" },
+];
+const ICONS = [Heart, Droplets, Hand];
+
+type ServiceDisplay = {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  price: string;
+  color: string;
+  bgColor: string;
+  number: string;
+};
+
+function toDisplayServices(sanityServices: SanityService[]): ServiceDisplay[] {
+  return sanityServices.map((s, i) => ({
+    icon: ICONS[i % ICONS.length],
+    title: s.title,
+    description: s.shortDescription ?? "",
+    price: s.price ?? "Ab \u20ac55",
+    color: COLORS[i % COLORS.length].color,
+    bgColor: COLORS[i % COLORS.length].bgColor,
+    number: String(i + 1).padStart(2, "0"),
+  }));
+}
+
+export function Services({
+  sanityServices,
+}: {
+  sanityServices?: SanityService[] | null;
+}) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  const services =
+    sanityServices && sanityServices.length > 0
+      ? toDisplayServices(sanityServices)
+      : FALLBACK_SERVICES;
 
   return (
     <section

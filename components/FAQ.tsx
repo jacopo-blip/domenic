@@ -3,8 +3,9 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import type { SanityFaqItem } from "@/sanity/lib/queries";
 
-const faqs = [
+const FALLBACK_FAQS = [
   {
     question: "Der erste Schritt zur Heilmassage",
     answer:
@@ -42,13 +43,15 @@ const faqs = [
   },
 ];
 
+type FaqDisplay = { question: string; answer: string };
+
 function FAQItem({
   faq,
   index,
   isOpen,
   onToggle,
 }: {
-  faq: (typeof faqs)[0];
+  faq: FaqDisplay;
   index: number;
   isOpen: boolean;
   onToggle: () => void;
@@ -96,10 +99,17 @@ function FAQItem({
   );
 }
 
-export function FAQ() {
+export function FAQ({
+  sanityFaqs,
+}: {
+  sanityFaqs?: SanityFaqItem[] | null;
+}) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs: FaqDisplay[] =
+    sanityFaqs && sanityFaqs.length > 0 ? sanityFaqs : FALLBACK_FAQS;
 
   return (
     <section

@@ -1,0 +1,9 @@
+import { createClient } from "next-sanity";
+
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
+
+// Client is null when Sanity is not configured — all queries will return null gracefully
+export const client = projectId
+  ? createClient({ projectId, dataset, apiVersion: "2024-01-01", useCdn: true })
+  : null;
