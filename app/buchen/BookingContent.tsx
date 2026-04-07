@@ -132,13 +132,19 @@ export function BookingContent() {
           // TODO: Calendly Cookie-Banner sitzt links unten im iFrame (position: fixed).
           // Kann nur in Domenics Calendly Account Settings > Cookie Consent
           // auf "centered" umgestellt werden - von aussen nicht steuerbar.
-          <iframe
-            key={iframeKey}
-            src="https://calendly.com/praxis-heilmasseur-domenic"
-            className="w-full border-0"
-            style={{ minHeight: "700px" }}
-            title="Termin buchen bei Heilmasseur Domenic Hacker"
-          />
+          //
+          // Mobile scrolling fix: iframe is made tall enough to avoid internal
+          // scrolling. scrolling="no" + touch-action:pan-y ensure the page
+          // (not the iframe) handles touch-scroll on mobile.
+          <div style={{ touchAction: "pan-y" }}>
+            <iframe
+              key={iframeKey}
+              src="https://calendly.com/praxis-heilmasseur-domenic"
+              className="w-full border-0 min-h-[900px] sm:min-h-[700px]"
+              scrolling="no"
+              title="Termin buchen bei Heilmasseur Domenic Hacker"
+            />
+          </div>
         )}
       </section>
 
