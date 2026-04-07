@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import type { SanityFaqItem } from "@/sanity/lib/queries";
 
@@ -47,7 +46,6 @@ type FaqDisplay = { question: string; answer: string };
 
 function FAQItem({
   faq,
-  index,
   isOpen,
   onToggle,
 }: {
@@ -57,13 +55,7 @@ function FAQItem({
   onToggle: () => void;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
-      className="border-b border-gray-100 last:border-0"
-    >
+    <div className="border-b border-gray-100 last:border-0">
       <button
         onClick={onToggle}
         className="flex w-full items-center justify-between gap-4 py-6 text-left"
@@ -72,30 +64,20 @@ function FAQItem({
         <span className="text-base sm:text-lg font-bold text-[#111]">
           {faq.question}
         </span>
-        <motion.span
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="shrink-0"
+        <span
+          className={`shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         >
           <ChevronDown size={20} className="text-[#0d4f4f]" />
-        </motion.span>
+        </span>
       </button>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <div className="pb-6 text-[#555] leading-relaxed text-sm sm:text-base whitespace-pre-line">
-              {faq.answer}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+      {isOpen && (
+        <div className="overflow-hidden">
+          <div className="pb-6 text-[#555] leading-relaxed text-sm sm:text-base whitespace-pre-line">
+            {faq.answer}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -104,8 +86,6 @@ export function FAQ({
 }: {
   sanityFaqs?: SanityFaqItem[] | null;
 }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const faqs: FaqDisplay[] =
@@ -118,25 +98,15 @@ export function FAQ({
     >
       <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-[#0d4f4f]/5 blur-3xl" />
 
-      <div className="relative mx-auto max-w-4xl px-5 sm:px-8" ref={ref}>
+      <div className="relative mx-auto max-w-4xl px-5 sm:px-8">
         <div className="text-center max-w-2xl mx-auto">
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-full bg-[#0d4f4f]/8 px-4 py-1.5 text-sm font-bold text-[#0d4f4f]"
-          >
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#0d4f4f]/8 px-4 py-1.5 text-sm font-bold text-[#0d4f4f]">
             FAQ & Informationen
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]"
-          >
+          </span>
+          <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]">
             Häufig gestellte{" "}
             <span className="text-[#0d4f4f]">Fragen</span>
-          </motion.h2>
+          </h2>
         </div>
 
         <div className="mt-14 rounded-3xl bg-white border border-gray-100 shadow-xl shadow-black/5 px-6 sm:px-10">
@@ -151,18 +121,13 @@ export function FAQ({
           ))}
         </div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-6 text-center text-sm text-[#555]"
-        >
+        <p className="mt-6 text-center text-sm text-[#555]">
           Bitte beachten Sie unsere{" "}
           <a href="/agb" className="font-bold text-[#0d4f4f] hover:underline">
             Allgemeinen Geschäftsbedingungen
           </a>{" "}
           vor der Buchung eines Termins.
-        </motion.p>
+        </p>
       </div>
     </section>
   );

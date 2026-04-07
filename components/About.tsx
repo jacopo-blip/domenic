@@ -1,7 +1,5 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import {
   Award,
   Flower2,
@@ -39,9 +37,6 @@ const FALLBACK_BIO = [
 ];
 
 export function About({ sanityAbout }: { sanityAbout?: SanityAbout | null }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
   const bio =
     sanityAbout?.bio && sanityAbout.bio.length > 0
       ? sanityAbout.bio
@@ -73,15 +68,10 @@ export function About({ sanityAbout }: { sanityAbout?: SanityAbout | null }) {
       <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-[#e8654a]/8" />
       <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-[#f2a93b]/5" />
 
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8" ref={ref}>
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Left — Image */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7 }}
-            className="relative"
-          >
+          <div className="relative">
             <div className="relative">
               <div className="absolute -top-6 -left-6 w-full h-full rounded-3xl bg-[#e8654a]/20 -rotate-3" />
               <div className="absolute -top-3 -left-3 w-full h-full rounded-3xl bg-[#f2a93b]/15 -rotate-1" />
@@ -108,53 +98,30 @@ export function About({ sanityAbout }: { sanityAbout?: SanityAbout | null }) {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right — text */}
           <div>
-            <motion.span
-              initial={{ opacity: 0, y: 10 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-bold text-white/80"
-            >
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-bold text-white/80">
               Über Domenic Hacker
-            </motion.span>
+            </span>
 
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-white"
-            >
+            <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-white">
               Von der Bewegung{" "}
               <span className="text-[#f2a93b]">zur Heilung</span>
-            </motion.h2>
+            </h2>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-6 space-y-4 text-base text-white/70 leading-relaxed"
-            >
+            <div className="mt-6 space-y-4 text-base text-white/70 leading-relaxed">
               {bio.map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
               ))}
-            </motion.div>
+            </div>
 
             {/* Credentials grid */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3"
-            >
-              {credentialItems.map((cred, i) => (
-                <motion.div
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {credentialItems.map((cred) => (
+                <div
                   key={cred.label}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.4 + i * 0.05 }}
                   className="flex items-center gap-3 rounded-2xl bg-white/[0.06] border border-white/[0.08] px-4 py-3"
                 >
                   <cred.icon
@@ -164,9 +131,9 @@ export function About({ sanityAbout }: { sanityAbout?: SanityAbout | null }) {
                   <span className="text-sm font-semibold text-white/80">
                     {cred.label}
                   </span>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

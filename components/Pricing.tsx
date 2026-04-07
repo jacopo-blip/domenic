@@ -1,7 +1,5 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import { Check, Info, ExternalLink } from "lucide-react";
 import type { SanityPricingItem, SanitySettings } from "@/sanity/lib/queries";
 
@@ -23,9 +21,6 @@ export function Pricing({
   sanityPricing?: SanityPricingItem[] | null;
   sanitySettings?: SanitySettings | null;
 }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
   const rows: PricingRow[] =
     sanityPricing && sanityPricing.length > 0
       ? sanityPricing.map((item) => ({
@@ -46,43 +41,23 @@ export function Pricing({
     >
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[#0d4f4f]/[0.03] blur-3xl" />
 
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8" ref={ref}>
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div className="text-center max-w-2xl mx-auto">
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-full bg-[#e8654a]/10 px-4 py-1.5 text-sm font-bold text-[#e8654a]"
-          >
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#e8654a]/10 px-4 py-1.5 text-sm font-bold text-[#e8654a]">
             Transparente Preise
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]"
-          >
+          </span>
+          <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]">
             Faire Preise,{" "}
             <span className="text-[#e8654a]">spürbare Wirkung</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-4 text-lg text-[#555]"
-          >
+          </h2>
+          <p className="mt-4 text-lg text-[#555]">
             Alle Behandlungen werden individuell auf Ihre Bedürfnisse
             abgestimmt.
-          </motion.p>
+          </p>
         </div>
 
         {/* Pricing table */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="mt-14 sm:mt-20 max-w-4xl mx-auto"
-        >
+        <div className="mt-14 sm:mt-20 max-w-4xl mx-auto">
           <div className="rounded-3xl bg-white border border-gray-100 shadow-xl shadow-black/5 overflow-hidden">
             <div className="grid grid-cols-4 bg-[#0d4f4f] text-white">
               <div className="px-6 sm:px-8 py-5 font-extrabold text-sm sm:text-base">
@@ -136,12 +111,7 @@ export function Pricing({
           </div>
 
           {/* Insurance note */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="mt-8 flex items-start gap-4 rounded-2xl bg-gradient-to-r from-[#0d4f4f]/[0.06] to-[#0d4f4f]/[0.02] border border-[#0d4f4f]/10 p-6 sm:p-8"
-          >
+          <div className="mt-8 flex items-start gap-4 rounded-2xl bg-gradient-to-r from-[#0d4f4f]/[0.06] to-[#0d4f4f]/[0.02] border border-[#0d4f4f]/10 p-6 sm:p-8">
             <div className="flex-shrink-0 mt-0.5">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0d4f4f]/10">
                 <Info size={20} className="text-[#0d4f4f]" />
@@ -164,15 +134,10 @@ export function Pricing({
                 <ExternalLink size={14} />
               </a>
             </div>
-          </motion.div>
+          </div>
 
           {/* Features */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3"
-          >
+          <div className="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3">
             {[
               "Individuell abgestimmt",
               "Keine Vertragsbindung",
@@ -186,8 +151,8 @@ export function Pricing({
                 {feat}
               </span>
             ))}
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );
