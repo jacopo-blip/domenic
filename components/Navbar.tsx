@@ -8,7 +8,7 @@ import Image from "next/image";
 
 const navLinks = [
   { label: "Leistungen", href: "#leistungen", sectionId: "leistungen" },
-  { label: "Über mich", href: "#ueber-mich", sectionId: "ueber-mich" },
+  { label: "Über mich", href: "/ueber-mich", sectionId: "ueber-mich" },
   { label: "Preise", href: "#preise", sectionId: "preise" },
   { label: "FAQ", href: "#faq", sectionId: "faq" },
   { label: "Kontakt", href: "#kontakt", sectionId: "kontakt" },
@@ -20,6 +20,8 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = usePathname();
   const isBookingPage = pathname === "/buchen";
+  const getHref = (href: string) =>
+    isBookingPage && href.startsWith("#") ? `/${href}` : href;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -118,7 +120,7 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <a
                   key={link.href}
-                  href={isBookingPage ? `/${link.href}` : link.href}
+                  href={getHref(link.href)}
                   className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${getLinkClass(link.sectionId)}`}
                 >
                   {link.label}
@@ -169,7 +171,7 @@ export function Navbar() {
               {navLinks.map((link, i) => (
                 <motion.a
                   key={link.href}
-                  href={isBookingPage ? `/${link.href}` : link.href}
+                  href={getHref(link.href)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.08 }}
