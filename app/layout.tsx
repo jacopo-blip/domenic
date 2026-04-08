@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { JsonLd } from "@/components/JsonLd";
 import Script from "next/script";
 import CookieConsentComponent from "@/components/CookieConsent";
+import { SanityLive } from "@/sanity/lib/live";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -99,6 +100,7 @@ export default function RootLayout({
           />
         </noscript>
         <Theme style={{ background: "transparent" }}>{children}</Theme>
+        <SanityLive />
         <Analytics />
         <CookieConsentComponent />
       </body>

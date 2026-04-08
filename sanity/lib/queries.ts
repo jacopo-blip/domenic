@@ -1,4 +1,4 @@
-import { client } from "./client";
+import { sanityFetch } from "./live";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -64,9 +64,9 @@ export type SanitySettings = {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 async function safeFetch<T>(query: string): Promise<T | null> {
-  if (!client) return null;
   try {
-    return await client.fetch<T>(query);
+    const { data } = await sanityFetch({ query });
+    return data as T;
   } catch {
     return null;
   }
