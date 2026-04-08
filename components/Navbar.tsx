@@ -2,20 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Check } from "lucide-react";
 import Image from "next/image";
 
 const navLinks = [
   { label: "Startseite", href: "/" },
   { label: "Heilmassage Wien", href: "/heilmassage-wien-1080" },
   { label: "Über mich", href: "/ueber-mich" },
-  { label: "Termin buchen", href: "/buchen" },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const isBookingPage = pathname === "/buchen";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -90,6 +90,19 @@ export function Navbar() {
                   {link.label}
                 </a>
               ))}
+              {isBookingPage ? (
+                <span className="ml-3 inline-flex items-center gap-2 rounded-full bg-[#0d4f4f] px-5 py-2.5 text-sm font-bold text-white">
+                  <Check size={16} strokeWidth={3} />
+                  Termin buchen
+                </span>
+              ) : (
+                <a
+                  href="/buchen"
+                  className="ml-3 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-[#e8654a]/25 transition-all duration-200 hover:shadow-xl hover:shadow-[#e8654a]/30 hover:scale-105"
+                >
+                  Termin buchen
+                </a>
+              )}
             </div>
 
             {/* Mobile hamburger */}
@@ -122,6 +135,20 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
+            {isBookingPage ? (
+              <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#0d4f4f] px-8 py-3.5 text-lg font-bold text-white">
+                <Check size={20} strokeWidth={3} />
+                Termin buchen
+              </span>
+            ) : (
+              <a
+                href="/buchen"
+                onClick={() => setMobileOpen(false)}
+                className="mt-4 inline-flex rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-8 py-3.5 text-lg font-bold text-white shadow-lg shadow-[#e8654a]/25"
+              >
+                Termin buchen
+              </a>
+            )}
           </div>
         </div>
       )}
