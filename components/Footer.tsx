@@ -4,15 +4,11 @@ import { Heart } from "lucide-react";
 import Image from "next/image";
 
 const navLinks = [
-  { label: "Leistungen", href: "#leistungen" },
-  { label: "Über mich", href: "/ueber-mich" },
-  { label: "Preise", href: "#preise" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Kontakt", href: "#kontakt" },
+  { label: "Startseite", href: "/" },
   { label: "Heilmassage Wien", href: "/heilmassage-wien-1080" },
+  { label: "Über mich", href: "/ueber-mich" },
   { label: "Termin buchen", href: "/buchen" },
   { label: "Impressum", href: "/impressum" },
-  { label: "Datenschutz", href: "/datenschutz" },
 ];
 
 export function Footer() {

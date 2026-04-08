@@ -6,54 +6,22 @@ import { Menu, X, Check } from "lucide-react";
 import Image from "next/image";
 
 const navLinks = [
-  { label: "Leistungen", href: "#leistungen", sectionId: "leistungen" },
-  { label: "Über mich", href: "/ueber-mich", sectionId: "ueber-mich" },
-  { label: "Preise", href: "#preise", sectionId: "preise" },
-  { label: "FAQ", href: "#faq", sectionId: "faq" },
-  { label: "Kontakt", href: "#kontakt", sectionId: "kontakt" },
-  { label: "Heilmassage Wien", href: "/heilmassage-wien-1080", sectionId: "heilmassage-wien-1080" },
+  { label: "Startseite", href: "/" },
+  { label: "Heilmassage Wien", href: "/heilmassage-wien-1080" },
+  { label: "Über mich", href: "/ueber-mich" },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = usePathname();
-  const isHomePage = pathname === "/";
   const isBookingPage = pathname === "/buchen";
-  const getHref = (href: string) =>
-    !isHomePage && href.startsWith("#") ? `/${href}` : href;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Track active section via IntersectionObserver
-  useEffect(() => {
-    if (!isHomePage) return;
-
-    const sectionIds = navLinks.map((l) => l.sectionId);
-    const observers: IntersectionObserver[] = [];
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setActiveSection(id);
-          }
-        },
-        { rootMargin: "-40% 0px -55% 0px" }
-      );
-      observer.observe(el);
-      observers.push(observer);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
-  }, [isBookingPage]);
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -62,8 +30,8 @@ export function Navbar() {
     };
   }, [mobileOpen]);
 
-  const getLinkClass = (sectionId: string) => {
-    const isActive = activeSection === sectionId;
+  const getLinkClass = (href: string) => {
+    const isActive = pathname === href;
     if (scrolled) {
       return isActive
         ? "text-[#0d4f4f] bg-[#0d4f4f]/8"
@@ -74,11 +42,9 @@ export function Navbar() {
       : "text-white/90 hover:text-white hover:bg-white/15";
   };
 
-  const getMobileLinkClass = (sectionId: string) => {
-    const isActive = activeSection === sectionId;
-    return isActive
-      ? "text-[#0d4f4f]"
-      : "text-[#111] hover:text-[#0d4f4f]";
+  const getMobileLinkClass = (href: string) => {
+    const isActive = pathname === href;
+    return isActive ? "text-[#0d4f4f]" : "text-[#111] hover:text-[#0d4f4f]";
   };
 
   return (
@@ -118,8 +84,8 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <a
                   key={link.href}
-                  href={getHref(link.href)}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${getLinkClass(link.sectionId)}`}
+                  href={link.href}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${getLinkClass(link.href)}`}
                 >
                   {link.label}
                 </a>
@@ -162,9 +128,9 @@ export function Navbar() {
             {navLinks.map((link) => (
               <a
                 key={link.href}
-                href={getHref(link.href)}
+                href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className={`text-2xl font-extrabold transition-colors ${getMobileLinkClass(link.sectionId)}`}
+                className={`text-2xl font-extrabold transition-colors ${getMobileLinkClass(link.href)}`}
               >
                 {link.label}
               </a>
