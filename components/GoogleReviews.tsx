@@ -1,50 +1,113 @@
-"use client";
-
-import { useRef } from "react";
 import { Star } from "lucide-react";
 import type { SanityTestimonial } from "@/sanity/lib/queries";
 
 // ─── Fallback data ─────────────────────────────────────────────────────────────
 
-const FALLBACK_REVIEWS = [
+const FALLBACK_REVIEWS: ReviewDisplay[] = [
   {
     id: "1",
     name: "Maria S.",
-    detail: "Stammkundin",
     rating: 5,
     text: "Ich komme schon seit über einem Jahr regelmäßig zu Domenic. Die Lymphdrainage hat bei meinen Schwellungen nach der OP wirklich geholfen. Sehr einfühlsam und professionell!",
     date: "vor 1 Woche",
+    photoUri: null,
   },
   {
     id: "2",
     name: "Thomas K.",
-    detail: "Neukunde",
     rating: 5,
     text: "Endlich jemand, der wirklich versteht was er tut. Chronische Rückenschmerzen nach 10 Jahren deutlich besser nach nur 4 Sitzungen. Kann ich wärmstens empfehlen.",
     date: "vor 3 Wochen",
+    photoUri: null,
   },
   {
     id: "3",
     name: "Sandra W.",
-    detail: "Kassenpatientin",
     rating: 5,
     text: "Sehr nette und kompetente Betreuung. Die Heilmassage mit ärztlicher Verordnung wird direkt mit der Kasse abgerechnet, das ist super unkompliziert. Top Praxis!",
     date: "vor 1 Monat",
+    photoUri: null,
   },
   {
     id: "4",
     name: "Michael B.",
-    detail: "Berufssportler",
     rating: 5,
     text: "Als Sportler bin ich auf gute Regeneration angewiesen. Domenic kennt die Anatomie genau und arbeitet sehr gezielt. Die beste Massage, die ich je hatte.",
     date: "vor 2 Monaten",
+    photoUri: null,
   },
 ];
 
-const OVERALL_RATING = 4.9;
-const REVIEW_COUNT = 47;
+const FALLBACK_RATING = 4.9;
+const FALLBACK_COUNT = 47;
 const GOOGLE_MAPS_URL =
-  "https://maps.google.com/?q=Domenic+Massagepraxis+Wien";
+  "https://maps.google.com/?q=Heilmasseur+Domenic+Hacker+Wien";
+
+// ─── Types ─────────────────────────────────────────────────────────────────────
+
+type ReviewDisplay = {
+  id: string;
+  name: string;
+  rating: number;
+  text: string;
+  date: string;
+  photoUri: string | null;
+};
+
+type PlacesData = {
+  rating: number;
+  userRatingCount: number;
+  reviews: ReviewDisplay[];
+};
+
+// ─── Data fetching ─────────────────────────────────────────────────────────────
+
+async function fetchGoogleReviews(): Promise<PlacesData | null> {
+  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+  const placeId = process.env.GOOGLE_PLACE_ID;
+
+  if (!apiKey || !placeId) return null;
+
+  try {
+    const res = await fetch(
+      `https://places.googleapis.com/v1/places/${placeId}`,
+      {
+        headers: {
+          "X-Goog-Api-Key": apiKey,
+          "X-Goog-FieldMask": "rating,userRatingCount,reviews",
+        },
+        next: { revalidate: 86400 },
+      }
+    );
+
+    if (!res.ok) {
+      console.error("Google Places API error:", res.status, await res.text());
+      return null;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: any = await res.json();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const reviews: ReviewDisplay[] = (data.reviews ?? []).map((r: any, i: number) => ({
+      id: String(i),
+      name: r.authorAttribution?.displayName ?? "Anonym",
+      rating: r.rating ?? 5,
+      text: r.text?.text ?? r.originalText?.text ?? "",
+      date: r.relativePublishTimeDescription ?? "",
+      photoUri: r.authorAttribution?.photoUri ?? null,
+    }));
+
+    return {
+      rating: data.rating ?? FALLBACK_RATING,
+      userRatingCount: data.userRatingCount ?? FALLBACK_COUNT,
+      reviews: reviews.slice(0, 4),
+    };
+  } catch (err) {
+    console.error("Google Places fetch failed:", err);
+    return null;
+  }
+}
 
 // ─── Helper components ─────────────────────────────────────────────────────────
 
@@ -64,7 +127,6 @@ function StarRating({ rating, size = 16 }: { rating: number; size?: number }) {
   );
 }
 
-// Inline Google "G" logo as SVG
 function GoogleLogo({ size = 20 }: { size?: number }) {
   return (
     <svg
@@ -94,39 +156,60 @@ function GoogleLogo({ size = 20 }: { size?: number }) {
   );
 }
 
-// ─── Main component ────────────────────────────────────────────────────────────
-
-type ReviewDisplay = {
-  id: string;
+function ReviewerAvatar({
+  name,
+  photoUri,
+}: {
   name: string;
-  detail?: string;
-  rating: number;
-  text: string;
-  date: string;
-};
+  photoUri: string | null;
+}) {
+  if (photoUri) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={photoUri}
+        alt={name}
+        width={32}
+        height={32}
+        className="w-8 h-8 rounded-full object-cover"
+      />
+    );
+  }
+  return (
+    <div className="w-8 h-8 rounded-full bg-[#0d4f4f]/10 flex items-center justify-center text-xs font-bold text-[#0d4f4f]">
+      {name.charAt(0).toUpperCase()}
+    </div>
+  );
+}
+
+// ─── Main component ────────────────────────────────────────────────────────────
 
 function toDisplayReviews(sanity: SanityTestimonial[]): ReviewDisplay[] {
   return sanity.map((t) => ({
     id: t._id,
     name: t.authorName,
-    detail: t.authorDetail,
     rating: t.rating ?? 5,
     text: t.quote,
     date: "",
+    photoUri: null,
   }));
 }
 
-export function GoogleReviews({
+export async function GoogleReviews({
   sanityTestimonials,
 }: {
   sanityTestimonials?: SanityTestimonial[] | null;
 }) {
-  const ref = useRef(null);
+  const googleData = await fetchGoogleReviews();
 
   const reviews =
-    sanityTestimonials && sanityTestimonials.length > 0
+    googleData?.reviews ??
+    (sanityTestimonials && sanityTestimonials.length > 0
       ? toDisplayReviews(sanityTestimonials)
-      : FALLBACK_REVIEWS;
+      : FALLBACK_REVIEWS);
+
+  const overallRating = googleData?.rating ?? FALLBACK_RATING;
+  const reviewCount = googleData?.userRatingCount ?? FALLBACK_COUNT;
 
   return (
     <section
@@ -137,24 +220,18 @@ export function GoogleReviews({
       <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-[#0d4f4f]/4 blur-3xl" />
       <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full bg-[#e8654a]/5 blur-3xl" />
 
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8" ref={ref}>
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8">
           <div className="max-w-xl">
-            <span
-              className="inline-flex items-center gap-2 rounded-full bg-[#0d4f4f]/8 px-4 py-1.5 text-sm font-bold text-[#0d4f4f]"
-            >
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#0d4f4f]/8 px-4 py-1.5 text-sm font-bold text-[#0d4f4f]">
               Kundenstimmen
             </span>
-            <h2
-              className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]"
-            >
+            <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]">
               Das sagen{" "}
               <span className="text-[#e8654a]">meine Klienten</span>
             </h2>
-            <p
-              className="mt-4 text-lg text-[#555] leading-relaxed"
-            >
+            <p className="mt-4 text-lg text-[#555] leading-relaxed">
               Echte Erfahrungen meiner Klienten — unbearbeitet und direkt von
               Google.
             </p>
@@ -171,12 +248,12 @@ export function GoogleReviews({
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-2xl font-extrabold text-[#111] leading-none">
-                  {OVERALL_RATING}
+                  {overallRating.toFixed(1)}
                 </span>
                 <StarRating rating={5} size={18} />
               </div>
               <p className="mt-0.5 text-xs text-[#888]">
-                Basierend auf {REVIEW_COUNT} Bewertungen
+                Basierend auf {reviewCount} Bewertungen
               </p>
             </div>
           </a>
@@ -208,20 +285,16 @@ export function GoogleReviews({
 
               {/* Author */}
               <div className="mt-5 pt-4 border-t border-gray-100">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-bold text-[#111]">
+                <div className="flex items-center gap-3">
+                  <ReviewerAvatar name={review.name} photoUri={review.photoUri} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-[#111] truncate">
                       {review.name}
                     </p>
-                    {review.detail && (
-                      <p className="text-xs text-[#888] mt-0.5">
-                        {review.detail}
-                      </p>
+                    {review.date && (
+                      <p className="text-xs text-[#aaa] mt-0.5">{review.date}</p>
                     )}
                   </div>
-                  {review.date && (
-                    <span className="text-xs text-[#aaa]">{review.date}</span>
-                  )}
                 </div>
               </div>
             </div>
@@ -229,9 +302,7 @@ export function GoogleReviews({
         </div>
 
         {/* CTA link */}
-        <div
-          className="mt-10 text-center"
-        >
+        <div className="mt-10 text-center">
           <a
             href={GOOGLE_MAPS_URL}
             target="_blank"
