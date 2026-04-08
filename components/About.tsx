@@ -80,7 +80,7 @@ export function About({ sanityAbout }: { sanityAbout?: SanityAbout | null }) {
                   src="/images/domenic-wien.webp"
                   alt="Domenic Hacker - Heilmasseur in Wien"
                   fill
-                  className="object-cover"
+                  className="object-cover object-[75%_30%]"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0d4f4f] to-transparent pt-20 p-8">
                   <div className="grid grid-cols-3 gap-4">

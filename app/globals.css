@@ -30,3 +30,15 @@ html {
 section[id] {
   scroll-margin-top: 5rem;
 }
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-container:hover .marquee-track {
+  animation-play-state: paused !important;
+}

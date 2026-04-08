@@ -13,18 +13,16 @@ import {
   getFaqItems,
   getAbout,
   getSettings,
-  getTestimonials,
 } from "@/sanity/lib/queries";
 
 export default async function Home() {
-  const [services, pricingItems, faqItems, about, settings, testimonials] =
+  const [services, pricingItems, faqItems, about, settings] =
     await Promise.all([
       getServices(),
       getPricingItems(),
       getFaqItems(),
       getAbout(),
       getSettings(),
-      getTestimonials(),
     ]);
 
   return (
@@ -34,7 +32,7 @@ export default async function Home() {
         <Hero sanitySettings={settings} />
         <Services sanityServices={services} />
         <About sanityAbout={about} />
-        <GoogleReviews sanityTestimonials={testimonials} />
+        <GoogleReviews />
         <Pricing sanityPricing={pricingItems} sanitySettings={settings} />
         <FAQ sanityFaqs={faqItems} />
         <Contact />

@@ -16,7 +16,7 @@ export function Hero({ sanitySettings }: { sanitySettings?: SanitySettings | nul
   return (
     <section
       className="relative min-h-screen flex items-center"
-      style={{ clipPath: "inset(0)" }}
+      style={{ clipPath: "inset(0 0 -1px 0)" }}
     >
       {/* Parallax background — position:fixed inside clip-path for mobile compatibility */}
       <div
@@ -130,7 +130,7 @@ export function Hero({ sanitySettings }: { sanitySettings?: SanitySettings | nul
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0" style={{ zIndex: 3 }}>
+      <div className="absolute bottom-[-1px] left-0 right-0" style={{ zIndex: 3 }}>
         <svg
           viewBox="0 0 1440 80"
           fill="none"
