@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
@@ -15,6 +16,15 @@ import {
   getAbout,
   getSettings,
 } from "@/sanity/lib/queries";
+
+export const metadata: Metadata = {
+  title: "Heilmasseur Domenic Hacker | Heilmassage Wien 1080",
+  description:
+    "Diplomierter Heilmasseur in Wien 1080 (Josefstadt). Heilmassage, Lymphdrainage & Klassische Massage – gezielt, wirksam und individuell. Jetzt Termin buchen.",
+  alternates: {
+    canonical: "https://heilmasseur-domenic.at",
+  },
+};
 
 export default async function Home() {
   const [services, pricingItems, faqItems, about, settings] =
@@ -69,6 +79,71 @@ export default async function Home() {
                 >
                   Mehr über mich
                 </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Praxis */}
+        <section id="praxis" className="py-20 sm:py-28 bg-[#f8f7f5]">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/10">
+                <Image
+                  src="/images/praxis-interior.png"
+                  alt="Behandlungsraum der Heilmassage-Praxis in Wien 1080 – helle Altbauräume mit professioneller Massageliege"
+                  width={800}
+                  height={534}
+                  className="w-full h-auto"
+                  quality={85}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </div>
+
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#0d4f4f]/8 px-4 py-1.5 text-sm font-bold text-[#0d4f4f]">
+                  Die Praxis
+                </span>
+                <h2 className="mt-4 text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold leading-[1.1] tracking-tight text-[#111]">
+                  Ihr Raum für{" "}
+                  <span className="text-[#0d4f4f]">Erholung</span>
+                </h2>
+                <p className="mt-4 text-base sm:text-lg text-[#555] leading-relaxed">
+                  Meine Praxis befindet sich in einem ruhigen Altbau in der
+                  Josefstadt — mitten in Wien, aber abseits vom Trubel. Helle
+                  Räume, eine angenehme Atmosphäre und alles, was Sie für eine
+                  entspannte Behandlung brauchen.
+                </p>
+
+                <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex items-start gap-3 rounded-2xl bg-white p-4 shadow-sm">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0d4f4f]/8">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#0d4f4f]"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-[#111]">Feldgasse 3/20</p>
+                      <p className="text-xs text-[#888]">1080 Wien, Josefstadt</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 rounded-2xl bg-white p-4 shadow-sm">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0d4f4f]/8">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#0d4f4f]"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-[#111]">Flexible Termine</p>
+                      <p className="text-xs text-[#888]">Nach Vereinbarung</p>
+                    </div>
+                  </div>
+                </div>
+
+                <a
+                  href="https://maps.google.com/?q=Feldgasse+3,+1080+Wien"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center gap-2 rounded-full border-2 border-[#0d4f4f] px-6 py-2.5 text-sm font-bold text-[#0d4f4f] hover:bg-[#0d4f4f] hover:text-white transition-all duration-200"
+                >
+                  Route planen
+                </a>
               </div>
             </div>
           </div>

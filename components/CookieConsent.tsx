@@ -107,9 +107,9 @@ export default function CookieConsentComponent() {
               serviceCounterLabel: "Dienst|Dienste",
               sections: [
                 {
-                  title: "Deine Privatsphäre",
+                  title: "Ihre Privatsphäre",
                   description:
-                    "Hier entscheidest du, welche Cookies wir verwenden dürfen. Die Auswahl kannst du jederzeit über den Link im Footer ändern.",
+                    "Hier entscheiden Sie, welche Cookies wir verwenden dürfen. Die Auswahl können Sie jederzeit über den Link im Footer ändern.",
                 },
                 {
                   title: "Technisch notwendig",
@@ -150,7 +150,7 @@ export default function CookieConsentComponent() {
                 {
                   title: "Weitere Infos",
                   description:
-                    'Bei Fragen zu unseren Cookies kannst du uns über das <a href="/#kontakt">Kontaktformular</a> erreichen.',
+                    'Bei Fragen zu unseren Cookies können Sie uns über das <a href="/#kontakt">Kontaktformular</a> erreichen.',
                 },
               ],
             },
