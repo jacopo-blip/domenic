@@ -1,17 +1,26 @@
 "use client";
 
-import { ArrowDown, MapPin, Phone } from "lucide-react";
+import { ArrowDown, Star } from "lucide-react";
 import Image from "next/image";
 import type { SanitySettings } from "@/sanity/lib/queries";
+import type { ReviewSummary } from "@/components/GoogleReviewsBadge";
 
-export function Hero({ sanitySettings }: { sanitySettings?: SanitySettings | null }) {
+const GOOGLE_MAPS_URL =
+  "https://maps.google.com/?q=Heilmasseur+Domenic+Hacker+Wien";
+
+export function Hero({
+  sanitySettings,
+  reviewSummary,
+}: {
+  sanitySettings?: SanitySettings | null;
+  reviewSummary?: ReviewSummary;
+}) {
   const headline = sanitySettings?.heroHeadline ?? "Weniger Schmerzen.";
   const headlineAccent = sanitySettings?.heroHeadlineAccent ?? "Tiefe Entspannung.";
   const subheading =
     sanitySettings?.heroSubheading ??
     "Gezielte Heilmassage bei Verspannungen, Stress und Rückenbeschwerden. Ihr Raum für Entspannung und Heilung in Wien 1080.";
-  const address = sanitySettings?.address ?? "Feldgasse 3/20, 1080 Wien";
-  const phone = sanitySettings?.phone ?? "+43 670 189 52 56";
+
 
   return (
     <section
@@ -61,7 +70,53 @@ export function Hero({ sanitySettings }: { sanitySettings?: SanitySettings | nul
               <span className="text-[#f2a93b]">{headlineAccent}</span>
             </h1>
 
-            <p className="mt-6 max-w-lg text-lg sm:text-xl text-white/75 leading-relaxed">
+            {reviewSummary && (
+              <a
+                href={GOOGLE_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 sm:mt-6 flex w-fit items-center gap-3 transition-opacity duration-300 hover:opacity-80"
+              >
+                <div className="flex -space-x-2">
+                  {reviewSummary.avatars.map((a, i) => (
+                    <div
+                      key={i}
+                      className="relative h-9 w-9 rounded-full border-2 border-[#0d4f4f] bg-white/20 flex items-center justify-center text-xs font-bold text-white overflow-hidden"
+                    >
+                      {a.name.charAt(0).toUpperCase()}
+                      {a.photoUri && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={a.photoUri}
+                          alt=""
+                          className="absolute inset-0 h-full w-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        size={16}
+                        className="fill-[#f2a93b] text-[#f2a93b]"
+                      />
+                    ))}
+                  </div>
+                  <span className="text-base font-bold text-white/90 leading-none">
+                    {reviewSummary.rating.toFixed(1)}
+                  </span>
+                </div>
+                <span className="text-sm text-white/75">
+                  {reviewSummary.count} Google Bewertungen
+                </span>
+              </a>
+            )}
+
+            <p className="mt-5 max-w-lg text-lg sm:text-xl text-white/75 leading-relaxed">
               {subheading}
             </p>
 
@@ -81,16 +136,6 @@ export function Hero({ sanitySettings }: { sanitySettings?: SanitySettings | nul
               </a>
             </div>
 
-            <div className="mt-10 sm:mt-14 flex flex-wrap gap-x-6 gap-y-3 text-sm text-white/60">
-              <span className="inline-flex items-center gap-1.5">
-                <MapPin size={14} className="text-[#f2a93b]" />
-                {address}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Phone size={14} className="text-[#f2a93b]" />
-                {phone}
-              </span>
-            </div>
           </div>
 
           <div className="hidden lg:flex relative items-center justify-center">

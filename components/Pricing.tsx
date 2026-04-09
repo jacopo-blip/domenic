@@ -58,56 +58,65 @@ export function Pricing({
 
         {/* Pricing table */}
         <div className="mt-14 sm:mt-20 max-w-4xl mx-auto">
-          <div className="rounded-3xl bg-white border border-gray-100 shadow-xl shadow-black/5 overflow-hidden">
-            <div className="grid grid-cols-4 bg-[#0d4f4f] text-white">
-              <div className="px-6 sm:px-8 py-5 font-extrabold text-sm sm:text-base">
-                Behandlung
-              </div>
-              <div className="px-4 sm:px-6 py-5 text-center font-extrabold text-sm sm:text-base">
-                30 Min
-              </div>
-              <div className="px-4 sm:px-6 py-5 text-center font-extrabold text-sm sm:text-base">
-                45 Min
-              </div>
-              <div className="px-4 sm:px-6 py-5 text-center font-extrabold text-sm sm:text-base">
-                <span className="inline-flex items-center gap-1.5">
-                  60 Min
-                  <span className="bg-[#f2a93b] text-[10px] font-bold px-2 py-0.5 rounded-full text-[#111]">
-                    Beliebt
-                  </span>
-                </span>
-              </div>
-            </div>
-
-            {rows.map((row, i) => (
-              <div
-                key={row.service}
-                className={`grid grid-cols-4 items-center ${
-                  i < rows.length - 1 ? "border-b border-gray-100" : ""
-                } hover:bg-[#0d4f4f]/[0.02] transition-colors`}
-              >
-                <div className="px-6 sm:px-8 py-5 sm:py-6">
-                  <span className="font-bold text-sm sm:text-base text-[#111]">
-                    {row.service}
-                  </span>
-                </div>
-                <div className="px-4 sm:px-6 py-5 sm:py-6 text-center">
-                  <span className="text-lg sm:text-xl font-extrabold text-[#333]">
-                    {row.p30}
-                  </span>
-                </div>
-                <div className="px-4 sm:px-6 py-5 sm:py-6 text-center">
-                  <span className="text-lg sm:text-xl font-extrabold text-[#333]">
-                    {row.p45}
-                  </span>
-                </div>
-                <div className="px-4 sm:px-6 py-5 sm:py-6 text-center">
-                  <span className="text-lg sm:text-xl font-extrabold text-[#e8654a]">
-                    {row.p60}
-                  </span>
-                </div>
-              </div>
-            ))}
+          <div className="rounded-3xl bg-white border border-gray-100 shadow-xl shadow-black/5 overflow-y-hidden overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-[#0d4f4f] text-white">
+                  <th className="px-4 sm:px-8 py-4 sm:py-5 text-left font-extrabold text-sm sm:text-base align-bottom">
+                    Behandlung
+                  </th>
+                  <th className="px-2 sm:px-6 py-4 sm:py-5 text-center font-extrabold text-sm sm:text-base whitespace-nowrap align-bottom">
+                    30 Min
+                  </th>
+                  <th className="px-2 sm:px-6 py-4 sm:py-5 text-center font-extrabold text-sm sm:text-base whitespace-nowrap align-bottom">
+                    45 Min
+                  </th>
+                  <th className="px-2 sm:px-6 pt-2 pb-4 sm:py-5 text-center font-extrabold text-sm sm:text-base align-bottom">
+                    <span className="sm:hidden bg-[#f2a93b] text-[9px] font-bold px-1.5 py-0.5 rounded-full text-[#111] inline-block mb-0.5">
+                      Beliebt
+                    </span>
+                    <br className="sm:hidden" />
+                    <span className="inline-flex items-center sm:gap-1.5">
+                      <span className="whitespace-nowrap">60 Min</span>
+                      <span className="hidden sm:inline bg-[#f2a93b] text-[10px] font-bold px-2 py-0.5 rounded-full text-[#111]">
+                        Beliebt
+                      </span>
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, i) => (
+                  <tr
+                    key={row.service}
+                    className={`${
+                      i < rows.length - 1 ? "border-b border-gray-100" : ""
+                    } hover:bg-[#0d4f4f]/[0.02] transition-colors`}
+                  >
+                    <td className="px-4 sm:px-8 py-4 sm:py-6">
+                      <span className="font-bold text-sm sm:text-base text-[#111]">
+                        {row.service}
+                      </span>
+                    </td>
+                    <td className="px-2 sm:px-6 py-4 sm:py-6 text-center whitespace-nowrap">
+                      <span className="text-base sm:text-xl font-extrabold text-[#333]">
+                        {row.p30}
+                      </span>
+                    </td>
+                    <td className="px-2 sm:px-6 py-4 sm:py-6 text-center whitespace-nowrap">
+                      <span className="text-base sm:text-xl font-extrabold text-[#333]">
+                        {row.p45}
+                      </span>
+                    </td>
+                    <td className="px-2 sm:px-6 py-4 sm:py-6 text-center whitespace-nowrap">
+                      <span className="text-base sm:text-xl font-extrabold text-[#e8654a]">
+                        {row.p60}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
           {/* Insurance note */}

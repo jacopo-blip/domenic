@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
 import { GoogleReviews } from "@/components/GoogleReviews";
+import { fetchReviewSummary } from "@/components/GoogleReviewsBadge";
 import { Pricing } from "@/components/Pricing";
 import { FAQ } from "@/components/FAQ";
 import { Contact } from "@/components/Contact";
@@ -27,13 +28,14 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [services, pricingItems, faqItems, about, settings] =
+  const [services, pricingItems, faqItems, about, settings, reviewSummary] =
     await Promise.all([
       getServices(),
       getPricingItems(),
       getFaqItems(),
       getAbout(),
       getSettings(),
+      fetchReviewSummary(),
     ]);
 
   const teaserText =
@@ -45,7 +47,7 @@ export default async function Home() {
     <>
       <Navbar />
       <main>
-        <Hero sanitySettings={settings} />
+        <Hero sanitySettings={settings} reviewSummary={reviewSummary} />
         <Services sanityServices={services} />
         <GoogleReviews />
         <Pricing sanityPricing={pricingItems} sanitySettings={settings} />
