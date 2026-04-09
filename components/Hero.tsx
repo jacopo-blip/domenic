@@ -11,9 +11,13 @@ const GOOGLE_MAPS_URL =
 export function Hero({
   sanitySettings,
   reviewSummary,
+  heroBackgroundImageUrl,
+  heroPortraitImageUrl,
 }: {
   sanitySettings?: SanitySettings | null;
   reviewSummary?: ReviewSummary;
+  heroBackgroundImageUrl?: string;
+  heroPortraitImageUrl?: string;
 }) {
   const headline = sanitySettings?.heroHeadline ?? "Weniger Schmerzen.";
   const headlineAccent = sanitySettings?.heroHeadlineAccent ?? "Tiefe Entspannung.";
@@ -30,7 +34,7 @@ export function Hero({
       {/* Parallax background — position:fixed inside clip-path for mobile compatibility */}
       <div className="fixed inset-x-0 top-0 h-[100lvh]" style={{ zIndex: 0 }}>
         <Image
-          src="/images/domenic-1080.webp"
+          src={heroBackgroundImageUrl ?? "/images/domenic-1080.webp"}
           alt=""
           fill
           priority
@@ -144,7 +148,7 @@ export function Hero({
               <div className="absolute -top-2 -left-2 w-full h-[420px] rounded-3xl bg-[#f2a93b]/20 rotate-1" />
               <div className="relative w-full h-[420px] rounded-3xl bg-white/10 backdrop-blur-sm border border-white/15 overflow-hidden">
                 <Image
-                  src="/images/hero-portrait.png"
+                  src={heroPortraitImageUrl ?? "/images/hero-portrait.png"}
                   alt="Heilmasseur Domenic Hacker"
                   fill
                   className="object-cover object-top"

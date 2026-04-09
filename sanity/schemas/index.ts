@@ -4,12 +4,22 @@ import { faqItemSchema } from "./faqItem";
 import { testimonialSchema } from "./testimonial";
 import { aboutSchema } from "./about";
 import { settingsSchema } from "./settings";
+import { homePageSchema } from "./homePage";
+import { heilmassagePageSchema } from "./heilmassagePage";
+import { buchenPageSchema } from "./buchenPage";
+import { impressumPageSchema } from "./impressumPage";
+import { datenschutzPageSchema } from "./datenschutzPage";
 
 export const schemaTypes = [
+  settingsSchema,
+  homePageSchema,
+  heilmassagePageSchema,
+  buchenPageSchema,
+  impressumPageSchema,
+  datenschutzPageSchema,
+  aboutSchema,
   serviceSchema,
   pricingItemSchema,
   faqItemSchema,
   testimonialSchema,
-  aboutSchema,
-  settingsSchema,
 ];

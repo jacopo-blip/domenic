@@ -3,6 +3,7 @@
 import { Heart, Instagram } from "lucide-react";
 import Image from "next/image";
 import * as CookieConsent from "vanilla-cookieconsent";
+import type { SanitySettings } from "@/sanity/lib/queries";
 
 const navLinks = [
   { label: "Startseite", href: "/" },
@@ -13,7 +14,8 @@ const navLinks = [
   { label: "Datenschutz", href: "/datenschutz" },
 ];
 
-export function Footer() {
+export function Footer({ sanitySettings }: { sanitySettings?: SanitySettings | null }) {
+  const instagramUrl = sanitySettings?.instagramUrl || "https://www.instagram.com/heilmasseurdomenic";
   return (
     <footer className="relative bg-[#0a0a0a] pt-16 pb-8">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -53,7 +55,7 @@ export function Footer() {
             </nav>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
               <a
-                href="https://www.instagram.com/heilmasseurdomenic"
+                href={instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"

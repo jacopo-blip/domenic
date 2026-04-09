@@ -71,6 +71,23 @@ export const settingsSchema = defineType({
       initialValue:
         "Je nach Krankenkasse bekommen Sie einen Teil Ihrer Massagekosten zurück. Sie haben auch die Möglichkeit, einen Teil der Therapiekosten bei einer Zusatzversicherung einzureichen. Privatversicherungen erstatten bis zu 100% der Therapiekosten zurück. Informieren Sie sich jetzt — es lohnt sich!",
     }),
+    defineField({
+      name: "instagramUrl",
+      title: "Instagram URL",
+      type: "url",
+      initialValue: "https://www.instagram.com/heilmasseurdomenic",
+    }),
+    defineField({
+      name: "googleMapsUrl",
+      title: "Google Maps Link",
+      type: "url",
+      initialValue: "https://maps.google.com/?q=Feldgasse+3,+1080+Wien",
+    }),
+    defineField({
+      name: "logo",
+      title: "Logo",
+      type: "image",
+    }),
   ],
   preview: {
     select: { title: "siteTitle" },

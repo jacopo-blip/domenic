@@ -12,14 +12,20 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
+import type { SanityBuchenPage, SanitySettings } from "@/sanity/lib/queries";
 
-const steps = [
+const defaultSteps = [
   { step: "1", text: "Behandlung auswählen" },
   { step: "2", text: "Wunschtermin wählen" },
   { step: "3", text: "Kontaktdaten eingeben" },
 ];
 
-export function BookingContent() {
+type BookingContentProps = {
+  sanityBuchen?: SanityBuchenPage | null;
+  sanitySettings?: SanitySettings | null;
+};
+
+export function BookingContent({ sanityBuchen, sanitySettings }: BookingContentProps) {
   const [booked, setBooked] = useState(false);
   const [iframeKey, setIframeKey] = useState(0);
 
@@ -42,6 +48,45 @@ export function BookingContent() {
     setIframeKey((k) => k + 1);
   }, []);
 
+  const heading = sanityBuchen?.heading ?? "Termin online buchen —";
+  const headingAccent = sanityBuchen?.headingAccent ?? "schnell & unkompliziert";
+  const subtitle = sanityBuchen?.subtitle ?? "In 3 einfachen Schritten zu Ihrem Termin";
+  const steps = sanityBuchen?.steps?.length
+    ? sanityBuchen.steps.map((s) => ({ step: s.number, text: s.text }))
+    : defaultSteps;
+  const medicalNote =
+    sanityBuchen?.medicalNote ??
+    "Medizinische Massagen erfolgen auf Grundlage einer ärztlichen Verordnung.";
+  const successHeading = sanityBuchen?.successHeading ?? "Termin erfolgreich gebucht!";
+  const successText =
+    sanityBuchen?.successText ??
+    "Sie erhalten in Kürze eine Bestätigung per E-Mail.";
+  const infoHeading = sanityBuchen?.infoHeading ?? "So finden Sie";
+  const infoHeadingAccent = sanityBuchen?.infoHeadingAccent ?? "die Praxis";
+  const infoDescription =
+    sanityBuchen?.infoDescription ??
+    "Die Praxis befindet sich im 8. Bezirk (Josefstadt) und ist mit öffentlichen Verkehrsmitteln gut erreichbar.";
+  const accessibilityFeatures = sanityBuchen?.accessibilityFeatures?.length
+    ? sanityBuchen.accessibilityFeatures
+    : [
+        "Barrierefreier Zugang",
+        "Parkplätze in der Nähe",
+        "U-Bahn Rathaus (U2) in 5 Min.",
+      ];
+  const googleMapsEmbedUrl =
+    sanityBuchen?.googleMapsEmbedUrl ??
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2658.6!2d16.349!3d48.211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sFeldgasse+3%2C+1080+Wien!5e0!3m2!1sde!2sat!4v1";
+
+  const address = sanitySettings?.address ?? "Feldgasse 3/20, 1080 Wien";
+  const phone = sanitySettings?.phone ?? "+43 670 189 52 56";
+  const email = sanitySettings?.email ?? "praxis@heilmasseur-domenic.at";
+  const calendlyUrl =
+    sanitySettings?.calendlyUrl ??
+    "https://calendly.com/praxis-heilmasseur-domenic";
+  const googleMapsUrl =
+    sanitySettings?.googleMapsUrl ??
+    "https://maps.google.com/?q=Feldgasse+3,+1080+Wien";
+
   return (
     <div className="min-h-screen bg-[#0d4f4f]">
       <Navbar />
@@ -56,11 +101,11 @@ export function BookingContent() {
         <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
           <div className="text-center max-w-2xl mx-auto">
             <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-white">
-              Termin online buchen —{" "}
-              <span className="text-[#f2a93b]">schnell & unkompliziert</span>
+              {heading}{" "}
+              <span className="text-[#f2a93b]">{headingAccent}</span>
             </h1>
             <p className="mt-4 text-lg text-white/70">
-              In 3 einfachen Schritten zu Ihrem Termin
+              {subtitle}
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
@@ -88,8 +133,7 @@ export function BookingContent() {
       <section className="bg-white">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 py-6">
           <p className="text-sm text-[#555] text-center">
-            Medizinische Massagen erfolgen auf Grundlage einer ärztlichen
-            Verordnung.
+            {medicalNote}
           </p>
         </div>
 
@@ -99,10 +143,10 @@ export function BookingContent() {
               <CalendarCheck size={40} className="text-[#0d4f4f]" />
             </div>
             <h2 className="text-3xl font-extrabold text-[#111]">
-              Termin erfolgreich gebucht!
+              {successHeading}
             </h2>
             <p className="mt-3 text-lg text-[#555]">
-              Sie erhalten in Kürze eine Bestätigung per E-Mail.
+              {successText}
             </p>
             <button
               onClick={resetBooking}
@@ -123,7 +167,7 @@ export function BookingContent() {
           <div style={{ touchAction: "pan-y" }}>
             <iframe
               key={iframeKey}
-              src="https://calendly.com/praxis-heilmasseur-domenic"
+              src={calendlyUrl}
               className="w-full border-0 min-h-[900px] sm:min-h-[700px]"
               scrolling="no"
               title="Termin buchen bei Heilmasseur Domenic Hacker"
@@ -138,12 +182,11 @@ export function BookingContent() {
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#111]">
-                So finden Sie{" "}
-                <span className="text-[#0d4f4f]">die Praxis</span>
+                {infoHeading}{" "}
+                <span className="text-[#0d4f4f]">{infoHeadingAccent}</span>
               </h2>
               <p className="mt-3 text-[#555] leading-relaxed">
-                Die Praxis befindet sich im 8. Bezirk (Josefstadt) und ist mit
-                öffentlichen Verkehrsmitteln gut erreichbar.
+                {infoDescription}
               </p>
 
               <div className="mt-8 flex flex-col gap-4">
@@ -151,22 +194,22 @@ export function BookingContent() {
                   {
                     icon: MapPin,
                     label: "Adresse",
-                    value: "Feldgasse 3/20, 1080 Wien",
-                    href: "https://maps.google.com/?q=Feldgasse+3,+1080+Wien",
+                    value: address,
+                    href: googleMapsUrl,
                     color: "#e8654a",
                   },
                   {
                     icon: Phone,
                     label: "Telefon",
-                    value: "+43 670 189 52 56",
-                    href: "tel:+4367018952556",
+                    value: phone,
+                    href: `tel:${phone.replace(/\s/g, "")}`,
                     color: "#0d4f4f",
                   },
                   {
                     icon: Mail,
                     label: "E-Mail",
-                    value: "praxis@heilmasseur-domenic.at",
-                    href: "mailto:praxis@heilmasseur-domenic.at",
+                    value: email,
+                    href: `mailto:${email}`,
                     color: "#f2a93b",
                   },
                   {
@@ -222,11 +265,7 @@ export function BookingContent() {
               </div>
 
               <div className="mt-8 flex flex-col gap-2">
-                {[
-                  "Barrierefreier Zugang",
-                  "Parkplätze in der Nähe",
-                  "U-Bahn Rathaus (U2) in 5 Min.",
-                ].map((info) => (
+                {accessibilityFeatures.map((info) => (
                   <div
                     key={info}
                     className="flex items-center gap-2 text-sm text-[#555]"
@@ -240,7 +279,7 @@ export function BookingContent() {
 
             <div className="rounded-3xl overflow-hidden shadow-xl shadow-black/5 border border-gray-100">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2658.6!2d16.349!3d48.211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sFeldgasse+3%2C+1080+Wien!5e0!3m2!1sde!2sat!4v1"
+                src={googleMapsEmbedUrl}
                 className="w-full h-[400px] lg:h-full min-h-[400px] border-0"
                 allowFullScreen
                 loading="lazy"

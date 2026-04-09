@@ -18,7 +18,8 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { getAbout } from "@/sanity/lib/queries";
+import { getAbout, getSettings } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
 
 export const metadata: Metadata = {
   title: "Über Domenic Hacker | Heilmasseur Wien 1080",
@@ -56,7 +57,7 @@ const FALLBACK_BIO = [
 ];
 
 export default async function UeberMichPage() {
-  const about = await getAbout();
+  const [about, settings] = await Promise.all([getAbout(), getSettings()]);
 
   const bio =
     about?.bio && about.bio.length > 0 ? about.bio : FALLBACK_BIO;
@@ -71,6 +72,53 @@ export default async function UeberMichPage() {
 
   const yearsExperience = about?.yearsExperience ?? "15+";
   const qualificationsCount = about?.qualificationsCount ?? "11";
+
+  const heroImageUrl = about?.heroImage
+    ? urlFor(about.heroImage).width(800).height(600).url()
+    : "/images/domenic-1080.webp";
+
+  const heroSubtitle =
+    about?.heroSubtitle ??
+    `Diplomierter Heilmasseur mit Leidenschaft für Bewegung und gezieltes Arbeiten am Körper. Seit ${yearsExperience} Jahren helfe ich Menschen, Schmerzen zu lindern und Wohlbefinden zurückzugewinnen.`;
+
+  const breakdanceImageUrl = about?.breakdanceImage
+    ? urlFor(about.breakdanceImage).width(600).height(750).url()
+    : "/images/breakdance.jpg";
+
+  const addressLine1 = settings?.address?.split(",")[0]?.trim() ?? "Feldgasse 3/20";
+  const addressLine2 = settings?.address?.split(",")[1]?.trim() ?? "1080 Wien";
+
+  const meinWegHighlights = about?.meinWegHighlights && about.meinWegHighlights.length > 0
+    ? about.meinWegHighlights
+    : [
+        { title: "Mit Auszeichnung", subtitle: "Abschluss der Ausbildung" },
+        { title: "Reha-Erfahrung", subtitle: "In Rehabilitationsinstituten" },
+      ];
+
+  const philosophieTexte = about?.philosophieTexte && about.philosophieTexte.length > 0
+    ? about.philosophieTexte
+    : [
+        "Jeder Körper spricht eine eigene Sprache. Deshalb beginne ich jede Behandlung mit einem kurzen Gespräch: Wo drückt der Schuh? Was soll sich danach anders anfühlen? Erst dann lege ich los — mit der Intensität, die Ihr Körper gerade braucht.",
+        "Zu viel Druck löst Schutzmechanismen aus, zu wenig bringt nichts. Mein Ziel ist die goldene Mitte: eine Behandlung, die Sie spüren, ohne Sie zu überfordern.",
+        "Meine Breakdance-Vergangenheit hat mir gelehrt, wie Bewegung und Körpergefühl zusammenspielen — dieses Wissen fließt direkt in meine Arbeit ein.",
+      ];
+
+  const quoteText =
+    about?.quote ??
+    `„Heilmasseur ist meine Berufung. Ich höre auf den Körper — und dann arbeite ich gezielt dort, wo er es wirklich braucht."`;
+
+  const quoteAuthorTitle =
+    about?.quoteAuthorTitle ?? "Diplomierter Heilmasseur, Wien 1080";
+
+  const quoteAvatarUrl = about?.image
+    ? urlFor(about.image).width(80).height(80).url()
+    : "/images/domenic-1080.webp";
+
+  const ctaHeading = about?.ctaHeading ?? "Bereit für Ihre erste Behandlung?";
+  const ctaText =
+    about?.ctaText ??
+    "Buchen Sie jetzt Ihren Termin online – unkompliziert und in wenigen Schritten.";
+  const phone = settings?.phone ?? "+43 670 189 52 56";
 
   return (
     <>
@@ -95,10 +143,7 @@ export default async function UeberMichPage() {
                 </h1>
 
                 <p className="mt-5 text-lg text-white/70 leading-relaxed max-w-md">
-                  Diplomierter Heilmasseur mit Leidenschaft für Bewegung und
-                  gezieltes Arbeiten am Körper. Seit {yearsExperience} Jahren
-                  helfe ich Menschen, Schmerzen zu lindern und Wohlbefinden
-                  zurückzugewinnen.
+                  {heroSubtitle}
                 </p>
 
                 {/* Stats row */}
@@ -121,9 +166,9 @@ export default async function UeberMichPage() {
                     <MapPin size={14} className="text-[#e8654a] mt-1 shrink-0" />
                     <div>
                       <span className="block text-white/90 font-semibold text-sm">
-                        Feldgasse 3/20
+                        {addressLine1}
                       </span>
-                      <span className="text-sm text-white/50">1080 Wien</span>
+                      <span className="text-sm text-white/50">{addressLine2}</span>
                     </div>
                   </div>
                 </div>
@@ -142,7 +187,7 @@ export default async function UeberMichPage() {
                 <div className="absolute -top-4 -right-4 w-full h-full rounded-3xl bg-[#f2a93b]/15 rotate-1 pointer-events-none" />
                 <div className="relative rounded-3xl overflow-hidden aspect-[4/3] max-w-lg mx-auto lg:mx-0 lg:ml-auto">
                   <Image
-                    src="/images/domenic-1080.webp"
+                    src={heroImageUrl}
                     alt="Domenic Hacker – Diplomierter Heilmasseur in Wien"
                     fill
                     className="object-cover"
@@ -163,7 +208,7 @@ export default async function UeberMichPage() {
                 <div className="absolute -bottom-6 -left-6 w-full h-full rounded-3xl bg-[#0d4f4f]/8 rotate-2 pointer-events-none" />
                 <div className="relative rounded-3xl overflow-hidden aspect-[4/5] max-w-md mx-auto">
                   <Image
-                    src="/images/breakdance.jpg"
+                    src={breakdanceImageUrl}
                     alt="Domenic Hacker beim Breakdance – Körpergefühl aus der Bewegung"
                     fill
                     className="object-cover"
@@ -191,22 +236,27 @@ export default async function UeberMichPage() {
 
                 {/* Highlight cards */}
                 <div className="mt-8 grid grid-cols-2 gap-4">
-                  <div className="rounded-2xl bg-[#0d4f4f]/5 border border-[#0d4f4f]/10 p-4">
-                    <span className="block text-xl font-extrabold text-[#0d4f4f]">
-                      Mit Auszeichnung
-                    </span>
-                    <span className="text-sm text-[#555]">
-                      Abschluss der Ausbildung
-                    </span>
-                  </div>
-                  <div className="rounded-2xl bg-[#e8654a]/5 border border-[#e8654a]/10 p-4">
-                    <span className="block text-xl font-extrabold text-[#e8654a]">
-                      Reha-Erfahrung
-                    </span>
-                    <span className="text-sm text-[#555]">
-                      In Rehabilitationsinstituten
-                    </span>
-                  </div>
+                  {meinWegHighlights.map((highlight, i) => (
+                    <div
+                      key={i}
+                      className={`rounded-2xl p-4 ${
+                        i % 2 === 0
+                          ? "bg-[#0d4f4f]/5 border border-[#0d4f4f]/10"
+                          : "bg-[#e8654a]/5 border border-[#e8654a]/10"
+                      }`}
+                    >
+                      <span
+                        className={`block text-xl font-extrabold ${
+                          i % 2 === 0 ? "text-[#0d4f4f]" : "text-[#e8654a]"
+                        }`}
+                      >
+                        {highlight.title}
+                      </span>
+                      <span className="text-sm text-[#555]">
+                        {highlight.subtitle}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -269,23 +319,9 @@ export default async function UeberMichPage() {
                 </h2>
 
                 <div className="mt-6 space-y-4 text-base text-[#555] leading-relaxed">
-                  <p>
-                    Jeder Körper spricht eine eigene Sprache. Deshalb beginne
-                    ich jede Behandlung mit einem kurzen Gespräch: Wo drückt
-                    der Schuh? Was soll sich danach anders anfühlen? Erst dann
-                    lege ich los — mit der Intensität, die Ihr Körper gerade
-                    braucht.
-                  </p>
-                  <p>
-                    Zu viel Druck löst Schutzmechanismen aus, zu wenig bringt
-                    nichts. Mein Ziel ist die goldene Mitte: eine Behandlung,
-                    die Sie spüren, ohne Sie zu überfordern.
-                  </p>
-                  <p>
-                    Meine Breakdance-Vergangenheit hat mir gelehrt, wie
-                    Bewegung und Körpergefühl zusammenspielen — dieses Wissen
-                    fließt direkt in meine Arbeit ein.
-                  </p>
+                  {philosophieTexte.map((paragraph, i) => (
+                    <p key={i}>{paragraph}</p>
+                  ))}
                 </div>
               </div>
 
@@ -298,14 +334,12 @@ export default async function UeberMichPage() {
                     fill="currentColor"
                   />
                   <blockquote className="text-lg sm:text-xl font-semibold text-white leading-relaxed">
-                    „Heilmasseur ist meine Berufung. Ich höre auf den Körper —
-                    und dann arbeite ich gezielt dort, wo er es wirklich
-                    braucht."
+                    {quoteText}
                   </blockquote>
                   <footer className="mt-6 flex items-center gap-3">
                     <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
                       <Image
-                        src="/images/domenic-1080.webp"
+                        src={quoteAvatarUrl}
                         alt="Domenic Hacker"
                         fill
                         className="object-cover"
@@ -316,7 +350,7 @@ export default async function UeberMichPage() {
                         Domenic Hacker
                       </span>
                       <span className="text-xs text-white/50">
-                        Diplomierter Heilmasseur, Wien 1080
+                        {quoteAuthorTitle}
                       </span>
                     </div>
                   </footer>
@@ -345,11 +379,10 @@ export default async function UeberMichPage() {
         <section className="py-16 sm:py-24 bg-[#0d4f4f]">
           <div className="mx-auto max-w-2xl px-5 sm:px-8 text-center">
             <h2 className="text-[clamp(1.8rem,4vw,3rem)] font-extrabold text-white leading-tight">
-              Bereit für Ihre erste Behandlung?
+              {ctaHeading}
             </h2>
             <p className="mt-4 text-white/65 text-lg max-w-xl mx-auto leading-relaxed">
-              Buchen Sie jetzt Ihren Termin online – unkompliziert und in
-              wenigen Schritten.
+              {ctaText}
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -360,16 +393,16 @@ export default async function UeberMichPage() {
                 Termin online buchen
               </Link>
               <a
-                href="tel:+4367018952556"
+                href={`tel:${phone.replace(/\s/g, "")}`}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-8 py-4 text-base font-semibold text-white/80 hover:bg-white/10 hover:text-white transition-all duration-200"
               >
-                +43 670 189 52 56
+                {phone}
               </a>
             </div>
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer sanitySettings={settings} />
     </>
   );
 }

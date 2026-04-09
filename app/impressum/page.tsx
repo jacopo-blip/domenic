@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { getImpressumPage } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Impressum | Heilmasseur Domenic Hacker",
   description: "Impressum und rechtliche Informationen von Heilmasseur Domenic Hacker, Wien 1080.",
 };
 
-export default function Impressum() {
+export default async function Impressum() {
+  const impressum = await getImpressumPage();
+
   return (
     <div className="min-h-screen bg-white">
       <div className="mx-auto max-w-3xl px-5 sm:px-8 py-16 sm:py-24">
@@ -22,6 +25,24 @@ export default function Impressum() {
         <h1 className="text-4xl font-extrabold text-[#111] mb-8">Impressum</h1>
 
         <div className="prose prose-gray max-w-none space-y-6 text-[#333] leading-relaxed">
+          {impressum?.sections ? (
+            impressum.sections.map((section, index) => (
+              <section key={index}>
+                <h2 className="text-xl font-bold text-[#111] mt-8 mb-3">
+                  {section.heading}
+                </h2>
+                <p>
+                  {section.content.split("\n").map((line, i, arr) => (
+                    <span key={i}>
+                      {line}
+                      {i < arr.length - 1 && <br />}
+                    </span>
+                  ))}
+                </p>
+              </section>
+            ))
+          ) : (
+            <>
           <section>
             <h2 className="text-xl font-bold text-[#111] mt-8 mb-3">
               Angaben gemäß § 5 ECG / § 25 MedienG
@@ -142,6 +163,8 @@ export default function Impressum() {
               kann jedoch keine Gewähr übernommen werden.
             </p>
           </section>
+          </>
+          )}
         </div>
       </div>
     </div>
