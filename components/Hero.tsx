@@ -75,7 +75,7 @@ export function Hero({
                 href={GOOGLE_MAPS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 sm:mt-6 flex w-fit items-center gap-3 transition-opacity duration-300 hover:opacity-80"
+                className="mt-5 sm:mt-6 flex w-fit flex-wrap items-center gap-x-3 gap-y-1 transition-opacity duration-300 hover:opacity-80"
               >
                 <div className="flex -space-x-2">
                   {reviewSummary.avatars.map((a, i) => (

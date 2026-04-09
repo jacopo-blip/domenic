@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart } from "lucide-react";
+import { Heart, Instagram } from "lucide-react";
 import Image from "next/image";
 
 const navLinks = [
@@ -37,17 +37,28 @@ export function Footer() {
             </p>
           </div>
 
-          <nav className="flex flex-wrap gap-x-6 gap-y-2">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm font-semibold text-white/40 hover:text-white transition-colors duration-200"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
+          <div className="flex flex-col gap-6">
+            <nav className="flex flex-wrap gap-x-6 gap-y-2">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm font-semibold text-white/40 hover:text-white transition-colors duration-200"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+            <a
+              href="https://www.instagram.com/heilmasseurdomenic"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-white/40 hover:text-white transition-colors duration-200"
+            >
+              <Instagram size={16} />
+              @heilmasseurdomenic
+            </a>
+          </div>
         </div>
 
         <div className="mt-12 h-px bg-white/5" />
@@ -58,7 +69,15 @@ export function Footer() {
             vorbehalten.
           </p>
           <p className="inline-flex items-center gap-1">
-            Crafted with <Heart size={12} className="text-[#e8654a]" /> in Wien
+            Crafted with <Heart size={12} className="text-[#e8654a]" /> in Wien by{" "}
+            <a
+              href="https://pixelmeister.at"
+              target="_blank"
+              rel="noopener"
+              className="hover:text-white/60 transition-colors duration-200"
+            >
+              pixelmeister.at
+            </a>
           </p>
         </div>
       </div>

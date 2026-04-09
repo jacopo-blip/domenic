@@ -134,7 +134,7 @@ export function Contact() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ihr Name"
-                  className="w-full rounded-xl bg-white/[0.06] border border-white/[0.1] px-4 py-3 text-white placeholder-white/30 outline-none transition-all focus:border-[#f2a93b]/50 focus:ring-2 focus:ring-[#f2a93b]/20"
+                  className="w-full rounded-xl bg-white/[0.06] border border-white/[0.1] px-4 py-3 text-white placeholder-white/50 outline-none transition-all focus:border-[#f2a93b]/50 focus:ring-2 focus:ring-[#f2a93b]/20"
                 />
               </div>
               <div>
@@ -151,7 +151,7 @@ export function Contact() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ihre@email.at"
-                  className="w-full rounded-xl bg-white/[0.06] border border-white/[0.1] px-4 py-3 text-white placeholder-white/30 outline-none transition-all focus:border-[#f2a93b]/50 focus:ring-2 focus:ring-[#f2a93b]/20"
+                  className="w-full rounded-xl bg-white/[0.06] border border-white/[0.1] px-4 py-3 text-white placeholder-white/50 outline-none transition-all focus:border-[#f2a93b]/50 focus:ring-2 focus:ring-[#f2a93b]/20"
                 />
               </div>
             </div>
@@ -169,7 +169,7 @@ export function Contact() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Erzählen Sie mir von Ihrem Anliegen..."
-                className="w-full rounded-xl bg-white/[0.06] border border-white/[0.1] px-4 py-3 text-white placeholder-white/30 outline-none transition-all resize-none focus:border-[#f2a93b]/50 focus:ring-2 focus:ring-[#f2a93b]/20"
+                className="w-full rounded-xl bg-white/[0.06] border border-white/[0.1] px-4 py-3 text-white placeholder-white/50 outline-none transition-all resize-none focus:border-[#f2a93b]/50 focus:ring-2 focus:ring-[#f2a93b]/20"
               />
             </div>
             <button
@@ -179,7 +179,7 @@ export function Contact() {
               <Send size={18} />
               Nachricht senden
             </button>
-            <p className="mt-3 text-xs text-white/30">
+            <p className="mt-3 text-xs text-white/50">
               Öffnet Ihr E-Mail-Programm mit vorausgefüllter Nachricht
             </p>
           </form>
