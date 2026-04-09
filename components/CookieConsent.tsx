@@ -114,7 +114,7 @@ export default function CookieConsentComponent() {
                 {
                   title: "Technisch notwendig",
                   description:
-                    "Diese Cookies sind für den Betrieb der Website unerlässlich und können nicht deaktiviert werden.",
+                    "Diese Cookies sind für den Betrieb der Website unerlässlich und können nicht deaktiviert werden. Dazu gehören auch Cookies von Calendly, die für die Online-Terminbuchung erforderlich sind.",
                   linkedCategory: "necessary",
                 },
                 {

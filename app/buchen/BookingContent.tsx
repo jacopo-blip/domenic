@@ -12,6 +12,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import type { SanityBuchenPage, SanitySettings } from "@/sanity/lib/queries";
 
 const defaultSteps = [
@@ -157,17 +158,10 @@ export function BookingContent({ sanityBuchen, sanitySettings }: BookingContentP
             </button>
           </div>
         ) : (
-          // TODO: Calendly Cookie-Banner sitzt links unten im iFrame (position: fixed).
-          // Kann nur in Domenics Calendly Account Settings > Cookie Consent
-          // auf "centered" umgestellt werden - von aussen nicht steuerbar.
-          //
-          // Mobile scrolling fix: iframe is made tall enough to avoid internal
-          // scrolling. scrolling="no" + touch-action:pan-y ensure the page
-          // (not the iframe) handles touch-scroll on mobile.
           <div style={{ touchAction: "pan-y" }}>
             <iframe
               key={iframeKey}
-              src={calendlyUrl}
+              src={`${calendlyUrl}${calendlyUrl.includes("?") ? "&" : "?"}hide_gdpr_banner=1&embed_type=Inline&embed_domain=1`}
               className="w-full border-0 min-h-[900px] sm:min-h-[700px]"
               scrolling="no"
               title="Termin buchen bei Heilmasseur Domenic Hacker"
@@ -291,28 +285,7 @@ export function BookingContent({ sanityBuchen, sanitySettings }: BookingContentP
         </div>
       </section>
 
-      <footer className="bg-[#0a0a0a] py-8">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/30">
-          <p>
-            &copy; {new Date().getFullYear()} Domenic Hacker. Alle Rechte
-            vorbehalten.
-          </p>
-          <div className="flex gap-4">
-            <a href="/" className="hover:text-white transition-colors">
-              Startseite
-            </a>
-            <a href="/impressum" className="hover:text-white transition-colors">
-              Impressum
-            </a>
-            <a
-              href="/datenschutz"
-              className="hover:text-white transition-colors"
-            >
-              Datenschutz
-            </a>
-          </div>
-        </div>
-      </footer>
+      <Footer sanitySettings={sanitySettings} />
     </div>
   );
 }

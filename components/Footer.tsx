@@ -39,6 +39,15 @@ export function Footer({ sanitySettings }: { sanitySettings?: SanitySettings | n
               Diplomierter Heilmasseur in Wien 1080. Heilmassage,
               Lymphdrainage & Klassische Massage. Feldgasse 3/20, 1080 Wien.
             </p>
+            <a
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
+            >
+              <Instagram size={16} />
+              @heilmasseurdomenic
+            </a>
           </div>
 
           <div className="flex flex-col gap-6">
@@ -54,15 +63,6 @@ export function Footer({ sanitySettings }: { sanitySettings?: SanitySettings | n
               ))}
             </nav>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-              <a
-                href={instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
-              >
-                <Instagram size={16} />
-                @heilmasseurdomenic
-              </a>
               <button
                 type="button"
                 onClick={() => CookieConsent.showPreferences()}
