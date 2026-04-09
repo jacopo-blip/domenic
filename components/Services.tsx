@@ -136,7 +136,7 @@ export function Services({
               )}
 
               <div className="p-8 sm:p-10">
-              <span className="absolute top-6 right-8 text-[5rem] font-extrabold leading-none opacity-[0.04] select-none">
+              <span aria-hidden="true" className="absolute top-6 right-8 text-[5rem] font-extrabold leading-none opacity-[0.04] select-none">
                 {service.number}
               </span>
 
@@ -169,8 +169,7 @@ export function Services({
                 </span>
                 <a
                   href="/buchen"
-                  className="text-sm font-bold transition-colors hover:underline"
-                  style={{ color: service.color }}
+                  className="text-sm font-bold transition-colors hover:underline text-[#0d4f4f]"
                 >
                   Termin buchen &rarr;
                 </a>

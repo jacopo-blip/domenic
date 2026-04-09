@@ -327,19 +327,19 @@ export default function HeilmassageWien() {
                 </div>
                 <div className="flex flex-col gap-3">
                   <div className="rounded-2xl bg-white/[0.07] border border-white/[0.12] px-5 py-4">
-                    <p className="text-xs font-bold uppercase tracking-widest text-white/40 mb-1">
+                    <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-1">
                       U-Bahn
                     </p>
                     <p className="font-bold text-white">U2 – Station Rathaus</p>
                   </div>
                   <div className="rounded-2xl bg-white/[0.07] border border-white/[0.12] px-5 py-4">
-                    <p className="text-xs font-bold uppercase tracking-widest text-white/40 mb-1">
+                    <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-1">
                       Straßenbahn
                     </p>
                     <p className="font-bold text-white">Linien J · 5 · 33</p>
                   </div>
                   <div className="rounded-2xl bg-white/[0.07] border border-white/[0.12] px-5 py-4">
-                    <p className="text-xs font-bold uppercase tracking-widest text-white/40 mb-1">
+                    <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-1">
                       Parken
                     </p>
                     <p className="font-bold text-white">

@@ -2,6 +2,7 @@
 
 import { Heart, Instagram } from "lucide-react";
 import Image from "next/image";
+import * as CookieConsent from "vanilla-cookieconsent";
 
 const navLinks = [
   { label: "Startseite", href: "/" },
@@ -9,6 +10,7 @@ const navLinks = [
   { label: "Über mich", href: "/ueber-mich" },
   { label: "Termin buchen", href: "/buchen" },
   { label: "Impressum", href: "/impressum" },
+  { label: "Datenschutz", href: "/datenschutz" },
 ];
 
 export function Footer() {
@@ -31,7 +33,7 @@ export function Footer() {
                 Domenic Hacker
               </span>
             </div>
-            <p className="mt-3 text-sm text-white/40 max-w-xs leading-relaxed">
+            <p className="mt-3 text-sm text-white/60 max-w-xs leading-relaxed">
               Diplomierter Heilmasseur in Wien 1080. Heilmassage,
               Lymphdrainage & Klassische Massage. Feldgasse 3/20, 1080 Wien.
             </p>
@@ -43,27 +45,37 @@ export function Footer() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-semibold text-white/40 hover:text-white transition-colors duration-200"
+                  className="text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
                 >
                   {link.label}
                 </a>
               ))}
             </nav>
-            <a
-              href="https://www.instagram.com/heilmasseurdomenic"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-white/40 hover:text-white transition-colors duration-200"
-            >
-              <Instagram size={16} />
-              @heilmasseurdomenic
-            </a>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              <a
+                href="https://www.instagram.com/heilmasseurdomenic"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
+              >
+                <Instagram size={16} />
+                @heilmasseurdomenic
+              </a>
+              <button
+                type="button"
+                onClick={() => CookieConsent.showPreferences()}
+                aria-haspopup="dialog"
+                className="text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
+              >
+                Cookie-Einstellungen
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="mt-12 h-px bg-white/5" />
 
-        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30">
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
           <p>
             &copy; {new Date().getFullYear()} Domenic Hacker. Alle Rechte
             vorbehalten.

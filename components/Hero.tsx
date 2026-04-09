@@ -28,16 +28,16 @@ export function Hero({
       style={{ clipPath: "inset(0 0 -1px 0)" }}
     >
       {/* Parallax background — position:fixed inside clip-path for mobile compatibility */}
-      <div
-        className="fixed inset-0"
-        style={{
-          backgroundImage: "url('/images/domenic-1080.webp')",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          zIndex: 0,
-        }}
-      />
+      <div className="fixed inset-x-0 top-0 h-[100lvh]" style={{ zIndex: 0 }}>
+        <Image
+          src="/images/domenic-1080.webp"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+      </div>
       {/* Dark teal overlay for readability */}
       <div className="absolute inset-0 bg-[#0d4f4f]/80" style={{ zIndex: 1 }} />
       <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 2 }}>

@@ -84,7 +84,7 @@ export function Contact() {
                   <item.icon size={20} style={{ color: item.color }} />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-white/60">
                     {item.label}
                   </p>
                   {item.href ? (

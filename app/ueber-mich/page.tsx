@@ -248,7 +248,7 @@ export default async function UeberMichPage() {
               ))}
             </div>
 
-            <p className="mt-8 text-center text-sm text-white/40">
+            <p className="mt-8 text-center text-sm text-white/60">
               Alle Qualifikationen staatlich anerkannt
             </p>
           </div>

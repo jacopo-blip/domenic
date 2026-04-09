@@ -61,6 +61,7 @@ export default async function Home() {
                   src="/images/domenic-wien.webp"
                   alt="Domenic Hacker – Diplomierter Heilmasseur Wien"
                   fill
+                  sizes="(max-width: 640px) 144px, 176px"
                   className="object-cover object-[75%_20%]"
                 />
               </div>
@@ -124,7 +125,7 @@ export default async function Home() {
                     </div>
                     <div>
                       <p className="text-sm font-bold text-[#111]">Feldgasse 3/20</p>
-                      <p className="text-xs text-[#888]">1080 Wien, Josefstadt</p>
+                      <p className="text-xs text-[#666]">1080 Wien, Josefstadt</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3 rounded-2xl bg-white p-4 shadow-sm">
@@ -133,7 +134,7 @@ export default async function Home() {
                     </div>
                     <div>
                       <p className="text-sm font-bold text-[#111]">Flexible Termine</p>
-                      <p className="text-xs text-[#888]">Nach Vereinbarung</p>
+                      <p className="text-xs text-[#666]">Nach Vereinbarung</p>
                     </div>
                   </div>
                 </div>
