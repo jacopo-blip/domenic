@@ -39,6 +39,17 @@ section[id] {
   to { transform: translateX(-50%); }
 }
 
-.marquee-container:hover .marquee-track {
-  animation-play-state: paused !important;
+@media (hover: hover) {
+  .marquee-container:hover .marquee-track {
+    animation-play-state: paused !important;
+  }
+}
+
+@media (hover: none) {
+  .marquee-container {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
 }

@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import { GoogleReviewsMarquee } from "./GoogleReviewsMarquee";
 
 // ─── Fallback data ─────────────────────────────────────────────────────────────
 
@@ -251,55 +252,47 @@ export async function GoogleReviews() {
         </div>
 
         {/* Review cards — auto-scrolling marquee */}
-        <div className="mt-12 sm:mt-16 relative overflow-hidden marquee-container">
-          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#fafaf8] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#fafaf8] to-transparent z-10 pointer-events-none" />
+        <GoogleReviewsMarquee durationSeconds={reviews.length * 16}>
+          {[...reviews, ...reviews].map((review, idx) => (
+            <div
+              key={`${review.id}-${idx}`}
+              className="w-[300px] sm:w-[320px] flex-shrink-0 relative flex flex-col rounded-3xl bg-white border border-gray-100 p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1"
+              style={{ boxShadow: "0 4px 24px rgba(13,79,79,0.06)" }}
+            >
+              <span className="absolute top-4 right-5 text-5xl font-serif leading-none text-[#e8654a]/10 select-none">
+                &ldquo;
+              </span>
 
-          <div
-            className="flex gap-5 sm:gap-6 w-max marquee-track"
-            style={{ animation: `marquee ${reviews.length * 16}s linear infinite` }}
-          >
-            {[...reviews, ...reviews].map((review, idx) => (
-              <div
-                key={`${review.id}-${idx}`}
-                className="w-[300px] sm:w-[320px] flex-shrink-0 relative flex flex-col rounded-3xl bg-white border border-gray-100 p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1"
-                style={{ boxShadow: "0 4px 24px rgba(13,79,79,0.06)" }}
-              >
-                <span className="absolute top-4 right-5 text-5xl font-serif leading-none text-[#e8654a]/10 select-none">
-                  &ldquo;
-                </span>
+              <div className="flex items-center">
+                <StarRating rating={review.rating} />
+              </div>
 
-                <div className="flex items-center">
-                  <StarRating rating={review.rating} />
-                </div>
+              <p className="mt-4 flex-1 text-sm text-[#444] leading-relaxed">
+                {review.text}
+              </p>
 
-                <p className="mt-4 flex-1 text-sm text-[#444] leading-relaxed">
-                  {review.text}
-                </p>
-
-                <div className="mt-5 pt-4 border-t border-gray-100">
-                  <div className="flex items-center gap-3">
-                    <ReviewerAvatar
-                      name={review.name}
-                      photoUri={review.photoUri}
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-[#111] truncate">
-                        {review.name}
+              <div className="mt-5 pt-4 border-t border-gray-100">
+                <div className="flex items-center gap-3">
+                  <ReviewerAvatar
+                    name={review.name}
+                    photoUri={review.photoUri}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-[#111] truncate">
+                      {review.name}
+                    </p>
+                    {review.date && (
+                      <p className="text-xs text-[#aaa] mt-0.5">
+                        {review.date}
                       </p>
-                      {review.date && (
-                        <p className="text-xs text-[#aaa] mt-0.5">
-                          {review.date}
-                        </p>
-                      )}
-                    </div>
-                    <GoogleLogo size={16} />
+                    )}
                   </div>
+                  <GoogleLogo size={16} />
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          ))}
+        </GoogleReviewsMarquee>
 
         {/* CTA link */}
         <div className="mt-10 text-center">
