@@ -43,7 +43,7 @@ export default function RootLayout({
     >
       <head>
         <JsonLd />
-        {/* Google Consent Mode v2 — must run before GTM */}
+        {/* Google Consent Mode v2 — must run before any GA tag loads */}
         <Script id="google-consent-mode" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
@@ -74,25 +74,26 @@ export default function RootLayout({
             });
           `}
         </Script>
-        {/* TODO: Replace GTM-XXXXXXX with Domenic's actual GTM container ID */}
-        <Script id="gtm" strategy="afterInteractive">{`
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-XXXXXXX');
-        `}</Script>
+        {/* Google Analytics 4 — gtag.js (only loads when Measurement ID is set) */}
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <>
+            <Script
+              id="ga4-src"
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
+                  anonymize_ip: true
+                });
+              `}
+            </Script>
+          </>
+        )}
       </head>
       <body className="min-h-full flex flex-col">
-        {/* GTM noscript fallback — TODO: Replace GTM-XXXXXXX with Domenic's actual GTM container ID */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
         {children}
         <SanityLive />
         <Analytics />
