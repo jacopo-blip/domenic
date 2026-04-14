@@ -38,6 +38,13 @@ const FALLBACK_REVIEWS: ReviewDisplay[] = [
   },
 ];
 
+// Section copy — move to CMS props (homePage) once Sanity schema is extended
+const SECTION_BADGE = "Kundenstimmen";
+const SECTION_HEADING = "Das sagen";
+const SECTION_HEADING_ACCENT = "meine Klienten";
+const SECTION_TEXT =
+  "Echte Erfahrungen meiner Klienten — unbearbeitet und direkt von Google.";
+
 const FALLBACK_RATING = 4.9;
 const FALLBACK_COUNT = 47;
 const GOOGLE_MAPS_URL =
@@ -217,15 +224,14 @@ export async function GoogleReviews() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8">
           <div className="max-w-xl">
             <span className="inline-flex items-center gap-2 rounded-full bg-[#0d4f4f]/8 px-4 py-1.5 text-sm font-bold text-[#0d4f4f]">
-              Kundenstimmen
+              {SECTION_BADGE}
             </span>
             <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]">
-              Das sagen{" "}
-              <span className="text-[#e8654a]">meine Klienten</span>
+              {SECTION_HEADING}{" "}
+              <span className="text-[#e8654a]">{SECTION_HEADING_ACCENT}</span>
             </h2>
             <p className="mt-4 text-lg text-[#555] leading-relaxed">
-              Echte Erfahrungen meiner Klienten — unbearbeitet und direkt von
-              Google.
+              {SECTION_TEXT}
             </p>
           </div>
 
