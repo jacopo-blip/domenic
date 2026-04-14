@@ -60,22 +60,16 @@ export default async function Home() {
 
         {/* Portrait – Vertrauen aufbauen */}
         {/* TODO: Bild später via homePage.portraitSectionImage aus Sanity laden */}
-        <section className="py-14 sm:py-20 bg-white">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8">
-            <div className="flex flex-col items-center text-center gap-5">
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-[#0d4f4f]/10 shadow-xl bg-[#0d4f4f]/8 flex items-center justify-center">
-                {/* Platzhalter – wird durch echtes Portrait-Bild ersetzt */}
-                <span className="text-4xl sm:text-5xl font-extrabold text-[#0d4f4f]/30 select-none">
-                  DH
-                </span>
-              </div>
-              <div>
-                <p className="text-lg sm:text-xl font-extrabold text-[#111]">
-                  Domenic Hacker
-                </p>
-                <p className="text-sm text-[#555] mt-1">Dipl. Heilmasseur</p>
-              </div>
-            </div>
+        <section className="py-14 sm:py-20 bg-white flex flex-col items-center text-center gap-5 px-5">
+          {/* Platzhalter – wird durch echtes Portrait-Bild ersetzt */}
+          <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-[#0d4f4f]/10 shadow-xl bg-[#0d4f4f]/8 flex items-center justify-center">
+            <span className="text-4xl sm:text-5xl font-extrabold text-[#0d4f4f]/30 select-none">
+              DH
+            </span>
+          </div>
+          <div>
+            <p className="text-lg sm:text-xl font-extrabold text-[#111]">Domenic Hacker</p>
+            <p className="text-sm text-[#555] mt-1">Dipl. Heilmasseur</p>
           </div>
         </section>
 
