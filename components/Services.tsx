@@ -43,6 +43,13 @@ const FALLBACK_SERVICES = [
   },
 ];
 
+// Section copy — move to CMS props (homePage) once Sanity schema is extended
+const SECTION_BADGE = "Massagen-Angebot";
+const SECTION_HEADING = "Was ich für Sie";
+const SECTION_HEADING_ACCENT = "tun kann";
+const SECTION_TEXT =
+  "Hier geht es nicht nur um Entspannung, sondern um Ihr Wohlbefinden. Ich unterstütze Sie dabei, Verspannungen zu lösen, Schmerzen zu lindern und mehr Bewegungsfreiheit zu gewinnen.";
+
 const COLORS = [
   { color: "#e8654a", bgColor: "#e8654a" },
   { color: "#0d4f4f", bgColor: "#0d4f4f" },
@@ -95,16 +102,14 @@ export function Services({
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-2 rounded-full bg-[#0d4f4f]/8 px-4 py-1.5 text-sm font-bold text-[#0d4f4f]">
-            Massagen-Angebot
+            {SECTION_BADGE}
           </span>
           <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]">
-            Was ich für Sie{" "}
-            <span className="text-[#e8654a]">tun kann</span>
+            {SECTION_HEADING}{" "}
+            <span className="text-[#e8654a]">{SECTION_HEADING_ACCENT}</span>
           </h2>
           <p className="mt-4 text-lg text-[#555] leading-relaxed">
-            Hier geht es nicht nur um Entspannung, sondern um Ihr Wohlbefinden.
-            Ich unterstütze Sie dabei, Verspannungen zu lösen, Schmerzen zu
-            lindern und mehr Bewegungsfreiheit zu gewinnen.
+            {SECTION_TEXT}
           </p>
         </div>
 
