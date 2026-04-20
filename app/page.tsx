@@ -56,25 +56,37 @@ export default async function Home() {
           heroBackgroundImageUrl={homePage?.heroBackgroundImage ? urlFor(homePage.heroBackgroundImage).width(2000).quality(80).url() : undefined}
           heroPortraitImageUrl={homePage?.heroPortraitImage ? urlFor(homePage.heroPortraitImage).width(800).height(840).url() : undefined}
         />
-        <Services sanityServices={services} />
+        <Services sanityServices={services} homePage={homePage} />
 
         {/* Portrait – Vertrauen aufbauen */}
-        {/* TODO: Bild später via homePage.portraitSectionImage aus Sanity laden */}
         <section className="py-14 sm:py-20 bg-white flex flex-col items-center text-center gap-5 px-5">
-          {/* Platzhalter – wird durch echtes Portrait-Bild ersetzt */}
-          <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-[#0d4f4f]/10 shadow-xl bg-[#0d4f4f]/8 flex items-center justify-center">
-            <span className="text-4xl sm:text-5xl font-extrabold text-[#0d4f4f]/30 select-none">
-              DH
-            </span>
+          <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-[#0d4f4f]/10 shadow-xl overflow-hidden bg-[#0d4f4f]/8 flex items-center justify-center">
+            {homePage?.portraitImage ? (
+              <Image
+                src={urlFor(homePage.portraitImage).width(320).height(320).url()}
+                alt={homePage?.portraitName ?? "Domenic Hacker"}
+                width={160}
+                height={160}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-4xl sm:text-5xl font-extrabold text-[#0d4f4f]/30 select-none">
+                DH
+              </span>
+            )}
           </div>
           <div>
-            <p className="text-lg sm:text-xl font-extrabold text-[#111]">Domenic Hacker</p>
-            <p className="text-sm text-[#555] mt-1">Dipl. Heilmasseur</p>
+            <p className="text-lg sm:text-xl font-extrabold text-[#111]">
+              {homePage?.portraitName ?? "Domenic Hacker"}
+            </p>
+            <p className="text-sm text-[#555] mt-1">
+              {homePage?.portraitTitle ?? "Dipl. Heilmasseur"}
+            </p>
           </div>
         </section>
 
-        <GoogleReviews />
-        <Pricing sanityPricing={pricingItems} sanitySettings={settings} />
+        <GoogleReviews homePage={homePage} />
+        <Pricing sanityPricing={pricingItems} sanitySettings={settings} homePage={homePage} />
 
         {/* About Teaser */}
         <section className="py-20 sm:py-24 bg-white">
