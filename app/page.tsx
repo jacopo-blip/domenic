@@ -60,17 +60,17 @@ export default async function Home() {
 
         {/* Portrait – Vertrauen aufbauen */}
         <section className="py-14 sm:py-20 bg-white flex flex-col items-center text-center gap-5 px-5">
-          <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-[#0d4f4f]/10 shadow-xl overflow-hidden bg-[#0d4f4f]/8 flex items-center justify-center">
+          <div className="w-56 h-56 sm:w-72 sm:h-72 rounded-full border-4 border-[#0d4f4f]/10 shadow-xl overflow-hidden bg-[#0d4f4f]/8 flex items-center justify-center">
             {homePage?.portraitImage ? (
               <Image
-                src={urlFor(homePage.portraitImage).width(320).height(320).url()}
+                src={urlFor(homePage.portraitImage).width(576).height(576).url()}
                 alt={homePage?.portraitName ?? "Domenic Hacker"}
-                width={160}
-                height={160}
+                width={288}
+                height={288}
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-4xl sm:text-5xl font-extrabold text-[#0d4f4f]/30 select-none">
+              <span className="text-6xl sm:text-7xl font-extrabold text-[#0d4f4f]/30 select-none">
                 DH
               </span>
             )}
