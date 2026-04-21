@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Heart, Droplets, Hand } from "lucide-react";
-import type { SanityService } from "@/sanity/lib/queries";
+import type { SanityService, SanityHomePage } from "@/sanity/lib/queries";
 
 const FALLBACK_SERVICES = [
   {
@@ -43,6 +43,12 @@ const FALLBACK_SERVICES = [
   },
 ];
 
+const FALLBACK_BADGE = "Massagen-Angebot";
+const FALLBACK_HEADING = "Was ich für Sie";
+const FALLBACK_HEADING_ACCENT = "tun kann";
+const FALLBACK_TEXT =
+  "Hier geht es nicht nur um Entspannung, sondern um Ihr Wohlbefinden. Ich unterstütze Sie dabei, Verspannungen zu lösen, Schmerzen zu lindern und mehr Bewegungsfreiheit zu gewinnen.";
+
 const COLORS = [
   { color: "#e8654a", bgColor: "#e8654a" },
   { color: "#0d4f4f", bgColor: "#0d4f4f" },
@@ -76,13 +82,20 @@ function toDisplayServices(sanityServices: SanityService[]): ServiceDisplay[] {
 
 export function Services({
   sanityServices,
+  homePage,
 }: {
   sanityServices?: SanityService[] | null;
+  homePage?: SanityHomePage | null;
 }) {
   const services =
     sanityServices && sanityServices.length > 0
       ? toDisplayServices(sanityServices)
       : FALLBACK_SERVICES;
+
+  const badge = homePage?.servicesBadge ?? FALLBACK_BADGE;
+  const heading = homePage?.servicesHeading ?? FALLBACK_HEADING;
+  const headingAccent = homePage?.servicesHeadingAccent ?? FALLBACK_HEADING_ACCENT;
+  const text = homePage?.servicesText ?? FALLBACK_TEXT;
 
   return (
     <section
@@ -95,16 +108,14 @@ export function Services({
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-2 rounded-full bg-[#0d4f4f]/8 px-4 py-1.5 text-sm font-bold text-[#0d4f4f]">
-            Massagen-Angebot
+            {badge}
           </span>
           <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]">
-            Was ich für Sie{" "}
-            <span className="text-[#e8654a]">tun kann</span>
+            {heading}{" "}
+            <span className="text-[#e8654a]">{headingAccent}</span>
           </h2>
           <p className="mt-4 text-lg text-[#555] leading-relaxed">
-            Hier geht es nicht nur um Entspannung, sondern um Ihr Wohlbefinden.
-            Ich unterstütze Sie dabei, Verspannungen zu lösen, Schmerzen zu
-            lindern und mehr Bewegungsfreiheit zu gewinnen.
+            {text}
           </p>
         </div>
 

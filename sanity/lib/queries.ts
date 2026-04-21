@@ -76,6 +76,22 @@ export type SanitySettings = {
 export type SanityHomePage = {
   heroBackgroundImage?: { asset: { _ref: string } };
   heroPortraitImage?: { asset: { _ref: string } };
+  servicesBadge?: string;
+  servicesHeading?: string;
+  servicesHeadingAccent?: string;
+  servicesText?: string;
+  portraitImage?: { asset: { _ref: string } };
+  portraitName?: string;
+  portraitTitle?: string;
+  reviewsBadge?: string;
+  reviewsHeading?: string;
+  reviewsHeadingAccent?: string;
+  reviewsText?: string;
+  pricingBadge?: string;
+  pricingHeading?: string;
+  pricingHeadingAccent?: string;
+  pricingText?: string;
+  pricingWkoUrl?: string;
   aboutTeaserBadge: string;
   aboutTeaserHeading: string;
   aboutTeaserHeadingAccent: string;
@@ -207,6 +223,10 @@ export async function getHomePage(): Promise<SanityHomePage | null> {
   return safeFetch<SanityHomePage>(
     `*[_type == "homePage"][0] {
       heroBackgroundImage, heroPortraitImage,
+      servicesBadge, servicesHeading, servicesHeadingAccent, servicesText,
+      portraitImage, portraitName, portraitTitle,
+      reviewsBadge, reviewsHeading, reviewsHeadingAccent, reviewsText,
+      pricingBadge, pricingHeading, pricingHeadingAccent, pricingText, pricingWkoUrl,
       aboutTeaserBadge, aboutTeaserHeading, aboutTeaserHeadingAccent, aboutTeaserImage,
       praxisBadge, praxisHeading, praxisHeadingAccent, praxisDescription, praxisImage
     }`

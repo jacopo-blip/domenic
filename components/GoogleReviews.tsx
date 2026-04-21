@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import { GoogleReviewsMarquee } from "./GoogleReviewsMarquee";
+import type { SanityHomePage } from "@/sanity/lib/queries";
 
 // ─── Fallback data ─────────────────────────────────────────────────────────────
 
@@ -37,6 +38,12 @@ const FALLBACK_REVIEWS: ReviewDisplay[] = [
     photoUri: null,
   },
 ];
+
+const FALLBACK_BADGE = "Kundenstimmen";
+const FALLBACK_HEADING = "Das sagen";
+const FALLBACK_HEADING_ACCENT = "meine Klienten";
+const FALLBACK_TEXT =
+  "Echte Erfahrungen meiner Klienten — unbearbeitet und direkt von Google.";
 
 const FALLBACK_RATING = 4.9;
 const FALLBACK_COUNT = 47;
@@ -192,7 +199,11 @@ function ReviewerAvatar({
 
 // ─── Main component ────────────────────────────────────────────────────────────
 
-export async function GoogleReviews() {
+export async function GoogleReviews({
+  homePage,
+}: {
+  homePage?: SanityHomePage | null;
+}) {
   const googleData = await fetchGoogleReviews();
 
   const reviews =
@@ -202,6 +213,11 @@ export async function GoogleReviews() {
 
   const overallRating = googleData?.rating ?? FALLBACK_RATING;
   const reviewCount = googleData?.userRatingCount ?? FALLBACK_COUNT;
+
+  const badge = homePage?.reviewsBadge ?? FALLBACK_BADGE;
+  const heading = homePage?.reviewsHeading ?? FALLBACK_HEADING;
+  const headingAccent = homePage?.reviewsHeadingAccent ?? FALLBACK_HEADING_ACCENT;
+  const text = homePage?.reviewsText ?? FALLBACK_TEXT;
 
   return (
     <section
@@ -217,15 +233,14 @@ export async function GoogleReviews() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8">
           <div className="max-w-xl">
             <span className="inline-flex items-center gap-2 rounded-full bg-[#0d4f4f]/8 px-4 py-1.5 text-sm font-bold text-[#0d4f4f]">
-              Kundenstimmen
+              {badge}
             </span>
             <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]">
-              Das sagen{" "}
-              <span className="text-[#e8654a]">meine Klienten</span>
+              {heading}{" "}
+              <span className="text-[#e8654a]">{headingAccent}</span>
             </h2>
             <p className="mt-4 text-lg text-[#555] leading-relaxed">
-              Echte Erfahrungen meiner Klienten — unbearbeitet und direkt von
-              Google.
+              {text}
             </p>
           </div>
 

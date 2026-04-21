@@ -1,7 +1,15 @@
 "use client";
 
 import { Check, Info, ExternalLink } from "lucide-react";
-import type { SanityPricingItem, SanitySettings } from "@/sanity/lib/queries";
+import type { SanityPricingItem, SanitySettings, SanityHomePage } from "@/sanity/lib/queries";
+
+const FALLBACK_BADGE = "Transparente Preise";
+const FALLBACK_HEADING = "Faire Preise,";
+const FALLBACK_HEADING_ACCENT = "spürbare Wirkung";
+const FALLBACK_TEXT =
+  "Alle Behandlungen werden individuell auf Ihre Bedürfnisse abgestimmt.";
+const FALLBACK_WKO_URL =
+  "https://www.wko.at/oe/gewerbe-handwerk/fusspfleger-kosmetiker-masseure/tarife-heilmasseure.pdf";
 
 const FALLBACK_ROWS = [
   { service: "Heilmassage", p30: "\u20ac55", p45: "\u20ac70", p60: "\u20ac85" },
@@ -17,9 +25,11 @@ type PricingRow = { service: string; p30: string; p45: string; p60: string };
 export function Pricing({
   sanityPricing,
   sanitySettings,
+  homePage,
 }: {
   sanityPricing?: SanityPricingItem[] | null;
   sanitySettings?: SanitySettings | null;
+  homePage?: SanityHomePage | null;
 }) {
   const rows: PricingRow[] =
     sanityPricing && sanityPricing.length > 0
@@ -34,6 +44,12 @@ export function Pricing({
   const insuranceText =
     sanitySettings?.insuranceText ?? FALLBACK_INSURANCE_TEXT;
 
+  const badge = homePage?.pricingBadge ?? FALLBACK_BADGE;
+  const heading = homePage?.pricingHeading ?? FALLBACK_HEADING;
+  const headingAccent = homePage?.pricingHeadingAccent ?? FALLBACK_HEADING_ACCENT;
+  const text = homePage?.pricingText ?? FALLBACK_TEXT;
+  const wkoUrl = homePage?.pricingWkoUrl ?? FALLBACK_WKO_URL;
+
   return (
     <section
       id="preise"
@@ -44,16 +60,13 @@ export function Pricing({
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div className="text-center max-w-2xl mx-auto">
           <span className="inline-flex items-center gap-2 rounded-full bg-[#e8654a]/10 px-4 py-1.5 text-sm font-bold text-[#e8654a]">
-            Transparente Preise
+            {badge}
           </span>
           <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#111]">
-            Faire Preise,{" "}
-            <span className="text-[#e8654a]">spürbare Wirkung</span>
+            {heading}{" "}
+            <span className="text-[#e8654a]">{headingAccent}</span>
           </h2>
-          <p className="mt-4 text-lg text-[#555]">
-            Alle Behandlungen werden individuell auf Ihre Bedürfnisse
-            abgestimmt.
-          </p>
+          <p className="mt-4 text-lg text-[#555]">{text}</p>
         </div>
 
         {/* Pricing table */}
@@ -134,7 +147,7 @@ export function Pricing({
                 {insuranceText}
               </p>
               <a
-                href="https://www.heilmasseur-domenic.at/#heilmasseur-zuschüsse"
+                href={wkoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-[#0d4f4f] hover:underline"
