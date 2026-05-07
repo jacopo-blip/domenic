@@ -129,6 +129,34 @@ export type SanityHeilmassagePage = {
   ctaText: string;
 };
 
+export type SanityKrankenkasse = {
+  name: string;
+  fullName: string;
+  reimbursement: string;
+  condition: string;
+};
+
+export type SanityPricingPage = {
+  seoTitle: string;
+  seoDescription: string;
+  heroBadge: string;
+  heroHeading: string;
+  heroHeadingAccent: string;
+  heroText: string;
+  tableIntro: string;
+  blockCardsHeading: string;
+  blockCardsText: string;
+  krankenkassenHeading: string;
+  krankenkassenIntro: string;
+  krankenkassen: SanityKrankenkasse[];
+  krankenkassenDisclaimer: string;
+  voucherCtaHeading: string;
+  voucherCtaText: string;
+  faqs: { question: string; answer: string }[];
+  ctaHeading: string;
+  ctaText: string;
+};
+
 export type SanityBuchenPage = {
   heading: string;
   headingAccent: string;
@@ -273,6 +301,23 @@ export async function getDatenschutzPage(): Promise<SanityDatenschutzPage | null
     `*[_type == "datenschutzPage"][0] {
       lastUpdated,
       sections[] { heading, content, subsections[] { heading, content } }
+    }`
+  );
+}
+
+export async function getPricingPage(): Promise<SanityPricingPage | null> {
+  return safeFetch<SanityPricingPage>(
+    `*[_type == "pricingPage"][0] {
+      seoTitle, seoDescription,
+      heroBadge, heroHeading, heroHeadingAccent, heroText,
+      tableIntro,
+      blockCardsHeading, blockCardsText,
+      krankenkassenHeading, krankenkassenIntro,
+      krankenkassen[] { name, fullName, reimbursement, condition },
+      krankenkassenDisclaimer,
+      voucherCtaHeading, voucherCtaText,
+      faqs[] { question, answer },
+      ctaHeading, ctaText
     }`
   );
 }
