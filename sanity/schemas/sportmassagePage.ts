@@ -94,7 +94,7 @@ export const sportmassagePageSchema = defineType({
       of: [{ type: "string" }],
       initialValue: [
         "Triggerpunkt-Arbeit an muskulären Schmerzpunkten",
-        "Faszien-Mobilisation und Geweblosung",
+        "Faszien-Mobilisation und Gewebelösung",
         "Tiefe Querfriktion bei chronischen Verspannungen",
         "Stretching-Elemente zur Bewegungsverbesserung",
       ],
