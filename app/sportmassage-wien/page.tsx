@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLdService } from "@/components/JsonLdService";
 import {
   TreatmentPage,
@@ -201,13 +200,15 @@ export default async function SportmassageWien() {
   return (
     <>
       <JsonLdService variant="sportmassage" />
-      <Breadcrumbs
-        items={[
+      <TreatmentPage
+        data={data}
+        variant="sportmassage"
+        settings={settings}
+        breadcrumbs={[
           { label: "Startseite", href: "/" },
           { label: "Sportmassage", href: "/sportmassage-wien" },
         ]}
       />
-      <TreatmentPage data={data} variant="sportmassage" settings={settings} />
     </>
   );
 }

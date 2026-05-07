@@ -181,7 +181,15 @@ export default async function HeilmassageWien() {
   return (
     <>
       <JsonLdService variant="heilmassage" />
-      <TreatmentPage data={data} variant="heilmassage" settings={settings} />
+      <TreatmentPage
+        data={data}
+        variant="heilmassage"
+        settings={settings}
+        breadcrumbs={[
+          { label: "Startseite", href: "/" },
+          { label: "Heilmassage", href: "/heilmassage-wien-1080" },
+        ]}
+      />
     </>
   );
 }
