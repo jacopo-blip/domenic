@@ -1,5 +1,3 @@
-"use client";
-
 import type { SanityPricingItem } from "@/sanity/lib/queries";
 
 export type PricingRow = {
