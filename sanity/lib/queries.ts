@@ -15,9 +15,9 @@ export type SanityService = {
 export type SanityPricingItem = {
   _id: string;
   serviceName: string;
-  price30: number;
-  price45: number;
-  price60: number;
+  price30: number | null;
+  price45: number | null;
+  price60: number | null;
   popular: boolean;
   sortOrder: number;
 };

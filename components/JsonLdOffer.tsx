@@ -35,10 +35,17 @@ const FALLBACK_ITEMS: SanityPricingItem[] = [
 function buildOffer(serviceName: string, durationMin: number, price: number) {
   return {
     "@type": "Offer",
-    name: `${serviceName} ${durationMin} Minuten`,
-    description: `${durationMin}-minütige ${serviceName} in Wien 1080`,
-    price: price.toFixed(2),
-    priceCurrency: "EUR",
+    itemOffered: {
+      "@type": "Service",
+      name: serviceName,
+      description: `${durationMin}-minütige ${serviceName} in Wien 1080`,
+    },
+    priceSpecification: {
+      "@type": "PriceSpecification",
+      price: price.toFixed(2),
+      priceCurrency: "EUR",
+      description: `${durationMin} Minuten`,
+    },
     availability: "https://schema.org/InStock",
     areaServed: { "@type": "City", name: "Wien 1080, Josefstadt" },
     seller: {
@@ -62,7 +69,7 @@ export function JsonLdOffer({
       item.price45 ? buildOffer(item.serviceName, 45, item.price45) : null,
       item.price60 ? buildOffer(item.serviceName, 60, item.price60) : null,
     ])
-    .filter(Boolean);
+    .filter((x): x is NonNullable<typeof x> => x !== null);
 
   const jsonLd = {
     "@context": "https://schema.org",
