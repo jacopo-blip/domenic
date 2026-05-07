@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { SanityPricingItem } from "@/sanity/lib/queries";
 
 export type PricingRow = {
@@ -25,7 +26,13 @@ export function pricingRowsFromSanity(
   }));
 }
 
-export function PricingTable({ rows }: { rows: PricingRow[] }) {
+export function PricingTable({
+  rows,
+  serviceLinks,
+}: {
+  rows: PricingRow[];
+  serviceLinks?: Record<string, string>;
+}) {
   return (
     <div className="rounded-3xl bg-white border border-gray-100 shadow-xl shadow-black/5 overflow-y-hidden overflow-x-auto">
       <table className="w-full">
@@ -63,9 +70,18 @@ export function PricingTable({ rows }: { rows: PricingRow[] }) {
               } hover:bg-[#0d4f4f]/[0.02] transition-colors`}
             >
               <td className="px-4 sm:px-8 py-4 sm:py-6">
-                <span className="font-bold text-sm sm:text-base text-[#111]">
-                  {row.service}
-                </span>
+                {serviceLinks?.[row.service] ? (
+                  <Link
+                    href={serviceLinks[row.service]}
+                    className="font-bold text-sm sm:text-base text-[#111] hover:text-[#0d4f4f] hover:underline transition-colors"
+                  >
+                    {row.service}
+                  </Link>
+                ) : (
+                  <span className="font-bold text-sm sm:text-base text-[#111]">
+                    {row.service}
+                  </span>
+                )}
               </td>
               <td className="px-2 sm:px-6 py-4 sm:py-6 text-center whitespace-nowrap">
                 <span className="text-base sm:text-xl font-extrabold text-[#333]">

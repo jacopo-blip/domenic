@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLdOffer } from "@/components/JsonLdOffer";
+import { JsonLdService } from "@/components/JsonLdService";
 import { FaqJsonLd } from "@/components/FaqJsonLd";
 import {
   PricingTable,
@@ -89,6 +90,7 @@ export default async function PreisePage() {
 
   return (
     <>
+      <JsonLdService />
       <JsonLdOffer items={pricingItems} />
       {faqs.length > 0 && (
         <FaqJsonLd faqs={faqs.map((f) => ({ q: f.question, a: f.answer }))} />
@@ -124,7 +126,10 @@ export default async function PreisePage() {
             <p className="text-[#555] mb-8 leading-relaxed max-w-2xl">
               {tableIntro}
             </p>
-            <PricingTable rows={rows} />
+            <PricingTable
+              rows={rows}
+              serviceLinks={{ "Heilmassage": "/heilmassage-wien-1080" }}
+            />
           </div>
         </section>
 
