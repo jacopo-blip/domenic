@@ -284,14 +284,14 @@ export default async function Page() {
 
 #### Für wen
 - **forWhomHeading:** "Für wen ist das?"
-- **forWhomDescription:** "Egal ob ambitioniert im Verein, regelmäßig im Fitnessstudio oder ein paar Mal pro Woche laufend — wenn dein Körper nach Belastung Erholung braucht oder Verspannungen das nächste Training ausbremsen, ist Sportmassage ein gezielter Hebel."
+- **forWhomDescription:** "Egal ob ambitioniert im Verein, regelmäßig im Fitnessstudio oder ein paar Mal pro Woche laufend — wenn Ihr Körper nach Belastung Erholung braucht oder Verspannungen das nächste Training ausbremsen, ist Sportmassage ein gezielter Hebel."
 - **conditions** (Tags): ["Verspannungen nach Training", "Muskelkater-Vorbeugung", "Triggerpunkte", "Faszienverklebungen", "Ermüdungssymptome", "Vor Wettkampf", "Nach Wettkampf", "Steifheit nach langen Läufen"]
 
 #### Mein Schwerpunkt
 - **approachHeading:** "Mein Schwerpunkt"
 - **approachDescription:** "Ich arbeite tief, aber kontrolliert — mit besonderem Fokus auf Triggerpunkte und Faszien. Dort, wo das Gewebe sich nach hoher Belastung verklebt oder nicht mehr richtig gleitet, setze ich gezielt an."
 - **approachPoints:** ["Triggerpunkt-Arbeit an muskulären Schmerzpunkten", "Faszien-Mobilisation und Geweblosung", "Tiefe Querfriktion bei chronischen Verspannungen", "Stretching-Elemente zur Bewegungsverbesserung"]
-- **approachBottomText:** "Wie viel Druck du brauchst, hängt von dir, deinem Trainingsstand und deinem Tagesform ab. Ich passe das an dein Feedback an — Sportmassage ist nicht zwangsläufig eine schmerzhafte Massage, auch wenn das Klischee anders sagt."
+- **approachBottomText:** "Wie viel Druck Sie brauchen, hängt von Ihnen, Ihrem Trainingsstand und Ihrer Tagesform ab. Ich passe das an Ihr Feedback an — Sportmassage ist nicht zwangsläufig eine schmerzhafte Massage, auch wenn das Klischee anders sagt."
 
 #### Was ist Sportmassage
 - **whatIsHeading:** "Was ist Sportmassage?"
@@ -302,7 +302,7 @@ export default async function Page() {
 
 #### Wirkung
 - **effectsHeading:** "Was Sportmassage bewirken kann"
-- **effectsDescription:** "Regelmäßig eingesetzt unterstützt Sportmassage deinen Körper dabei, Belastung besser wegzustecken und schneller einsatzfähig zu sein."
+- **effectsDescription:** "Regelmäßig eingesetzt unterstützt Sportmassage Ihren Körper dabei, Belastung besser wegzustecken und schneller einsatzfähig zu sein."
 - **effects** (Karten):
   - { title: "Schnellere Regeneration", description: "Verbesserte Durchblutung kann den Abtransport von Stoffwechselprodukten und die Versorgung der Muskulatur unterstützen." }
   - { title: "Verbesserte Beweglichkeit", description: "Gezielte Faszienarbeit und Triggerpunkt-Lösung können Bewegungseinschränkungen reduzieren." }
@@ -322,7 +322,7 @@ export default async function Page() {
 
 #### FAQs (5–6 sportspezifisch)
 - "Wie oft sollte ich Sportmassage in Anspruch nehmen?"
-  → "Das hängt von deinem Trainingsvolumen ab. Hobby-Sportler:innen mit 3–4 Trainings/Woche profitieren oft von einer Sportmassage alle 2–3 Wochen. Bei intensiven Trainingsphasen kann häufiger sinnvoll sein, in Ruhephasen seltener. Wir können das gerne in der ersten Behandlung gemeinsam einschätzen."
+  → "Das hängt von Ihrem Trainingsvolumen ab. Hobby-Sportler:innen mit 3–4 Trainings/Woche profitieren oft von einer Sportmassage alle 2–3 Wochen. Bei intensiven Trainingsphasen kann häufiger sinnvoll sein, in Ruhephasen seltener. Wir können das gerne in der ersten Behandlung gemeinsam einschätzen."
 - "Vor oder nach dem Wettkampf — was bringt mehr?"
   → "Beides hat einen Platz: Pre-Wettkampf 2–3 Tage vorher zur Lockerung, ohne dass tief gearbeitet wird. Post-Wettkampf am besten 24–48 Stunden danach, dann ist das Gewebe schon wieder belastbarer für tiefere Techniken."
 - "Was unterscheidet Sportmassage von Heilmassage?"
@@ -332,11 +332,11 @@ export default async function Page() {
 - "Auch ohne Sportverletzung?"
   → "Definitiv. Sportmassage ist primär präventiv und regenerativ gedacht, nicht therapeutisch. Wer regelmäßig sportlich aktiv ist, profitiert davon, ohne Beschwerden zu haben."
 - "Ist Sportmassage immer schmerzhaft?"
-  → "Nein. Tiefer Druck heißt nicht automatisch Schmerz — der richtige Druck am richtigen Ort fühlt sich oft 'gut intensiv' an, nicht quälend. Wir sprechen während der Behandlung über das richtige Maß für dich."
+  → "Nein. Tiefer Druck heißt nicht automatisch Schmerz — der richtige Druck am richtigen Ort fühlt sich oft 'gut intensiv' an, nicht quälend. Wir sprechen während der Behandlung über das richtige Maß für Sie."
 
 #### CTA
 - **ctaHeading:** "Bereit für die nächste Behandlung?"
-- **ctaText:** "Buche direkt online einen Termin — oder melde dich, wenn du vorher Fragen hast."
+- **ctaText:** "Termin direkt online buchen — oder melden Sie sich, wenn Sie vorher Fragen haben."
 
 ### 5.4 SEO
 
