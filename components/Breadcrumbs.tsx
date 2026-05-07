@@ -23,7 +23,7 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning>
-        {JSON.stringify(jsonLd)}
+        {JSON.stringify(jsonLd).replace(/</g, "\\u003c")}
       </script>
       <nav
         aria-label="Breadcrumb"

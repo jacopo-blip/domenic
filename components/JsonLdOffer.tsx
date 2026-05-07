@@ -80,7 +80,7 @@ export function JsonLdOffer({
 
   return (
     <script type="application/ld+json" suppressHydrationWarning>
-      {JSON.stringify(jsonLd)}
+      {JSON.stringify(jsonLd).replace(/</g, "\\u003c")}
     </script>
   );
 }

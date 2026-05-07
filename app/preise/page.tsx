@@ -155,20 +155,20 @@ export default async function PreisePage() {
                 Antworten auf die Fragen, die mir am häufigsten gestellt werden.
               </p>
               <div className="space-y-3">
-                {faqs.map(({ question, answer }) => (
+                {faqs.map((faq) => (
                   <details
-                    key={question}
+                    key={faq._key}
                     className="group rounded-2xl bg-white border border-[#0d4f4f]/10 overflow-hidden"
                   >
                     <summary className="flex items-center justify-between gap-4 cursor-pointer px-6 py-5 font-semibold text-[#111] text-sm sm:text-base list-none">
-                      {question}
+                      {faq.question}
                       <ChevronDown
                         size={18}
                         className="text-[#0d4f4f] shrink-0 transition-transform duration-200 group-open:rotate-180"
                       />
                     </summary>
                     <p className="px-6 pb-5 text-sm text-[#555] leading-relaxed border-t border-[#0d4f4f]/5 pt-4">
-                      {answer}
+                      {faq.answer}
                     </p>
                   </details>
                 ))}
@@ -190,7 +190,7 @@ export default async function PreisePage() {
                 className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-8 py-4 text-base font-bold text-white shadow-lg shadow-[#e8654a]/30 transition-all duration-200 hover:shadow-xl hover:shadow-[#e8654a]/40 hover:scale-[1.03]"
               >
                 Termin buchen
-                <ArrowRight size={18} strokeWidth={2.5} />
+                <ArrowRight size={18} strokeWidth={2.5} aria-hidden={true} />
               </Link>
               <Link
                 href="/gutscheine"

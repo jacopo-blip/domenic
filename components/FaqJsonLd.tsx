@@ -13,7 +13,7 @@ const buildFaqSchema = (faqs: FaqItem[]) => ({
 export function FaqJsonLd({ faqs }: { faqs: FaqItem[] }) {
   return (
     <script type="application/ld+json" suppressHydrationWarning>
-      {JSON.stringify(buildFaqSchema(faqs))}
+      {JSON.stringify(buildFaqSchema(faqs)).replace(/</g, "\\u003c")}
     </script>
   );
 }

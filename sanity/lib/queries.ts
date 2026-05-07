@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { sanityFetch } from "./live";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -152,7 +153,7 @@ export type SanityPricingPage = {
   krankenkassenDisclaimer: string;
   voucherCtaHeading: string;
   voucherCtaText: string;
-  faqs: { question: string; answer: string }[];
+  faqs: { _key: string; question: string; answer: string }[];
   ctaHeading: string;
   ctaText: string;
 };
@@ -305,7 +306,7 @@ export async function getDatenschutzPage(): Promise<SanityDatenschutzPage | null
   );
 }
 
-export async function getPricingPage(): Promise<SanityPricingPage | null> {
+export const getPricingPage = cache(async (): Promise<SanityPricingPage | null> => {
   return safeFetch<SanityPricingPage>(
     `*[_type == "pricingPage"][0] {
       seoTitle, seoDescription,
@@ -316,8 +317,8 @@ export async function getPricingPage(): Promise<SanityPricingPage | null> {
       krankenkassen[] { name, fullName, reimbursement, condition },
       krankenkassenDisclaimer,
       voucherCtaHeading, voucherCtaText,
-      faqs[] { question, answer },
+      faqs[] { _key, question, answer },
       ctaHeading, ctaText
     }`
   );
-}
+});
