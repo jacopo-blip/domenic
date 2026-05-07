@@ -9,11 +9,13 @@ import { heilmassagePageSchema } from "./heilmassagePage";
 import { buchenPageSchema } from "./buchenPage";
 import { impressumPageSchema } from "./impressumPage";
 import { datenschutzPageSchema } from "./datenschutzPage";
+import { pricingPageSchema } from "./pricingPage";
 
 export const schemaTypes = [
   settingsSchema,
   homePageSchema,
   heilmassagePageSchema,
+  pricingPageSchema,
   buchenPageSchema,
   impressumPageSchema,
   datenschutzPageSchema,

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { sanityFetch } from "./live";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -15,9 +16,9 @@ export type SanityService = {
 export type SanityPricingItem = {
   _id: string;
   serviceName: string;
-  price30: number;
-  price45: number;
-  price60: number;
+  price30: number | null;
+  price45: number | null;
+  price60: number | null;
   popular: boolean;
   sortOrder: number;
 };
@@ -125,6 +126,34 @@ export type SanityHeilmassagePage = {
   locationDescription: string;
   transportInfo: { label: string; value: string }[];
   faqs: { question: string; answer: string }[];
+  ctaHeading: string;
+  ctaText: string;
+};
+
+export type SanityKrankenkasse = {
+  name: string;
+  fullName: string;
+  reimbursement: string;
+  condition: string;
+};
+
+export type SanityPricingPage = {
+  seoTitle: string;
+  seoDescription: string;
+  heroBadge: string;
+  heroHeading: string;
+  heroHeadingAccent: string;
+  heroText: string;
+  tableIntro: string;
+  blockCardsHeading: string;
+  blockCardsText: string;
+  krankenkassenHeading: string;
+  krankenkassenIntro: string;
+  krankenkassen: SanityKrankenkasse[];
+  krankenkassenDisclaimer: string;
+  voucherCtaHeading: string;
+  voucherCtaText: string;
+  faqs: { _key: string; question: string; answer: string }[];
   ctaHeading: string;
   ctaText: string;
 };
@@ -276,3 +305,20 @@ export async function getDatenschutzPage(): Promise<SanityDatenschutzPage | null
     }`
   );
 }
+
+export const getPricingPage = cache(async (): Promise<SanityPricingPage | null> => {
+  return safeFetch<SanityPricingPage>(
+    `*[_type == "pricingPage"][0] {
+      seoTitle, seoDescription,
+      heroBadge, heroHeading, heroHeadingAccent, heroText,
+      tableIntro,
+      blockCardsHeading, blockCardsText,
+      krankenkassenHeading, krankenkassenIntro,
+      krankenkassen[] { name, fullName, reimbursement, condition },
+      krankenkassenDisclaimer,
+      voucherCtaHeading, voucherCtaText,
+      faqs[] { _key, question, answer },
+      ctaHeading, ctaText
+    }`
+  );
+});

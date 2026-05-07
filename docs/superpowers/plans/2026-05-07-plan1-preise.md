@@ -117,7 +117,7 @@ export const pricingPageSchema = defineType({
       type: "text",
       rows: 3,
       initialValue:
-        "Faire, transparente Preise für jede Behandlung. Egal ob einzelne Heilmassage, Sportmassage oder eine Block-Karte — du weißt vor der ersten Buchung, was es kostet. Plus: Rückerstattung über deine Krankenkasse möglich.",
+        "Faire, transparente Preise für jede Behandlung. Egal ob einzelne Heilmassage, Sportmassage oder eine Block-Karte — Sie wissen vor der ersten Buchung, was es kostet. Plus: Rückerstattung über Ihre Krankenkasse möglich.",
       group: "hero",
     }),
 
@@ -128,7 +128,7 @@ export const pricingPageSchema = defineType({
       type: "text",
       rows: 2,
       initialValue:
-        "Alle Behandlungen werden individuell auf deine Bedürfnisse abgestimmt. Die Preise gelten pro Behandlung — Block-Karten siehst du weiter unten.",
+        "Alle Behandlungen werden individuell auf Ihre Bedürfnisse abgestimmt. Die Preise gelten pro Behandlung — Block-Karten sehen Sie weiter unten.",
       group: "table",
     }),
 
@@ -146,7 +146,7 @@ export const pricingPageSchema = defineType({
       type: "text",
       rows: 3,
       initialValue:
-        "Wer regelmäßig kommt, profitiert: Block-Karten gibt es als 5er- oder 10er-Block, wahlweise für 30, 45 oder 60 Minuten. Beim Einlösen entscheidest du, welche Behandlung du nimmst — Heilmassage oder Sportmassage.",
+        "Wer regelmäßig kommt, profitiert: Block-Karten gibt es als 5er- oder 10er-Block, wahlweise für 30, 45 oder 60 Minuten. Beim Einlösen entscheiden Sie, welche Behandlung Sie nehmen — Heilmassage oder Sportmassage.",
       group: "blocks",
     }),
 
@@ -164,7 +164,7 @@ export const pricingPageSchema = defineType({
       type: "text",
       rows: 3,
       initialValue:
-        "Heilmassage kann je nach Kasse teilweise erstattet werden. Sportmassage zählt als Wellness-Leistung und ist nicht erstattbar. Die folgenden Werte sind Richtwerte — bitte direkt bei deiner Kasse erfragen.",
+        "Heilmassage kann je nach Kasse teilweise erstattet werden. Sportmassage zählt als Wellness-Leistung und ist nicht erstattbar. Die folgenden Werte sind Richtwerte — bitte direkt bei Ihrer Kasse erfragen.",
       group: "krankenkassen",
     }),
     defineField({
@@ -202,7 +202,7 @@ export const pricingPageSchema = defineType({
       type: "text",
       rows: 2,
       initialValue:
-        "Die angegebenen Beträge sind Richtwerte (Stand 2026) und können je nach Tarif und Versicherungsstatus variieren. Bitte direkt bei deiner Kasse erfragen.",
+        "Die angegebenen Beträge sind Richtwerte (Stand 2026) und können je nach Tarif und Versicherungsstatus variieren. Bitte direkt bei Ihrer Kasse erfragen.",
       group: "krankenkassen",
     }),
 
@@ -251,19 +251,19 @@ export const pricingPageSchema = defineType({
           _key: "faq-2",
           question: "Wie funktionieren Block-Karten?",
           answer:
-            "Eine Block-Karte ist ein Vorauskauf mehrerer Behandlungen mit Preisvorteil. Du wählst Größe (5er oder 10er) und Dauer (30, 45 oder 60 Min) beim Kauf. Beim Einlösen ist die Behandlungsart frei wählbar — Heilmassage oder Sportmassage. Block-Karten sind 3 Jahre gültig.",
+            "Eine Block-Karte ist ein Vorauskauf mehrerer Behandlungen mit Preisvorteil. Sie wählen Größe (5er oder 10er) und Dauer (30, 45 oder 60 Min) beim Kauf. Beim Einlösen ist die Behandlungsart frei wählbar — Heilmassage oder Sportmassage. Block-Karten sind 3 Jahre gültig.",
         },
         {
           _key: "faq-3",
           question: "Bekomme ich die Behandlung von der Krankenkasse erstattet?",
           answer:
-            "Heilmassage wird von einigen Kassen teilweise erstattet — meist mit ärztlicher Überweisung. Konkrete Beträge findest du in der Tabelle weiter oben. Sportmassage ist eine Wellness-Leistung und nicht erstattbar.",
+            "Heilmassage wird von einigen Kassen teilweise erstattet — meist mit ärztlicher Überweisung. Konkrete Beträge finden Sie in der Tabelle weiter oben. Sportmassage ist eine Wellness-Leistung und nicht erstattbar.",
         },
         {
           _key: "faq-4",
           question: "Sind Gutscheine personalisiert?",
           answer:
-            "Auf Wunsch: Beim Kauf kannst du einen Empfänger-Namen angeben, der dann auf dem PDF-Gutschein erscheint. Ohne Angabe ist der Gutschein neutral und übertragbar.",
+            "Auf Wunsch: Beim Kauf können Sie einen Empfänger-Namen angeben, der dann auf dem PDF-Gutschein erscheint. Ohne Angabe ist der Gutschein neutral und übertragbar.",
         },
         {
           _key: "faq-5",
@@ -285,7 +285,7 @@ export const pricingPageSchema = defineType({
       name: "ctaHeading",
       title: "Closing CTA — Überschrift",
       type: "string",
-      initialValue: "Bereit für deinen Termin?",
+      initialValue: "Bereit für Ihren Termin?",
       group: "cta",
     }),
     defineField({
@@ -294,7 +294,7 @@ export const pricingPageSchema = defineType({
       type: "text",
       rows: 2,
       initialValue:
-        "Buche direkt online — oder verschenke einen Gutschein für jemanden, dem etwas Gutes gut täte.",
+        "Buchen Sie direkt online — oder verschenken Sie einen Gutschein an jemanden, dem etwas Gutes gut täte.",
       group: "cta",
     }),
   ],
@@ -1241,7 +1241,7 @@ export default async function PreisePage() {
     page?.heroText ?? "Faire, transparente Preise für jede Behandlung.";
   const tableIntro =
     page?.tableIntro ??
-    "Alle Behandlungen werden individuell auf deine Bedürfnisse abgestimmt.";
+    "Alle Behandlungen werden individuell auf Ihre Bedürfnisse abgestimmt.";
 
   const blockHeading =
     page?.blockCardsHeading ?? "Block-Karten — günstiger ab 5 Behandlungen";
@@ -1256,7 +1256,7 @@ export default async function PreisePage() {
     "Heilmassage kann je nach Kasse teilweise erstattet werden.";
   const krankenkassenDisclaimer =
     page?.krankenkassenDisclaimer ??
-    "Stand 2026, Richtwerte. Bitte direkt bei deiner Kasse erfragen.";
+    "Stand 2026, Richtwerte. Bitte direkt bei Ihrer Kasse erfragen.";
 
   const voucherCtaHeading = page?.voucherCtaHeading ?? "Gutscheine verschenken";
   const voucherCtaText =
@@ -1264,10 +1264,10 @@ export default async function PreisePage() {
     "Gutscheine sind in jedem Wert oder als Block-Karte erhältlich.";
 
   const faqs = page?.faqs ?? [];
-  const ctaHeading = page?.ctaHeading ?? "Bereit für deinen Termin?";
+  const ctaHeading = page?.ctaHeading ?? "Bereit für Ihren Termin?";
   const ctaText =
     page?.ctaText ??
-    "Buche direkt online — oder verschenke einen Gutschein.";
+    "Buchen Sie direkt online — oder verschenken Sie einen Gutschein.";
 
   const rows = pricingRowsFromSanity(pricingItems);
 
