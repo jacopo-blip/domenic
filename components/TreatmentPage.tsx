@@ -232,7 +232,7 @@ export function TreatmentPage({
                 <p
                   key={i}
                   className={
-                    i === data.whatIsParagraphs.length - 1
+                    variant === "heilmassage" && i === data.whatIsParagraphs.length - 1
                       ? "text-sm text-[#555]/80"
                       : undefined
                   }
@@ -271,7 +271,7 @@ export function TreatmentPage({
 
         {/* ── COST NOTE (nur Sportmassage) ─────────────────────────── */}
         {variant === "sportmassage" && data.costNote && (
-          <section className="py-12 sm:py-16 bg-white border-t border-[#0d4f4f]/8">
+          <section className="py-12 sm:py-16 bg-[#f0f7f7]">
             <div className="mx-auto max-w-4xl px-5 sm:px-8">
               <div className="flex items-start gap-4 rounded-2xl bg-gradient-to-r from-[#0d4f4f]/[0.06] to-[#0d4f4f]/[0.02] border border-[#0d4f4f]/10 p-6 sm:p-8">
                 <div className="flex-shrink-0 mt-0.5">
