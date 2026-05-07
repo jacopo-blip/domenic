@@ -9,6 +9,7 @@ type BlockOption = {
   productKey: string;
 };
 
+// productKey values must align with STRIPE_PRICE_BLOCK_* env vars — see Plan 3, Task 1
 const BLOCK_OPTIONS: BlockOption[] = [
   { size: 5, duration: 30, price: 259, fullPrice: 275, productKey: "block_5_30" },
   { size: 5, duration: 45, price: 329, fullPrice: 350, productKey: "block_5_45" },
@@ -71,7 +72,7 @@ export function BlockCardOverview({
             </div>
             <Link
               href="/gutscheine"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#e8654a]/25 hover:shadow-xl hover:shadow-[#e8654a]/30 transition-all duration-200 hover:scale-105 whitespace-nowrap"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#e8654a]/25 hover:shadow-xl hover:shadow-[#e8654a]/30 transition-all duration-200 motion-safe:hover:scale-105 whitespace-nowrap"
             >
               Gutschein kaufen
             </Link>
@@ -92,7 +93,7 @@ function BlockCard({
   const discount = discountPercent(option.price, option.fullPrice);
   return (
     <div
-      className={`relative rounded-3xl border bg-white p-6 sm:p-8 shadow-sm transition-all duration-200 hover:shadow-lg hover:scale-[1.02] ${
+      className={`relative rounded-3xl border bg-white p-6 sm:p-8 shadow-sm transition-all duration-200 hover:shadow-lg motion-safe:hover:scale-[1.02] ${
         highlight ? "border-[#e8654a] shadow-md" : "border-gray-100"
       }`}
     >
@@ -107,8 +108,8 @@ function BlockCard({
       <p className="text-3xl font-extrabold text-[#111]">
         €{option.price}
       </p>
-      <p className="mt-1 text-sm text-[#666] line-through">
-        statt €{option.fullPrice}
+      <p className="mt-1 text-sm text-[#666]">
+        <s>statt €{option.fullPrice}</s>
       </p>
       <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[#f2a93b]/15 px-3 py-1 text-xs font-bold text-[#0d4f4f]">
         <Check size={12} strokeWidth={3} />

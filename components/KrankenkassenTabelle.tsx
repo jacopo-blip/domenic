@@ -50,15 +50,16 @@ export function KrankenkassenTabelle({
 
         <div className="rounded-3xl bg-white border border-gray-100 shadow-xl shadow-black/5 overflow-x-auto">
           <table className="w-full">
+            <caption className="sr-only">Krankenkassen-Rückerstattung Übersicht</caption>
             <thead>
               <tr className="bg-[#0d4f4f] text-white">
-                <th className="px-4 sm:px-6 py-4 text-left font-extrabold text-sm sm:text-base">
+                <th scope="col" className="px-4 sm:px-6 py-4 text-left font-extrabold text-sm sm:text-base">
                   Kasse
                 </th>
-                <th className="px-4 sm:px-6 py-4 text-left font-extrabold text-sm sm:text-base">
+                <th scope="col" className="px-4 sm:px-6 py-4 text-left font-extrabold text-sm sm:text-base">
                   Erstattung
                 </th>
-                <th className="hidden sm:table-cell px-4 sm:px-6 py-4 text-left font-extrabold text-sm sm:text-base">
+                <th scope="col" className="hidden sm:table-cell px-4 sm:px-6 py-4 text-left font-extrabold text-sm sm:text-base">
                   Voraussetzung
                 </th>
               </tr>
@@ -77,6 +78,7 @@ export function KrankenkassenTabelle({
                   </td>
                   <td className="px-4 sm:px-6 py-4 text-sm text-[#333] align-top">
                     {row.reimbursement}
+                    <p className="sm:hidden mt-1 text-xs text-[#555]">{row.condition}</p>
                   </td>
                   <td className="hidden sm:table-cell px-4 sm:px-6 py-4 text-sm text-[#555] align-top">
                     {row.condition}
