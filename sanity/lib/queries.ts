@@ -258,9 +258,9 @@ export type SanityVoucher = {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-async function safeFetch<T>(query: string): Promise<T | null> {
+async function safeFetch<T>(query: string, params?: Record<string, unknown>): Promise<T | null> {
   try {
-    const { data } = await sanityFetch({ query });
+    const { data } = await sanityFetch({ query, params });
     return data as T;
   } catch {
     return null;
@@ -415,7 +415,7 @@ export const getPricingPage = cache(async (): Promise<SanityPricingPage | null> 
 
 export async function getVoucherByStripeSession(sessionId: string): Promise<SanityVoucher | null> {
   return safeFetch<SanityVoucher>(
-    `*[_type == "voucher" && stripeSessionId == "${sessionId}"][0] {
+    `*[_type == "voucher" && stripeSessionId == $sessionId][0] {
       _id, code, stripeSessionId, stripePaymentIntentId, productType,
       sessionsTotal, sessionsRemaining, durationMin,
       customAmount, customAmountRemaining,
@@ -423,6 +423,7 @@ export async function getVoucherByStripeSession(sessionId: string): Promise<Sani
       redemptions[] { _key, date, sessionsRedeemed, amountRedeemed, note },
       purchasedAt, expiresAt,
       pdfAsset { asset->{ _ref, url } }
-    }`
+    }`,
+    { sessionId }
   );
 }

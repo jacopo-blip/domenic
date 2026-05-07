@@ -56,6 +56,7 @@ export const voucherSchema = defineType({
       title: "Verbleibende Behandlungen",
       type: "number",
       description: "Wird beim Einloesen reduziert",
+      validation: (rule) => rule.min(0).integer(),
     }),
     defineField({
       name: "durationMin",
@@ -77,6 +78,7 @@ export const voucherSchema = defineType({
       title: "Verbleibender Betrag (EUR)",
       type: "number",
       description: "Wird beim Einloesen reduziert",
+      validation: (rule) => rule.min(0),
     }),
     // Kaeufer-Daten
     defineField({
