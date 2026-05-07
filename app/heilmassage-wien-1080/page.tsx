@@ -440,25 +440,25 @@ export default async function HeilmassageWien() {
           </div>
         </section>
 
-        {/* ── PREISE HUB-LINK ──────────────────────────────────────── */}
-        <section className="py-16 sm:py-24 bg-white">
+        {/* ── PREISE-LINK ──────────────────────────────────────────── */}
+        <section className="py-12 sm:py-16 bg-white border-t border-[#0d4f4f]/8">
           <div className="mx-auto max-w-4xl px-5 sm:px-8">
-            <div className="rounded-3xl bg-[#e8f5f5] border border-[#0d4f4f]/10 p-8 sm:p-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 rounded-3xl bg-[#f0f7f7] p-6 sm:p-8">
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-[#0d4f4f]/60 mb-2">
+                <p className="text-xs font-bold uppercase tracking-widest text-[#0d4f4f]/60 mb-1">
                   Was kostet eine Behandlung?
                 </p>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-[#0d4f4f]">
-                  Alle Preise &amp; Block-Karten auf einen Blick
-                </h2>
+                <p className="text-lg sm:text-xl font-extrabold text-[#111]">
+                  Alle Preise & Block-Karten auf einen Blick
+                </p>
               </div>
-              <a
+              <Link
                 href="/preise"
-                className="flex-shrink-0 inline-flex items-center gap-2 rounded-full border-2 border-[#0d4f4f] px-7 py-3.5 text-base font-bold text-[#0d4f4f] transition-all duration-200 hover:bg-[#0d4f4f] hover:text-white"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-[#0d4f4f] px-6 py-3 text-sm font-bold text-[#0d4f4f] hover:bg-[#0d4f4f] hover:text-white transition-all duration-200 whitespace-nowrap"
               >
                 Preise einsehen
-                <ArrowRight size={18} strokeWidth={2.5} />
-              </a>
+                <ArrowRight size={16} strokeWidth={2.5} />
+              </Link>
             </div>
           </div>
         </section>
