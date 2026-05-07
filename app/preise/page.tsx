@@ -131,7 +131,10 @@ export default async function PreisePage() {
                 Plan 2 should migrate this to slug-based matching via a new pricingItem.slug field. */}
             <PricingTable
               rows={rows}
-              serviceLinks={{ "Heilmassage": "/heilmassage-wien-1080" }}
+              serviceLinks={{
+                "Heilmassage": "/heilmassage-wien-1080",
+                "Sportmassage": "/sportmassage-wien",
+              }}
             />
           </div>
         </section>

@@ -28,6 +28,7 @@ export const deskStructure = (S: StructureBuilder) =>
       // ── Seiten ────────────────────────────────────────────
       singleton(S, "Startseite", "homePage", "homePage"),
       singleton(S, "Heilmassage Wien", "heilmassagePage", "heilmassagePage"),
+      singleton(S, "Sportmassage Wien", "sportmassagePage", "sportmassagePage"),
       singleton(S, "Preise (Seite)", "pricingPage", "pricingPage"),
       singleton(S, "Über mich", "about", "about"),
       singleton(S, "Buchen", "buchenPage", "buchenPage"),
