@@ -440,6 +440,29 @@ export default async function HeilmassageWien() {
           </div>
         </section>
 
+        {/* ── PREISE HUB-LINK ──────────────────────────────────────── */}
+        <section className="py-16 sm:py-24 bg-white">
+          <div className="mx-auto max-w-4xl px-5 sm:px-8">
+            <div className="rounded-3xl bg-[#e8f5f5] border border-[#0d4f4f]/10 p-8 sm:p-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-[#0d4f4f]/60 mb-2">
+                  Was kostet eine Behandlung?
+                </p>
+                <h2 className="text-xl sm:text-2xl font-extrabold text-[#0d4f4f]">
+                  Alle Preise &amp; Block-Karten auf einen Blick
+                </h2>
+              </div>
+              <a
+                href="/preise"
+                className="flex-shrink-0 inline-flex items-center gap-2 rounded-full border-2 border-[#0d4f4f] px-7 py-3.5 text-base font-bold text-[#0d4f4f] transition-all duration-200 hover:bg-[#0d4f4f] hover:text-white"
+              >
+                Preise einsehen
+                <ArrowRight size={18} strokeWidth={2.5} />
+              </a>
+            </div>
+          </div>
+        </section>
+
         {/* ── FINAL CTA ────────────────────────────────────────────── */}
         <section className="py-16 sm:py-24 bg-[#0d4f4f]">
           <div className="mx-auto max-w-2xl px-5 sm:px-8 text-center">
