@@ -126,6 +126,9 @@ export default async function PreisePage() {
             <p className="text-[#555] mb-8 leading-relaxed max-w-2xl">
               {tableIntro}
             </p>
+            {/* serviceLinks keys MUST match `pricingItem.serviceName` strings exactly.
+                If a Sanity editor renames the service, the link silently disappears.
+                Plan 2 should migrate this to slug-based matching via a new pricingItem.slug field. */}
             <PricingTable
               rows={rows}
               serviceLinks={{ "Heilmassage": "/heilmassage-wien-1080" }}
