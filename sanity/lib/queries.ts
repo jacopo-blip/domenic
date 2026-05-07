@@ -125,7 +125,34 @@ export type SanityHeilmassagePage = {
   locationHeading: string;
   locationDescription: string;
   transportInfo: { label: string; value: string }[];
-  faqs: { question: string; answer: string }[];
+  faqs: { _key: string; question: string; answer: string }[];
+  ctaHeading: string;
+  ctaText: string;
+};
+
+export type SanitySportmassagePage = {
+  heroBadge: string;
+  heroHeading: string;
+  heroSubtitle: string;
+  heroImage?: { asset: { _ref: string } };
+  forWhomHeading: string;
+  forWhomDescription: string;
+  conditions: string[];
+  approachHeading: string;
+  approachDescription: string;
+  approachPoints: string[];
+  approachBottomText: string;
+  approachImage?: { asset: { _ref: string } };
+  whatIsHeading: string;
+  whatIsParagraphs: string[];
+  effectsHeading: string;
+  effectsDescription: string;
+  effects: { title: string; description: string }[];
+  locationHeading: string;
+  locationDescription: string;
+  transportInfo: { label: string; value: string }[];
+  costNote: string;
+  faqs: { _key: string; question: string; answer: string }[];
   ctaHeading: string;
   ctaText: string;
 };
@@ -262,7 +289,7 @@ export async function getHomePage(): Promise<SanityHomePage | null> {
   );
 }
 
-export async function getHeilmassagePage(): Promise<SanityHeilmassagePage | null> {
+export const getHeilmassagePage = cache(async (): Promise<SanityHeilmassagePage | null> => {
   return safeFetch<SanityHeilmassagePage>(
     `*[_type == "heilmassagePage"][0] {
       heroBadge, heroHeading, heroSubtitle, heroImage,
@@ -271,11 +298,27 @@ export async function getHeilmassagePage(): Promise<SanityHeilmassagePage | null
       whatIsHeading, whatIsParagraphs,
       effectsHeading, effectsDescription, effects[] { title, description },
       locationHeading, locationDescription, transportInfo[] { label, value },
-      faqs[] { question, answer },
+      faqs[] { _key, question, answer },
       ctaHeading, ctaText
     }`
   );
-}
+});
+
+export const getSportmassagePage = cache(async (): Promise<SanitySportmassagePage | null> => {
+  return safeFetch<SanitySportmassagePage>(
+    `*[_type == "sportmassagePage"][0] {
+      heroBadge, heroHeading, heroSubtitle, heroImage,
+      forWhomHeading, forWhomDescription, conditions,
+      approachHeading, approachDescription, approachPoints, approachBottomText, approachImage,
+      whatIsHeading, whatIsParagraphs,
+      effectsHeading, effectsDescription, effects[] { title, description },
+      locationHeading, locationDescription, transportInfo[] { label, value },
+      costNote,
+      faqs[] { _key, question, answer },
+      ctaHeading, ctaText
+    }`
+  );
+});
 
 export async function getBuchenPage(): Promise<SanityBuchenPage | null> {
   return safeFetch<SanityBuchenPage>(

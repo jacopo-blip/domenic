@@ -6,6 +6,7 @@ import { aboutSchema } from "./about";
 import { settingsSchema } from "./settings";
 import { homePageSchema } from "./homePage";
 import { heilmassagePageSchema } from "./heilmassagePage";
+import { sportmassagePageSchema } from "./sportmassagePage";
 import { buchenPageSchema } from "./buchenPage";
 import { impressumPageSchema } from "./impressumPage";
 import { datenschutzPageSchema } from "./datenschutzPage";
@@ -15,6 +16,7 @@ export const schemaTypes = [
   settingsSchema,
   homePageSchema,
   heilmassagePageSchema,
+  sportmassagePageSchema,
   pricingPageSchema,
   buchenPageSchema,
   impressumPageSchema,
