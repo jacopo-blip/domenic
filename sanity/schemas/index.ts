@@ -3,6 +3,7 @@ import { pricingItemSchema } from "./pricingItem";
 import { faqItemSchema } from "./faqItem";
 import { testimonialSchema } from "./testimonial";
 import { aboutSchema } from "./about";
+import { voucherSchema } from "./voucher";
 import { settingsSchema } from "./settings";
 import { homePageSchema } from "./homePage";
 import { heilmassagePageSchema } from "./heilmassagePage";
@@ -26,4 +27,5 @@ export const schemaTypes = [
   pricingItemSchema,
   faqItemSchema,
   testimonialSchema,
+  voucherSchema,
 ];

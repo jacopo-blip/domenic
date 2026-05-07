@@ -57,4 +57,13 @@ export const deskStructure = (S: StructureBuilder) =>
         .title("Kundenstimmen")
         .schemaType("testimonial")
         .child(S.documentTypeList("testimonial").title("Kundenstimmen")),
+
+      S.listItem()
+        .title("Gutscheine")
+        .schemaType("voucher")
+        .child(
+          S.documentTypeList("voucher")
+            .title("Gutscheine")
+            .defaultOrdering([{ field: "purchasedAt", direction: "desc" }])
+        ),
     ]);

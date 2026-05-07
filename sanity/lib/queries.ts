@@ -209,6 +209,53 @@ export type SanityDatenschutzPage = {
   sections: { heading: string; content: string; subsections?: { heading: string; content: string }[] }[];
 };
 
+export type SanityVoucherProductType =
+  | "block_5_30"
+  | "block_5_45"
+  | "block_5_60"
+  | "block_10_30"
+  | "block_10_45"
+  | "block_10_60"
+  | "voucher_custom";
+
+export type SanityVoucherStatus =
+  | "paid"
+  | "partially_redeemed"
+  | "fully_redeemed"
+  | "expired"
+  | "cancelled"
+  | "paid_pdf_failed"
+  | "paid_email_failed";
+
+export type SanityVoucher = {
+  _id: string;
+  code: string;
+  stripeSessionId: string;
+  stripePaymentIntentId: string | null;
+  productType: SanityVoucherProductType;
+  sessionsTotal: number | null;
+  sessionsRemaining: number | null;
+  durationMin: number | null;
+  customAmount: number | null;
+  customAmountRemaining: number | null;
+  buyerEmail: string;
+  buyerName: string | null;
+  recipientName: string | null;
+  status: SanityVoucherStatus;
+  redemptions: Array<{
+    _key: string;
+    date: string;
+    sessionsRedeemed?: number;
+    amountRedeemed?: number;
+    note?: string;
+  }> | null;
+  purchasedAt: string;
+  expiresAt: string;
+  pdfAsset: {
+    asset: { _ref: string; url: string };
+  } | null;
+};
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 async function safeFetch<T>(query: string): Promise<T | null> {
@@ -365,3 +412,17 @@ export const getPricingPage = cache(async (): Promise<SanityPricingPage | null> 
     }`
   );
 });
+
+export async function getVoucherByStripeSession(sessionId: string): Promise<SanityVoucher | null> {
+  return safeFetch<SanityVoucher>(
+    `*[_type == "voucher" && stripeSessionId == "${sessionId}"][0] {
+      _id, code, stripeSessionId, stripePaymentIntentId, productType,
+      sessionsTotal, sessionsRemaining, durationMin,
+      customAmount, customAmountRemaining,
+      buyerEmail, buyerName, recipientName, status,
+      redemptions[] { _key, date, sessionsRedeemed, amountRedeemed, note },
+      purchasedAt, expiresAt,
+      pdfAsset { asset->{ _ref, url } }
+    }`
+  );
+}
