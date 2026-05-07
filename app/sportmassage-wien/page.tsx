@@ -136,7 +136,7 @@ export default async function SportmassageWien() {
 
   const heroImageSrc = page?.heroImage
     ? urlFor(page.heroImage).width(800).height(600).url()
-    : "/images/heilmassage-wien.webp"; // Platzhalter aus Heilmassage-Pool
+    : "/images/heilmassage-wien.webp"; // Platzhalter aus Heilmassage-Pool — TODO(assets): replace with real sportmassage images once Domenic provides them
 
   const approachImageSrc = page?.approachImage
     ? urlFor(page.approachImage).width(800).height(600).url()
@@ -149,7 +149,7 @@ export default async function SportmassageWien() {
       page?.heroSubtitle ??
       "für Regeneration, Beweglichkeit und nachhaltige Leistung",
     heroImageSrc,
-    heroImageAlt: "Sportmassage Behandlung in Wien 1080 – Praxis Domenic Hacker",
+    heroImageAlt: "Massage-Behandlung in der Praxis Domenic Hacker, Wien 1080",
 
     forWhomHeading: page?.forWhomHeading ?? "Für wen ist das?",
     forWhomDescription:
@@ -166,7 +166,7 @@ export default async function SportmassageWien() {
       page?.approachBottomText ??
       "Wie viel Druck Sie brauchen, hängt von Ihnen, Ihrem Trainingsstand und Ihrer Tagesform ab. Ich passe das an Ihr Feedback an — Sportmassage ist nicht zwangsläufig eine schmerzhafte Massage, auch wenn das Klischee anders sagt.",
     approachImageSrc,
-    approachImageAlt: "Praxis-Interieur Sportmassage Wien 1080 – Domenic Hacker",
+    approachImageAlt: "Praxis-Interieur Wien 1080 – Domenic Hacker",
 
     whatIsHeading: page?.whatIsHeading ?? "Was ist Sportmassage?",
     whatIsParagraphs: page?.whatIsParagraphs ?? [

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { JsonLdService } from "@/components/JsonLdService";
 import {
   TreatmentPage,
   type TreatmentPageData,
@@ -177,5 +178,10 @@ export default async function HeilmassageWien() {
       "Termin direkt online buchen – oder melden Sie sich, wenn Sie vorher Fragen haben.",
   };
 
-  return <TreatmentPage data={data} variant="heilmassage" settings={settings} />;
+  return (
+    <>
+      <JsonLdService variant="heilmassage" />
+      <TreatmentPage data={data} variant="heilmassage" settings={settings} />
+    </>
+  );
 }
