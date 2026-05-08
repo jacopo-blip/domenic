@@ -5,6 +5,7 @@ import { createClient } from "next-sanity";
 import { stripe } from "@/lib/stripe/client";
 import {
   PRODUCT_DEFINITIONS,
+  PRODUCT_PRICES_EUR,
   productTypeFromStripeMetadata,
 } from "@/lib/stripe/products";
 import { generateUniqueVoucherCode } from "@/lib/voucher/generateCode";
@@ -23,17 +24,17 @@ const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 
-// Server-side write client: useCdn false, token-bearing.
-// Note: SANITY_API_READ_TOKEN must have write permission for this to work.
-// If you see "Insufficient permissions" errors, rotate token in Sanity dashboard
-// (Project Settings → API → Tokens → "Editor" or higher permission).
+// Server-side write client: useCdn false, Editor-permission token required.
+// SANITY_API_WRITE_TOKEN must be created at sanity.io/manage/project/<id>/api/tokens
+// with "Editor" permission (NOT "Read") — needed for create/upload/patch operations
+// when persisting voucher documents and uploading PDF assets.
 const writeClient = projectId
   ? createClient({
       projectId,
       dataset,
       apiVersion: "2024-01-01",
       useCdn: false,
-      token: process.env.SANITY_API_READ_TOKEN,
+      token: process.env.SANITY_API_WRITE_TOKEN,
     })
   : null;
 
@@ -118,6 +119,40 @@ export async function POST(req: Request) {
   if (!productType) {
     console.error(`Invalid productType in session metadata: ${sessionId}`);
     return NextResponse.json({ error: "Invalid productType" }, { status: 400 });
+  }
+
+  // Defense in depth: for block products, verify Stripe-charged amount matches expected price.
+  // If a malicious request bypassed /api/checkout validation, this catches it before voucher creation.
+  if (PRODUCT_DEFINITIONS[productType].kind === "block") {
+    const expectedCents = (PRODUCT_PRICES_EUR[productType] ?? 0) * 100;
+    if (session.amount_total !== expectedCents) {
+      console.error(
+        `Price mismatch for ${productType}: expected ${expectedCents}, got ${session.amount_total}. Session ${sessionId}`
+      );
+      // Best-effort alert to Domenic; don't fail webhook (Stripe was already paid)
+      try {
+        const settings = await getSettings();
+        const domenicEmail = settings?.email ?? "praxis@heilmasseur-domenic.at";
+        await sendDomenicNotification({
+          voucher: {
+            code: "(no voucher created)",
+            productType,
+            sessionsTotal: null,
+            durationMin: null,
+            customAmount: session.amount_total ? session.amount_total / 100 : null,
+            buyerEmail: session.customer_details?.email ?? "(unknown)",
+            buyerName: "(price mismatch)",
+            recipientName: null,
+            status: "cancelled",
+          },
+          domenicEmail,
+          isAlert: true,
+        });
+      } catch (alertErr) {
+        console.error("Price-mismatch alert failed:", alertErr);
+      }
+      return NextResponse.json({ received: true, error: "Price mismatch" }, { status: 200 });
+    }
   }
 
   const buyerEmail =

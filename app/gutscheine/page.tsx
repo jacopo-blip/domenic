@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -9,39 +9,32 @@ import { VoucherProductSelector, type SelectedProduct } from "@/components/Vouch
 import { VoucherCheckout, type CheckoutFormInput } from "@/components/VoucherCheckout";
 import { PRODUCT_PRICES_EUR } from "@/lib/stripe/products";
 
+function deriveInitialSelected(productPreset: string | null): SelectedProduct | null {
+  if (!productPreset) return null;
+  const blockMatch = /^block_(5|10)_(30|45|60)$/.exec(productPreset);
+  if (blockMatch) {
+    const size = Number(blockMatch[1]) as 5 | 10;
+    const duration = Number(blockMatch[2]) as 30 | 45 | 60;
+    const productType = productPreset as SelectedProduct["productType"];
+    const price = PRODUCT_PRICES_EUR[productType] ?? 0;
+    return { productType, kind: "block", price, size, duration };
+  }
+  // For voucher_custom: don't auto-select; stay on select step
+  return null;
+}
+
 function GutscheineContent() {
   const searchParams = useSearchParams();
   const productPreset = searchParams.get("product");
 
-  const [selected, setSelected] = useState<SelectedProduct | null>(null);
+  const [selected, setSelected] = useState<SelectedProduct | null>(() => deriveInitialSelected(productPreset));
   const [customAmount, setCustomAmount] = useState<number>(50);
   const [buyerEmail, setBuyerEmail] = useState("");
   const [buyerName, setBuyerName] = useState("");
   const [recipientName, setRecipientName] = useState("");
-  const [step, setStep] = useState<"select" | "details" | "pay">("select");
-
-  // Pre-select from URL if present
-  useEffect(() => {
-    if (!productPreset || selected) return;
-    const blockMatch = /^block_(5|10)_(30|45|60)$/.exec(productPreset);
-    if (blockMatch) {
-      const size = Number(blockMatch[1]) as 5 | 10;
-      const duration = Number(blockMatch[2]) as 30 | 45 | 60;
-      const productType = productPreset as SelectedProduct["productType"];
-      const price = PRODUCT_PRICES_EUR[productType] ?? 0;
-      setSelected({
-        productType,
-        kind: "block",
-        price,
-        size,
-        duration,
-      });
-      setStep("details");
-    }
-    // For voucher_custom: do NOT auto-select. Let user pick an amount in the
-    // selection step. (Spec §6.6: "Custom-Voucher vorausgewählt, Custom-Amount-Input fokussiert"
-    // — the input lives in VoucherProductSelector, so we stay on "select" step.)
-  }, [productPreset, selected]);
+  const [step, setStep] = useState<"select" | "details" | "pay">(() =>
+    deriveInitialSelected(productPreset) ? "details" : "select",
+  );
 
   const checkoutInput: CheckoutFormInput | null =
     selected && buyerEmail && buyerName

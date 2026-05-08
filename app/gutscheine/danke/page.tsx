@@ -6,6 +6,8 @@ import { Footer } from "@/components/Footer";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { getVoucherByStripeSession, getSettings } from "@/sanity/lib/queries";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Vielen Dank | Heilmasseur Domenic Hacker",
   robots: { index: false, follow: false },

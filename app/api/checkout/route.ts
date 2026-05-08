@@ -39,13 +39,18 @@ function validateInput(body: unknown): CheckoutInput | { error: string } {
   const def = PRODUCT_DEFINITIONS[b.productType];
   if (def.kind === "custom") {
     if (typeof b.customAmount !== "number" || b.customAmount < 3000 || b.customAmount > 50000) {
-      return { error: "customAmount must be between 3000 and 50000 cents" };
+      return { error: "customAmount must be between 3000 and 50000 cents for voucher_custom" };
+    }
+  } else {
+    // Block products: customAmount MUST NOT be present (price-tampering protection)
+    if (b.customAmount !== undefined) {
+      return { error: "customAmount is only allowed for productType=voucher_custom" };
     }
   }
 
   return {
     productType: b.productType,
-    customAmount: typeof b.customAmount === "number" ? b.customAmount : undefined,
+    customAmount: def.kind === "custom" ? (b.customAmount as number) : undefined,
     buyerEmail: b.buyerEmail,
     buyerName: b.buyerName.trim(),
     recipientName:
