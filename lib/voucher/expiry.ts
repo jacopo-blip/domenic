@@ -2,7 +2,9 @@ const VALIDITY_YEARS = 3;
 
 export function expiryFromNow(): Date {
   const now = new Date();
-  return new Date(now.getFullYear() + VALIDITY_YEARS, now.getMonth(), now.getDate());
+  return new Date(
+    Date.UTC(now.getUTCFullYear() + VALIDITY_YEARS, now.getUTCMonth(), now.getUTCDate())
+  );
 }
 
 export function formatExpiry(d: Date | string): string {
@@ -11,5 +13,6 @@ export function formatExpiry(d: Date | string): string {
     day: "2-digit",
     month: "long",
     year: "numeric",
+    timeZone: "Europe/Vienna",
   });
 }

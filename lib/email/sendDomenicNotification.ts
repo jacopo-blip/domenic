@@ -1,5 +1,6 @@
 import { resend, EMAIL_FROM } from "./resend";
 import type { SanityVoucher } from "@/sanity/lib/queries";
+import { escapeHtml } from "./escapeHtml";
 
 const PRODUCT_LABELS: Record<string, string> = {
   block_5_30: "5er-Block 30 Min",
@@ -45,9 +46,9 @@ export async function sendDomenicNotification(args: {
       <tr><td style="padding: 0.5rem; color: #666;">Code:</td><td style="padding: 0.5rem; font-family: monospace;"><strong>${voucher.code}</strong></td></tr>
       <tr><td style="padding: 0.5rem; color: #666;">Produkt:</td><td style="padding: 0.5rem;">${product}</td></tr>
       <tr><td style="padding: 0.5rem; color: #666;">Wert:</td><td style="padding: 0.5rem;">${valueText}</td></tr>
-      <tr><td style="padding: 0.5rem; color: #666;">Käufer:</td><td style="padding: 0.5rem;">${voucher.buyerName || "—"}</td></tr>
-      <tr><td style="padding: 0.5rem; color: #666;">E-Mail:</td><td style="padding: 0.5rem;">${voucher.buyerEmail}</td></tr>
-      ${voucher.recipientName ? `<tr><td style="padding: 0.5rem; color: #666;">Beschenkte:r:</td><td style="padding: 0.5rem;">${voucher.recipientName}</td></tr>` : ""}
+      <tr><td style="padding: 0.5rem; color: #666;">Käufer:</td><td style="padding: 0.5rem;">${escapeHtml(voucher.buyerName) || "—"}</td></tr>
+      <tr><td style="padding: 0.5rem; color: #666;">E-Mail:</td><td style="padding: 0.5rem;">${escapeHtml(voucher.buyerEmail)}</td></tr>
+      ${voucher.recipientName ? `<tr><td style="padding: 0.5rem; color: #666;">Beschenkte:r:</td><td style="padding: 0.5rem;">${escapeHtml(voucher.recipientName)}</td></tr>` : ""}
     </table>
     <p>Im Studio einsehen: <a href="https://heilmasseur-domenic.at/studio">heilmasseur-domenic.at/studio</a> → Gutscheine</p>
   </body>

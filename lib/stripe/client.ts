@@ -1,3 +1,4 @@
+import "server-only";
 import Stripe from "stripe";
 
 const SECRET = process.env.STRIPE_SECRET_KEY;

@@ -1,6 +1,7 @@
 import { resend, EMAIL_FROM } from "./resend";
 import type { SanityVoucher } from "@/sanity/lib/queries";
 import { formatExpiry } from "@/lib/voucher/expiry";
+import { escapeHtml } from "./escapeHtml";
 
 const PRODUCT_LABELS: Record<string, string> = {
   block_5_30: "5er-Block 30 Min",
@@ -16,7 +17,7 @@ function valueDescription(
   voucher: Pick<SanityVoucher, "productType" | "sessionsTotal" | "durationMin" | "customAmount">,
 ): string {
   if (voucher.productType === "voucher_custom") {
-    return `EUR ${voucher.customAmount}`;
+    return `EUR ${voucher.customAmount ?? "—"}`;
   }
   return `${voucher.sessionsTotal} x ${voucher.durationMin}-Minuten-Behandlung`;
 }
@@ -31,9 +32,9 @@ export async function sendVoucherConfirmation(args: {
   const { voucher, pdfBuffer } = args;
 
   const product = PRODUCT_LABELS[voucher.productType] ?? voucher.productType;
-  const greeting = voucher.buyerName ? `Hallo ${voucher.buyerName},` : "Hallo,";
+  const greeting = voucher.buyerName ? `Hallo ${escapeHtml(voucher.buyerName)},` : "Hallo,";
   const recipientLine = voucher.recipientName
-    ? `<p>Der Gutschein ist personalisiert für: <strong>${voucher.recipientName}</strong>.</p>`
+    ? `<p>Der Gutschein ist personalisiert für: <strong>${escapeHtml(voucher.recipientName)}</strong>.</p>`
     : "";
   const valueText = valueDescription(voucher);
 
