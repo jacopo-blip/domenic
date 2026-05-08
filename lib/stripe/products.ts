@@ -25,6 +25,23 @@ const PRICE_ID_ENV: Record<SanityVoucherProductType, string> = {
   voucher_custom: "STRIPE_PRICE_VOUCHER_CUSTOM",
 };
 
+/**
+ * Block product prices in EUR (matches scripts/setup-stripe-products.ts).
+ * Used for displaying purchased value on the customer PDF.
+ *
+ * voucher_custom is null because the amount is dynamic — read from
+ * voucher.customAmount in the consuming code.
+ */
+export const PRODUCT_PRICES_EUR: Record<SanityVoucherProductType, number | null> = {
+  block_5_30: 259,
+  block_5_45: 329,
+  block_5_60: 399,
+  block_10_30: 489,
+  block_10_45: 619,
+  block_10_60: 749,
+  voucher_custom: null,
+};
+
 export function getStripePriceId(productType: SanityVoucherProductType): string {
   const envName = PRICE_ID_ENV[productType];
   const priceId = process.env[envName];

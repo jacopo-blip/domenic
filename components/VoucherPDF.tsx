@@ -1,6 +1,14 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import type { SanityVoucher } from "@/sanity/lib/queries";
 import { formatExpiry } from "@/lib/voucher/expiry";
+import { PRODUCT_PRICES_EUR } from "@/lib/stripe/products";
+
+// Note: Spec §6.5 mentioned a logo from settings.logo as the first layout element.
+// We deliberately use a text-only brand block ("HEILMASSEUR · WIEN 1080 / Domenic Hacker")
+// to avoid an extra Sanity asset fetch during PDF render in the webhook handler. The
+// brand text serves the same identification purpose. If a logo image is needed later,
+// the webhook handler in Task 5 can fetch settings and pass `logoUrl` as a prop, and
+// this component can conditionally render <Image src={logoUrl}/> at the top.
 
 const styles = StyleSheet.create({
   page: {
@@ -145,9 +153,18 @@ export type VoucherPDFData = Pick<
 export function VoucherPDF({ voucher }: { voucher: VoucherPDFData }) {
   const productLabel = PRODUCT_LABELS[voucher.productType] ?? voucher.productType;
   const isCustom = voucher.productType === "voucher_custom";
+  const blockPriceEur = PRODUCT_PRICES_EUR[voucher.productType];
+
   const valuePrimary = isCustom
     ? `€ ${voucher.customAmount ?? "—"}`
     : `${voucher.sessionsTotal} × ${voucher.durationMin}-Minuten-Behandlung`;
+
+  // For block products, show the EUR amount paid as secondary info alongside product label
+  const valueSecondaryText = isCustom
+    ? productLabel
+    : blockPriceEur
+    ? `${productLabel} · Wert: € ${blockPriceEur}`
+    : productLabel;
 
   return (
     <Document
@@ -166,7 +183,7 @@ export function VoucherPDF({ voucher }: { voucher: VoucherPDFData }) {
         <View style={styles.valueBox}>
           <Text style={styles.valueLabel}>Wert</Text>
           <Text style={styles.valuePrimary}>{valuePrimary}</Text>
-          <Text style={styles.valueSecondary}>{productLabel}</Text>
+          <Text style={styles.valueSecondary}>{valueSecondaryText}</Text>
         </View>
 
         {voucher.recipientName ? (
