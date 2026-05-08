@@ -58,7 +58,7 @@ export async function sendVoucherConfirmation(args: {
   </body>
 </html>`;
 
-  await resend.emails.send({
+  const result = await resend.emails.send({
     from: EMAIL_FROM,
     to: voucher.buyerEmail,
     subject: `Ihr Gutschein bei Heilmasseur Domenic Hacker — Code ${voucher.code}`,
@@ -70,4 +70,7 @@ export async function sendVoucherConfirmation(args: {
       },
     ],
   });
+  if (result.error) {
+    throw new Error(`Resend send failed: ${result.error.message ?? JSON.stringify(result.error)}`);
+  }
 }

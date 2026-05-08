@@ -15,6 +15,9 @@ import { getSettings } from "@/sanity/lib/queries";
 import { VoucherPDF } from "@/components/VoucherPDF";
 import type { SanityVoucher, SanityVoucherProductType } from "@/sanity/lib/queries";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
@@ -131,6 +134,8 @@ export async function POST(req: Request) {
   // Create voucher document in Sanity
   let voucherDoc: SanityVoucher;
   try {
+    // Sanity .create() returns SanityDocument with extra metadata fields (_createdAt, _rev) that
+    // don't strictly satisfy our SanityVoucher type — double-cast bypasses the structural check.
     voucherDoc = (await writeClient.create({
       _type: "voucher",
       code,
@@ -172,7 +177,7 @@ export async function POST(req: Request) {
           expiresAt: voucherDoc.expiresAt,
         }}
       />
-    ) as unknown as Buffer;
+    );
   } catch (err) {
     console.error("PDF rendering failed:", err);
     await writeClient.patch(voucherDoc._id).set({ status: "paid_pdf_failed" }).commit();

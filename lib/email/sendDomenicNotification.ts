@@ -54,10 +54,13 @@ export async function sendDomenicNotification(args: {
   </body>
 </html>`;
 
-  await resend.emails.send({
+  const result = await resend.emails.send({
     from: EMAIL_FROM,
     to: domenicEmail,
     subject,
     html,
   });
+  if (result.error) {
+    throw new Error(`Resend send failed: ${result.error.message ?? JSON.stringify(result.error)}`);
+  }
 }

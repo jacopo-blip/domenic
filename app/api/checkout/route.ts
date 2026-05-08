@@ -3,6 +3,8 @@ import { stripe } from "@/lib/stripe/client";
 import { getStripePriceId, PRODUCT_DEFINITIONS } from "@/lib/stripe/products";
 import type { SanityVoucherProductType } from "@/sanity/lib/queries";
 
+export const dynamic = "force-dynamic";
+
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
 type CheckoutInput = {
