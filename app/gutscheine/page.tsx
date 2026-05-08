@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { VoucherProductSelector, type SelectedProduct } from "@/components/VoucherProductSelector";
 import { VoucherCheckout, type CheckoutFormInput } from "@/components/VoucherCheckout";
+import { PRODUCT_PRICES_EUR } from "@/lib/stripe/products";
 
 function GutscheineContent() {
   const searchParams = useSearchParams();
@@ -26,23 +27,21 @@ function GutscheineContent() {
     if (blockMatch) {
       const size = Number(blockMatch[1]) as 5 | 10;
       const duration = Number(blockMatch[2]) as 30 | 45 | 60;
-      const PRICES: Record<string, number> = {
-        block_5_30: 259, block_5_45: 329, block_5_60: 399,
-        block_10_30: 489, block_10_45: 619, block_10_60: 749,
-      };
+      const productType = productPreset as SelectedProduct["productType"];
+      const price = PRODUCT_PRICES_EUR[productType] ?? 0;
       setSelected({
-        productType: productPreset as SelectedProduct["productType"],
+        productType,
         kind: "block",
-        price: PRICES[productPreset],
+        price,
         size,
         duration,
       });
       setStep("details");
-    } else if (productPreset === "voucher_custom") {
-      setSelected({ productType: "voucher_custom", kind: "custom", customAmountEur: customAmount });
-      setStep("details");
     }
-  }, [productPreset, selected, customAmount]);
+    // For voucher_custom: do NOT auto-select. Let user pick an amount in the
+    // selection step. (Spec §6.6: "Custom-Voucher vorausgewählt, Custom-Amount-Input fokussiert"
+    // — the input lives in VoucherProductSelector, so we stay on "select" step.)
+  }, [productPreset, selected]);
 
   const checkoutInput: CheckoutFormInput | null =
     selected && buyerEmail && buyerName

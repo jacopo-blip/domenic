@@ -28,9 +28,9 @@ export default async function DankePage({
 
   const settings = await getSettings();
 
-  // Polling: webhook may not have completed yet
+  // Polling: 1 immediate + up to 4 retries × 2s = max ~8s wait for webhook
   let voucher = await getVoucherByStripeSession(sessionId);
-  for (let i = 0; i < 3 && !voucher; i++) {
+  for (let i = 0; i < 4 && !voucher; i++) {
     await sleep(2000);
     voucher = await getVoucherByStripeSession(sessionId);
   }
