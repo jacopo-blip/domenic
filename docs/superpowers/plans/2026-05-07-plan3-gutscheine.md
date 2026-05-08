@@ -194,7 +194,7 @@ See spec §3.5 and §6.3.
 - Create: `lib/email/sendVoucherConfirmation.ts` — sends German HTML email to buyer with PDF attachment, includes code, value, expiry, booking URL
 - Create: `lib/email/sendDomenicNotification.ts` — sends notification to Domenic when voucher purchased; supports `isAlert` flag for failure cases (PDF/email failed)
 
-- [ ] **Step 3.1: Create `lib/stripe/client.ts`** — Stripe instance with `apiVersion: "2024-12-18.acacia"`, `typescript: true`.
+- [ ] **Step 3.1: Create `lib/stripe/client.ts`** — Stripe instance with `apiVersion: "2026-04-22.dahlia"`, `typescript: true`. (Matches stripe@22.x SDK — same API version as `scripts/setup-stripe-products.ts` from Task 1.)
 
 - [ ] **Step 3.2: Create `lib/stripe/products.ts`** — see Implementer Prompt for full code.
 
