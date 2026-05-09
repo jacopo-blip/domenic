@@ -13,6 +13,10 @@ type NavDropdown = {
 };
 type NavItem = NavLink | NavDropdown;
 
+// NOTE: Only one dropdown is currently supported because state and refs
+// (desktopDropdownOpen, dropdownRef, closeTimeoutRef) are scalar.
+// To add a second dropdown, refactor to per-item state (e.g. Map<label, boolean>)
+// or extract a Dropdown sub-component with its own state.
 const navItems: NavItem[] = [
   { kind: "link", label: "Startseite", href: "/" },
   {
@@ -75,6 +79,15 @@ export function Navbar() {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [desktopDropdownOpen]);
+
+  // Cleanup pending close-grace timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Hover handlers with 200ms grace timeout
   function openDropdown() {
@@ -171,7 +184,7 @@ export function Navbar() {
                     <button
                       type="button"
                       onClick={() => setDesktopDropdownOpen((o) => !o)}
-                      aria-haspopup="menu"
+                      aria-haspopup="true"
                       aria-expanded={desktopDropdownOpen}
                       className={`inline-flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${getLinkClass(active)}`}
                     >
@@ -187,7 +200,7 @@ export function Navbar() {
                     </button>
                     {desktopDropdownOpen && (
                       <div
-                        role="menu"
+                        aria-label={`${item.label} Untermenü`}
                         className="absolute left-0 top-full mt-2 min-w-[220px] rounded-2xl bg-white/95 backdrop-blur-md shadow-lg shadow-black/10 border border-gray-100 overflow-hidden"
                       >
                         {item.items.map((sub) => {
@@ -196,7 +209,6 @@ export function Navbar() {
                             <a
                               key={sub.href}
                               href={sub.href}
-                              role="menuitem"
                               className={`block px-5 py-3 text-sm font-semibold transition-colors duration-200 ${
                                 subActive
                                   ? "bg-[#0d4f4f]/8 text-[#0d4f4f]"
