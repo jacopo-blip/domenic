@@ -23,7 +23,9 @@ export default defineConfig({
   document: {
     actions: (prev, context) => {
       if (context.schemaType !== "voucher") return prev;
-      return [...prev, RedeemBlockSessionAction, RedeemCustomAmountAction];
+      // Redeem-Actions zuerst, damit sie als prominenter Primary-Button erscheinen
+      // (Sanity zeigt die erste non-null Action als großen Button, Rest im Dropdown).
+      return [RedeemBlockSessionAction, RedeemCustomAmountAction, ...prev];
     },
   },
 });

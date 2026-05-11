@@ -6,6 +6,7 @@ import {
   type DocumentActionProps,
   type SanityDocument,
 } from "sanity";
+import { CheckmarkCircleIcon, CreditCardIcon } from "@sanity/icons";
 
 type VoucherDoc = SanityDocument & {
   code?: string;
@@ -30,8 +31,6 @@ function nextStatus(remaining: number): string {
   return "partially_redeemed";
 }
 
-const PlusIcon = () => <span style={{ fontSize: 16 }}>+</span>;
-const EurIcon = () => <span style={{ fontSize: 16 }}>EUR</span>;
 
 export const RedeemBlockSessionAction: DocumentActionComponent = (
   props: DocumentActionProps,
@@ -48,13 +47,14 @@ export const RedeemBlockSessionAction: DocumentActionComponent = (
   if (remaining <= 0) return null;
 
   return {
-    label: `1 Behandlung einloesen (${remaining} uebrig)`,
-    icon: PlusIcon,
+    label: `Behandlung einlösen · ${remaining} übrig`,
+    icon: CheckmarkCircleIcon,
+    tone: "positive",
     onHandle: () => setDialogOpen(true),
     dialog: dialogOpen
       ? {
           type: "dialog",
-          header: "Behandlung einloesen",
+          header: "Behandlung einlösen",
           onClose: () => setDialogOpen(false),
           content: (
             <div style={{ padding: "1rem" }}>
@@ -147,13 +147,14 @@ export const RedeemCustomAmountAction: DocumentActionComponent = (
   if (remaining <= 0) return null;
 
   return {
-    label: `Betrag einloesen (EUR ${remaining} uebrig)`,
-    icon: EurIcon,
+    label: `Betrag einlösen · €${remaining} übrig`,
+    icon: CreditCardIcon,
+    tone: "positive",
     onHandle: () => setDialogOpen(true),
     dialog: dialogOpen
       ? {
           type: "dialog",
-          header: "Betrag einloesen",
+          header: "Betrag einlösen",
           onClose: () => setDialogOpen(false),
           content: (
             <div style={{ padding: "1rem" }}>
