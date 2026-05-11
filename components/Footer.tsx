@@ -97,7 +97,7 @@ export function Footer({ sanitySettings }: { sanitySettings?: SanitySettings | n
                 type="button"
                 onClick={() => CookieConsent.showPreferences()}
                 aria-haspopup="dialog"
-                className="mt-2.5 text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
+                className="cursor-pointer mt-2.5 text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
               >
                 Cookie-Einstellungen
               </button>

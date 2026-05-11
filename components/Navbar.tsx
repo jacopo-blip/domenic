@@ -32,6 +32,18 @@ const navItems: NavItem[] = [
   { kind: "link", label: "Über mich", href: "/ueber-mich" },
 ];
 
+// Pages that render a DARK hero behind the navbar at the top of the page.
+// On these pages the navbar starts transparent with WHITE text (overlay style).
+// All other pages (white/light heros) get DARK text from the start so the
+// links stay visible — bg only turns solid white once the user scrolls.
+// Add new pages with dark heros here.
+const DARK_HERO_PATHS = new Set<string>([
+  "/",
+  "/ueber-mich",
+  "/heilmassage-wien-1080",
+  "/sportmassage-wien",
+]);
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -41,6 +53,12 @@ export function Navbar() {
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
   const isBookingPage = pathname === "/buchen";
+  const hasDarkHero = DARK_HERO_PATHS.has(pathname);
+  // Text/icon color: dark by default (white-hero pages), white only on dark-hero
+  // pages while at the top. Once scrolled, always dark (solid white bg below).
+  const useDarkText = scrolled || !hasDarkHero;
+
+  if (pathname.startsWith("/studio")) return null;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -65,7 +83,10 @@ export function Navbar() {
   useEffect(() => {
     if (!desktopDropdownOpen) return;
     function onMouseDown(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setDesktopDropdownOpen(false);
       }
     }
@@ -99,7 +120,10 @@ export function Navbar() {
   }
   function scheduleCloseDropdown() {
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
-    closeTimeoutRef.current = setTimeout(() => setDesktopDropdownOpen(false), 200);
+    closeTimeoutRef.current = setTimeout(
+      () => setDesktopDropdownOpen(false),
+      200,
+    );
   }
 
   function isActiveLink(href: string): boolean {
@@ -111,7 +135,7 @@ export function Navbar() {
   }
 
   const getLinkClass = (active: boolean) => {
-    if (scrolled) {
+    if (useDarkText) {
       return active
         ? "text-[#0d4f4f] bg-[#0d4f4f]/8"
         : "text-[#333] hover:text-[#0d4f4f] hover:bg-[#0d4f4f]/8";
@@ -149,7 +173,7 @@ export function Navbar() {
               />
               <span
                 className={`font-extrabold text-lg tracking-tight transition-colors duration-300 ${
-                  scrolled ? "text-[#111]" : "text-white"
+                  useDarkText ? "text-[#111]" : "text-white"
                 }`}
               >
                 Domenic Hacker
@@ -186,7 +210,7 @@ export function Navbar() {
                       onClick={() => setDesktopDropdownOpen((o) => !o)}
                       aria-haspopup="true"
                       aria-expanded={desktopDropdownOpen}
-                      className={`inline-flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${getLinkClass(active)}`}
+                      className={`cursor-pointer inline-flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${getLinkClass(active)}`}
                     >
                       {item.label}
                       <ChevronDown
@@ -242,8 +266,8 @@ export function Navbar() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className={`relative z-10 md:hidden p-2 rounded-xl transition-colors ${
-                scrolled || mobileOpen
+              className={`cursor-pointer relative z-10 md:hidden p-2 rounded-xl transition-colors ${
+                useDarkText || mobileOpen
                   ? "text-[#111] hover:bg-black/5"
                   : "text-white hover:bg-white/15"
               }`}
@@ -276,12 +300,15 @@ export function Navbar() {
               // dropdown — accordion in mobile
               const active = isActiveDropdown(item);
               return (
-                <div key={item.label} className="flex flex-col items-center gap-4">
+                <div
+                  key={item.label}
+                  className="flex flex-col items-center gap-4"
+                >
                   <button
                     type="button"
                     onClick={() => setMobileDropdownOpen((o) => !o)}
                     aria-expanded={mobileDropdownOpen}
-                    className={`inline-flex items-center gap-2 text-2xl font-extrabold transition-colors ${getMobileLinkClass(active)}`}
+                    className={`cursor-pointer inline-flex items-center gap-2 text-2xl font-extrabold transition-colors ${getMobileLinkClass(active)}`}
                   >
                     {item.label}
                     <ChevronDown
@@ -303,7 +330,9 @@ export function Navbar() {
                             href={sub.href}
                             onClick={() => setMobileOpen(false)}
                             className={`text-lg font-bold transition-colors ${
-                              subActive ? "text-[#0d4f4f]" : "text-[#555] hover:text-[#0d4f4f]"
+                              subActive
+                                ? "text-[#0d4f4f]"
+                                : "text-[#555] hover:text-[#0d4f4f]"
                             }`}
                           >
                             {sub.label}

@@ -58,7 +58,7 @@ function FAQItem({
     <div className="border-b border-gray-100 last:border-0">
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-4 py-6 text-left"
+        className="cursor-pointer flex w-full items-center justify-between gap-4 py-6 text-left"
         aria-expanded={isOpen}
       >
         <span className="text-base sm:text-lg font-bold text-[#111]">

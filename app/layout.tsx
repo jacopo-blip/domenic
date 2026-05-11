@@ -6,6 +6,7 @@ import { JsonLd } from "@/components/JsonLd";
 import Script from "next/script";
 import CookieConsentComponent from "@/components/CookieConsent";
 import { SanityLive } from "@/sanity/lib/live";
+import { Navbar } from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -94,6 +95,7 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-full flex flex-col">
+        <Navbar />
         {children}
         <SanityLive />
         <Analytics />

@@ -1,27 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import { Check, Gift } from "lucide-react";
-
-type BlockOption = {
-  size: 5 | 10;
-  duration: 30 | 45 | 60;
-  price: number;
-  fullPrice: number;
-  productKey: string;
-};
-
-// productKey values must align with STRIPE_PRICE_BLOCK_* env vars — see Plan 3, Task 1
-const BLOCK_OPTIONS: BlockOption[] = [
-  { size: 5, duration: 30, price: 259, fullPrice: 275, productKey: "block_5_30" },
-  { size: 5, duration: 45, price: 329, fullPrice: 350, productKey: "block_5_45" },
-  { size: 5, duration: 60, price: 399, fullPrice: 425, productKey: "block_5_60" },
-  { size: 10, duration: 30, price: 489, fullPrice: 550, productKey: "block_10_30" },
-  { size: 10, duration: 45, price: 619, fullPrice: 700, productKey: "block_10_45" },
-  { size: 10, duration: 60, price: 749, fullPrice: 850, productKey: "block_10_60" },
-];
-
-function discountPercent(price: number, fullPrice: number): number {
-  return Math.round(((fullPrice - price) / fullPrice) * 100);
-}
+import {
+  DURATIONS,
+  discountPercent,
+  getBlockOption,
+  type Duration,
+  type Size,
+} from "@/lib/blockOptions";
 
 export function BlockCardOverview({
   heading,
@@ -34,28 +22,58 @@ export function BlockCardOverview({
   voucherCtaHeading: string;
   voucherCtaText: string;
 }) {
+  const [duration, setDuration] = useState<Duration>(60);
+
   return (
     <section className="py-16 sm:py-24 bg-white">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+      <div className="mx-auto max-w-5xl px-5 sm:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0d4f4f] mb-4">
             {heading}
           </h2>
           <p className="text-[#555] leading-relaxed">{text}</p>
         </div>
 
-        <h3 className="text-lg font-bold text-[#111] mb-4">5er-Block</h3>
-        <div className="grid sm:grid-cols-3 gap-4 sm:gap-6 mb-10">
-          {BLOCK_OPTIONS.filter((o) => o.size === 5).map((option) => (
-            <BlockCard key={option.productKey} option={option} />
-          ))}
+        {/* Globaler Dauer-Toggle */}
+        <div className="flex flex-col items-center mb-10 sm:mb-12">
+          <p className="text-xs font-bold uppercase tracking-widest text-[#0d4f4f]/70 mb-3">
+            Behandlungsdauer wählen
+          </p>
+          <div
+            role="radiogroup"
+            aria-label="Behandlungsdauer"
+            className="inline-flex rounded-full bg-white border border-gray-200 p-1.5 shadow-sm"
+          >
+            {DURATIONS.map((d) => {
+              const active = d === duration;
+              return (
+                <button
+                  key={d}
+                  type="button"
+                  role="radio"
+                  aria-checked={active}
+                  onClick={() => setDuration(d)}
+                  className={`cursor-pointer relative px-5 sm:px-7 py-2.5 rounded-full text-sm font-bold transition-all duration-200 ${
+                    active
+                      ? "bg-[#0d4f4f] text-white shadow-md"
+                      : "text-[#0d4f4f] hover:bg-[#0d4f4f]/5"
+                  }`}
+                >
+                  {d} Min
+                  {d === 60 && !active && (
+                    <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#f2a93b] text-[10px] font-bold px-2 py-0.5 rounded-full text-[#111] whitespace-nowrap shadow-sm">
+                      Beliebt
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <h3 className="text-lg font-bold text-[#111] mb-4">10er-Block</h3>
-        <div className="grid sm:grid-cols-3 gap-4 sm:gap-6">
-          {BLOCK_OPTIONS.filter((o) => o.size === 10).map((option) => (
-            <BlockCard key={option.productKey} option={option} highlight />
-          ))}
+        <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
+          <SizeCard size={5} duration={duration} />
+          <SizeCard size={10} duration={duration} highlight />
         </div>
 
         {/* Einzelgutschein-CTA */}
@@ -83,17 +101,23 @@ export function BlockCardOverview({
   );
 }
 
-function BlockCard({
-  option,
+function SizeCard({
+  size,
+  duration,
   highlight = false,
 }: {
-  option: BlockOption;
+  size: Size;
+  duration: Duration;
   highlight?: boolean;
 }) {
-  const discount = discountPercent(option.price, option.fullPrice);
+  const opt = getBlockOption(size, duration);
+  const discount = discountPercent(opt.price, opt.fullPrice);
+  const savings = opt.fullPrice - opt.price;
+  const perSession = Math.round(opt.price / size);
+
   return (
     <div
-      className={`relative rounded-3xl border bg-white p-6 sm:p-8 shadow-sm transition-all duration-200 hover:shadow-lg motion-safe:hover:scale-[1.02] ${
+      className={`relative rounded-3xl border bg-white p-6 sm:p-8 shadow-sm transition-all duration-200 hover:shadow-lg ${
         highlight ? "border-[#e8654a] shadow-md" : "border-gray-100"
       }`}
     >
@@ -102,24 +126,36 @@ function BlockCard({
           Beliebt
         </span>
       )}
+
       <p className="text-xs font-bold uppercase tracking-widest text-[#0d4f4f] mb-2">
-        {option.duration} Min · {option.size} Behandlungen
+        {size} Behandlungen · {duration} Min
       </p>
-      <p className="text-3xl font-extrabold text-[#111]">
-        €{option.price}
+      <h3 className="text-2xl font-extrabold text-[#111] mb-5">
+        {size}er-Block
+      </h3>
+
+      <p className="text-4xl sm:text-5xl font-extrabold text-[#111] tabular-nums">
+        €{opt.price}
       </p>
-      <p className="mt-1 text-sm text-[#666]">
-        <s>statt €{option.fullPrice}</s>
+      <p className="mt-1 text-sm text-[#888] tabular-nums">
+        €{perSession} pro Behandlung
+      </p>
+      <p className="mt-2 text-sm text-[#666]">
+        <s>statt €{opt.fullPrice}</s>{" "}
+        <span className="text-[#0d4f4f] font-semibold">
+          (€{savings} gespart)
+        </span>
       </p>
       <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[#f2a93b]/15 px-3 py-1 text-xs font-bold text-[#0d4f4f]">
         <Check size={12} strokeWidth={3} />
         {discount} % Vorteil
       </p>
+
       <Link
-        href={`/gutscheine?product=${option.productKey}`}
-        className="mt-6 block rounded-full bg-[#0d4f4f] py-3 text-center text-sm font-bold text-white transition-colors duration-200 hover:bg-[#0a3d3d]"
+        href={`/gutscheine?product=${opt.productKey}`}
+        className="mt-7 block rounded-full bg-[#0d4f4f] py-3 text-center text-sm font-bold text-white transition-colors duration-200 hover:bg-[#0a3d3d]"
       >
-        Block kaufen
+        {size}er-Block kaufen
       </Link>
     </div>
   );

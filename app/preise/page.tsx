@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLdOffer } from "@/components/JsonLdOffer";
 import { JsonLdService } from "@/components/JsonLdService";
 import { FaqJsonLd } from "@/components/FaqJsonLd";
@@ -95,18 +93,10 @@ export default async function PreisePage() {
       {faqs.length > 0 && (
         <FaqJsonLd faqs={faqs.map((f) => ({ q: f.question, a: f.answer }))} />
       )}
-      <Navbar />
       <main>
-        <Breadcrumbs
-          items={[
-            { label: "Startseite", href: "/" },
-            { label: "Preise", href: "/preise" },
-          ]}
-        />
-
         {/* HERO */}
         <section className="bg-white">
-          <div className="mx-auto max-w-4xl px-5 sm:px-8 pt-8 pb-16 sm:pt-12 sm:pb-24">
+          <div className="mx-auto max-w-4xl px-5 sm:px-8 pt-28 pb-16 sm:pt-36 sm:pb-24">
             <span className="inline-flex items-center gap-2 rounded-full bg-[#e8654a]/10 px-4 py-1.5 text-sm font-bold text-[#e8654a]">
               {heroBadge}
             </span>

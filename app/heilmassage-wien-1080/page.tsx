@@ -185,10 +185,6 @@ export default async function HeilmassageWien() {
         data={data}
         variant="heilmassage"
         settings={settings}
-        breadcrumbs={[
-          { label: "Startseite", href: "/" },
-          { label: "Heilmassage", href: "/heilmassage-wien-1080" },
-        ]}
       />
     </>
   );

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
 import { GoogleReviews } from "@/components/GoogleReviews";
@@ -48,7 +47,6 @@ export default async function Home() {
 
   return (
     <>
-      <Navbar />
       <main>
         <Hero
           sanitySettings={settings}

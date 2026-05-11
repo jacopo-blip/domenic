@@ -11,6 +11,7 @@ export const voucherSchema = defineType({
       type: "string",
       validation: (rule) => rule.required(),
       readOnly: true,
+      options: { search: { weight: 50 } },
     }),
     defineField({
       name: "stripeSessionId",

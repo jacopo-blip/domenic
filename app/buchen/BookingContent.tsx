@@ -11,7 +11,6 @@ import {
   CalendarCheck,
   RotateCcw,
 } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import type { SanityBuchenPage, SanitySettings } from "@/sanity/lib/queries";
 
@@ -90,7 +89,6 @@ export function BookingContent({ sanityBuchen, sanitySettings }: BookingContentP
 
   return (
     <div className="min-h-screen bg-[#0d4f4f]">
-      <Navbar />
 
       {/* Hero section */}
       <section className="relative py-16 sm:py-24 overflow-hidden">
@@ -151,7 +149,7 @@ export function BookingContent({ sanityBuchen, sanitySettings }: BookingContentP
             </p>
             <button
               onClick={resetBooking}
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-7 py-3.5 text-base font-bold text-white shadow-lg shadow-[#e8654a]/25 transition-all duration-300 hover:shadow-xl hover:scale-105"
+              className="cursor-pointer mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-7 py-3.5 text-base font-bold text-white shadow-lg shadow-[#e8654a]/25 transition-all duration-300 hover:shadow-xl hover:scale-105"
             >
               <RotateCcw size={18} />
               Weiteren Termin buchen

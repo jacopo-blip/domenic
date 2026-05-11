@@ -204,10 +204,6 @@ export default async function SportmassageWien() {
         data={data}
         variant="sportmassage"
         settings={settings}
-        breadcrumbs={[
-          { label: "Startseite", href: "/" },
-          { label: "Sportmassage", href: "/sportmassage-wien" },
-        ]}
       />
     </>
   );

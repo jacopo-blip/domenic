@@ -2,9 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { VoucherProductSelector, type SelectedProduct } from "@/components/VoucherProductSelector";
 import { VoucherCheckout, type CheckoutFormInput } from "@/components/VoucherCheckout";
 import { PRODUCT_PRICES_EUR } from "@/lib/stripe/products";
@@ -49,12 +47,9 @@ function GutscheineContent() {
 
   return (
     <>
-      <Navbar />
       <main>
-        <Breadcrumbs items={[{ label: "Startseite", href: "/" }, { label: "Gutscheine", href: "/gutscheine" }]} />
-
         <section className="bg-white">
-          <div className="mx-auto max-w-4xl px-5 sm:px-8 pt-8 pb-16 sm:pt-12 sm:pb-24">
+          <div className="mx-auto max-w-4xl px-5 sm:px-8 pt-28 pb-16 sm:pt-36 sm:pb-24">
             <span className="inline-flex items-center gap-2 rounded-full bg-[#e8654a]/10 px-4 py-1.5 text-sm font-bold text-[#e8654a]">
               Geschenke, die wirklich gut tun
             </span>
@@ -138,7 +133,7 @@ function GutscheineContent() {
                     setSelected(null);
                     setStep("select");
                   }}
-                  className="rounded-full border-2 border-[#0d4f4f] px-6 py-3 text-sm font-bold text-[#0d4f4f] hover:bg-[#0d4f4f] hover:text-white transition-all"
+                  className="cursor-pointer rounded-full border-2 border-[#0d4f4f] px-6 py-3 text-sm font-bold text-[#0d4f4f] hover:bg-[#0d4f4f] hover:text-white transition-all"
                 >
                   Zurück
                 </button>
@@ -146,7 +141,7 @@ function GutscheineContent() {
                   type="button"
                   disabled={!buyerEmail || !buyerName || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(buyerEmail)}
                   onClick={() => setStep("pay")}
-                  className="rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-7 py-3 text-sm font-bold text-white shadow-lg shadow-[#e8654a]/25 disabled:opacity-50 transition-all"
+                  className="cursor-pointer rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-7 py-3 text-sm font-bold text-white shadow-lg shadow-[#e8654a]/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   Weiter zur Zahlung
                 </button>

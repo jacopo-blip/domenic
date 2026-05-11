@@ -11,7 +11,6 @@ import {
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { FaqJsonLd } from "@/components/FaqJsonLd";
-import { Breadcrumbs, type BreadcrumbItem } from "@/components/Breadcrumbs";
 import type { SanitySettings } from "@/sanity/lib/queries";
 
 export type TreatmentVariant = "heilmassage" | "sportmassage";
@@ -80,12 +79,10 @@ export function TreatmentPage({
   data,
   variant,
   settings,
-  breadcrumbs,
 }: {
   data: TreatmentPageData;
   variant: TreatmentVariant;
   settings: SanitySettings | null | undefined;
-  breadcrumbs: BreadcrumbItem[];
 }) {
   const address = settings?.address ?? "Feldgasse 3/20";
   const sister = SISTER_LINKS[variant];
@@ -95,7 +92,6 @@ export function TreatmentPage({
       <FaqJsonLd faqs={data.faqs.map((f) => ({ q: f.question, a: f.answer }))} />
       <Navbar />
       <main>
-        <Breadcrumbs items={breadcrumbs} />
         {/* ── HERO ─────────────────────────────────────────────────── */}
         <section className="relative bg-[#0d4f4f] overflow-hidden">
           <div
@@ -107,7 +103,7 @@ export function TreatmentPage({
               backgroundSize: "32px 32px",
             }}
           />
-          <div className="relative mx-auto max-w-7xl px-5 sm:px-8 pt-12 pb-16 sm:pt-16 sm:pb-24">
+          <div className="relative mx-auto max-w-7xl px-5 sm:px-8 pt-28 pb-16 sm:pt-36 sm:pb-24">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <div>
                 <p className="mb-4 inline-block rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white/70">
