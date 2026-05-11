@@ -31,6 +31,95 @@ function nextStatus(remaining: number): string {
   return "partially_redeemed";
 }
 
+// Theme-aware styles using Sanity CSS vars (Light/Dark Mode kompatibel).
+// Wird in beide Dialoge gemounted — Sanity Studio dedupliziert
+// gleiche <style>-Inhalte nicht, aber Auswirkung ist vernachlässigbar.
+const DIALOG_STYLES = `
+  .redeem-label {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: var(--card-muted-fg-color, #6b6b6b);
+    font-weight: 500;
+  }
+  .redeem-label > span {
+    display: block;
+    margin-bottom: 0.375rem;
+    color: var(--card-fg-color, #1a1a1a);
+  }
+  .redeem-input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--card-border-color, hsl(220, 10%, 78%));
+    border-radius: 3px;
+    background: var(--card-bg-color, white);
+    color: var(--card-fg-color, #1a1a1a);
+    font: inherit;
+    font-size: 0.9375rem;
+    outline: none;
+    transition: border-color 0.12s ease, box-shadow 0.12s ease;
+  }
+  .redeem-input::placeholder {
+    color: var(--card-muted-fg-color, #9a9a9a);
+    opacity: 0.7;
+  }
+  .redeem-input:hover {
+    border-color: var(--card-border-color, hsl(220, 10%, 60%));
+  }
+  .redeem-input:focus {
+    border-color: var(--card-focus-ring-color, hsl(210, 80%, 55%));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--card-focus-ring-color, hsl(210, 80%, 55%)) 25%, transparent);
+  }
+  .redeem-actions {
+    margin-top: 1.25rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+  .redeem-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.12s ease, border-color 0.12s ease;
+  }
+  .redeem-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .redeem-btn-primary {
+    border: 1px solid transparent;
+    background: var(--card-tone-positive-bg-color, hsl(150, 60%, 38%));
+    color: var(--card-tone-positive-fg-color, white);
+  }
+  .redeem-btn-primary:hover:not(:disabled) {
+    background: var(--card-tone-positive-bg-color-hover, hsl(150, 60%, 32%));
+    filter: brightness(0.95);
+  }
+  .redeem-btn-secondary {
+    border: 1px solid var(--card-border-color, hsl(220, 10%, 78%));
+    background: transparent;
+    color: var(--card-fg-color, #1a1a1a);
+  }
+  .redeem-btn-secondary:hover:not(:disabled) {
+    background: var(--card-bg-color-hover, color-mix(in srgb, currentColor 6%, transparent));
+  }
+  .redeem-summary {
+    margin: 0.75rem 0;
+    padding: 0.625rem 0.75rem;
+    background: color-mix(in srgb, var(--card-fg-color, #000) 5%, transparent);
+    border-radius: 3px;
+    font-size: 0.875rem;
+    color: var(--card-fg-color, #1a1a1a);
+  }
+  .redeem-summary strong {
+    font-weight: 700;
+  }
+`;
 
 export const RedeemBlockSessionAction: DocumentActionComponent = (
   props: DocumentActionProps,
@@ -57,40 +146,37 @@ export const RedeemBlockSessionAction: DocumentActionComponent = (
           header: "Behandlung einlösen",
           onClose: () => setDialogOpen(false),
           content: (
-            <div style={{ padding: "1rem" }}>
-              <p>
-                Eine Behandlung von <strong>{doc.code as string}</strong> einloesen.
-              </p>
-              <p>
-                Es bleiben dann <strong>{remaining - 1}</strong> von {doc.sessionsTotal} uebrig.
-              </p>
-              <label>
-                Notiz (optional):
+            <div style={{ padding: "1.25rem 1.5rem" }}>
+              <style>{DIALOG_STYLES}</style>
+              <div className="redeem-summary">
+                Eine Behandlung von <strong>{doc.code}</strong> einlösen.
+                <br />
+                Danach bleiben <strong>{remaining - 1}</strong> von {doc.sessionsTotal} übrig.
+              </div>
+
+              <label className="redeem-label">
+                <span>Notiz (optional)</span>
                 <input
+                  className="redeem-input"
                   type="text"
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    padding: "0.5rem",
-                    marginTop: "0.25rem",
-                  }}
                   placeholder="z.B. Heilmassage 60 Min am 12.05.2026"
                 />
               </label>
-              <div
-                style={{
-                  marginTop: "1rem",
-                  display: "flex",
-                  gap: "0.5rem",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <button onClick={() => setDialogOpen(false)} disabled={running}>
+
+              <div className="redeem-actions">
+                <button
+                  type="button"
+                  className="redeem-btn redeem-btn-secondary"
+                  onClick={() => setDialogOpen(false)}
+                  disabled={running}
+                >
                   Abbrechen
                 </button>
                 <button
+                  type="button"
+                  className="redeem-btn redeem-btn-primary"
                   disabled={running}
                   onClick={async () => {
                     setRunning(true);
@@ -115,13 +201,13 @@ export const RedeemBlockSessionAction: DocumentActionComponent = (
                       props.onComplete();
                     } catch (err) {
                       console.error(err);
-                      alert("Fehler beim Einloesen — siehe Konsole");
+                      alert("Fehler beim Einlösen — siehe Konsole");
                     } finally {
                       setRunning(false);
                     }
                   }}
                 >
-                  {running ? "Wird eingeloest..." : "Einloesen"}
+                  {running ? "Wird eingelöst…" : "Einlösen"}
                 </button>
               </div>
             </div>
@@ -146,6 +232,10 @@ export const RedeemCustomAmountAction: DocumentActionComponent = (
   const remaining = doc.customAmountRemaining ?? doc.customAmount ?? 0;
   if (remaining <= 0) return null;
 
+  const amountNum = Number(amount);
+  const validAmount = amount !== "" && amountNum > 0 && amountNum <= remaining;
+  const restAfter = remaining - (amountNum || 0);
+
   return {
     label: `Betrag einlösen · €${remaining} übrig`,
     icon: CreditCardIcon,
@@ -157,62 +247,62 @@ export const RedeemCustomAmountAction: DocumentActionComponent = (
           header: "Betrag einlösen",
           onClose: () => setDialogOpen(false),
           content: (
-            <div style={{ padding: "1rem" }}>
-              <p>
-                Vom Gutschein <strong>{doc.code as string}</strong> einen Betrag einloesen.
-              </p>
-              <label>
-                Betrag in EUR:
+            <div style={{ padding: "1.25rem 1.5rem" }}>
+              <style>{DIALOG_STYLES}</style>
+              <div className="redeem-summary">
+                Vom Gutschein <strong>{doc.code}</strong> einen Betrag einlösen.
+                <br />
+                Verbleibend: <strong>€{remaining}</strong>
+              </div>
+
+              <label className="redeem-label">
+                <span>Betrag in €</span>
                 <input
+                  className="redeem-input"
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   step="1"
                   min="1"
                   max={remaining}
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    padding: "0.5rem",
-                    marginTop: "0.25rem",
-                  }}
+                  placeholder={`max. ${remaining}`}
+                  autoFocus
                 />
               </label>
-              <label>
-                Notiz (optional):
+
+              <label className="redeem-label">
+                <span>Notiz (optional)</span>
                 <input
+                  className="redeem-input"
                   type="text"
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    padding: "0.5rem",
-                    marginTop: "0.5rem",
-                  }}
                   placeholder="z.B. Heilmassage 45 Min am 12.05.2026"
                 />
               </label>
-              <p style={{ marginTop: "0.5rem" }}>
-                Restbetrag: <strong>EUR {remaining - (Number(amount) || 0)}</strong>
-              </p>
-              <div
-                style={{
-                  marginTop: "1rem",
-                  display: "flex",
-                  gap: "0.5rem",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <button onClick={() => setDialogOpen(false)} disabled={running}>
+
+              {validAmount && (
+                <div className="redeem-summary">
+                  Restbetrag nach Einlösung: <strong>€{restAfter}</strong>
+                </div>
+              )}
+
+              <div className="redeem-actions">
+                <button
+                  type="button"
+                  className="redeem-btn redeem-btn-secondary"
+                  onClick={() => setDialogOpen(false)}
+                  disabled={running}
+                >
                   Abbrechen
                 </button>
                 <button
-                  disabled={running || !amount || Number(amount) <= 0 || Number(amount) > remaining}
+                  type="button"
+                  className="redeem-btn redeem-btn-primary"
+                  disabled={running || !validAmount}
                   onClick={async () => {
                     setRunning(true);
                     try {
-                      const amountNum = Number(amount);
                       const newRemaining = remaining - amountNum;
                       const newStatus = nextStatus(newRemaining);
                       await client
@@ -234,13 +324,13 @@ export const RedeemCustomAmountAction: DocumentActionComponent = (
                       props.onComplete();
                     } catch (err) {
                       console.error(err);
-                      alert("Fehler beim Einloesen — siehe Konsole");
+                      alert("Fehler beim Einlösen — siehe Konsole");
                     } finally {
                       setRunning(false);
                     }
                   }}
                 >
-                  {running ? "Wird eingeloest..." : "Einloesen"}
+                  {running ? "Wird eingelöst…" : "Einlösen"}
                 </button>
               </div>
             </div>
