@@ -98,7 +98,7 @@ export const pricingPageSchema = defineType({
       type: "text",
       rows: 3,
       initialValue:
-        "Heilmassage kann je nach Kasse teilweise erstattet werden. Sportmassage zählt als Wellness-Leistung und ist nicht erstattbar. Die folgenden Werte sind Richtwerte — bitte direkt bei Ihrer Kasse erfragen.",
+        "Heilmassage kann mit ärztlicher Verordnung teilweise erstattet werden. Sportmassage zählt als Wellness-Leistung und ist nicht erstattbar. Die folgenden Werte sind Richtwerte (Stand 2026) — bitte direkt bei Ihrer Kasse erfragen.",
       group: "krankenkassen",
     }),
     defineField({
@@ -116,17 +116,54 @@ export const pricingPageSchema = defineType({
               name: "reimbursement",
               title: "Erstattung",
               type: "string",
-              description: 'z.B. "ca. €15 pro Behandlung (max. 10/Jahr)"',
+              description:
+                'z.B. "ca. €10,60 (20 Min Heilmassage) bis ca. €16,90 (45 Min Lymphdrainage)"',
             }),
             defineField({
               name: "condition",
               title: "Voraussetzung",
               type: "text",
               rows: 2,
-              description: 'z.B. "Ärztliche Überweisung erforderlich"',
+              description: 'z.B. "Ärztliche Verordnung + chefärztliche Bewilligung"',
             }),
           ],
           preview: { select: { title: "name", subtitle: "reimbursement" } },
+        },
+      ],
+      initialValue: [
+        {
+          _key: "kk-oegk",
+          name: "ÖGK",
+          fullName: "Österreichische Gesundheitskasse",
+          reimbursement:
+            "ca. €10,60 (20 Min Heilmassage) bis ca. €16,90 (45 Min Lymphdrainage)",
+          condition:
+            "Ärztliche Verordnung nötig. Bis 30.06.2027 keine chefärztliche Bewilligung erforderlich.",
+        },
+        {
+          _key: "kk-bvaeb",
+          name: "BVAEB",
+          fullName: "Versicherungsanstalt öffentlich Bediensteter",
+          reimbursement:
+            "ca. €11,20 (20 Min Heilmassage) bis ca. €17,70 (45 Min Lymphdrainage)",
+          condition:
+            "Ärztliche Verordnung + chefärztliche Bewilligung vor Therapiebeginn.",
+        },
+        {
+          _key: "kk-svs",
+          name: "SVS",
+          fullName: "Sozialversicherung der Selbständigen",
+          reimbursement:
+            "ca. €5,66 (15–20 Min Heilmassage) bis ca. €21,22 (60 Min Lymphdrainage)",
+          condition:
+            "Ärztliche Verordnung + chefärztliche Bewilligung. SVS-Gesundheitshunderter zusätzlich möglich.",
+        },
+        {
+          _key: "kk-privat",
+          name: "Privat",
+          fullName: "Private Zusatzversicherungen",
+          reimbursement: "Bis zu 100 % je nach Tarif",
+          condition: "Tarif-abhängig — Police prüfen.",
         },
       ],
     }),
@@ -134,9 +171,9 @@ export const pricingPageSchema = defineType({
       name: "krankenkassenDisclaimer",
       title: "Krankenkassen — Disclaimer",
       type: "text",
-      rows: 2,
+      rows: 3,
       initialValue:
-        "Die angegebenen Beträge sind Richtwerte (Stand 2026) und können je nach Tarif und Versicherungsstatus variieren. Bitte direkt bei Ihrer Kasse erfragen.",
+        "Stand 01.01.2026 — Richtwerte aus den Kassen-Vertragstarifen für Wahltherapie. Tatsächliche Erstattung hängt von Behandlungstyp, Dauer und individuellem Versicherungsstatus ab. Heilmassage wird grundsätzlich nur mit gültiger ärztlicher Verordnung erstattet. Sportmassage ist als Wellness-Leistung nicht erstattbar. Bitte vor Behandlungsbeginn direkt bei Ihrer Kasse erfragen.",
       group: "krankenkassen",
     }),
 

@@ -1,29 +1,40 @@
 import type { SanityKrankenkasse } from "@/sanity/lib/queries";
 
+// Quellen: WKO Heilmasseur-Tarifübersicht (tarife-heilmasseure.pdf),
+// tk-heilmassagen.at, heimphysio.at — Stand 01.01.2026.
+// Die Beträge sind Vertragstarife, die als Refundierung an Wahltherapie-
+// Patienten ausgezahlt werden. Exakte Höhe je Behandlung hängt von
+// Behandlungstyp, Dauer und Bewilligung ab.
 const FALLBACK_KASSEN: SanityKrankenkasse[] = [
   {
     name: "ÖGK",
     fullName: "Österreichische Gesundheitskasse",
-    reimbursement: "Stand 2026 — bitte direkt erfragen",
-    condition: "In der Regel ärztliche Überweisung erforderlich",
+    reimbursement:
+      "ca. €10,60 (20 Min Heilmassage) bis ca. €16,90 (45 Min Lymphdrainage)",
+    condition:
+      "Ärztliche Verordnung nötig. Bis 30.06.2027 keine chefärztliche Bewilligung erforderlich.",
   },
   {
     name: "BVAEB",
     fullName: "Versicherungsanstalt öffentlich Bediensteter",
-    reimbursement: "Stand 2026 — bitte direkt erfragen",
-    condition: "In der Regel ärztliche Überweisung erforderlich",
+    reimbursement:
+      "ca. €11,20 (20 Min Heilmassage) bis ca. €17,70 (45 Min Lymphdrainage)",
+    condition:
+      "Ärztliche Verordnung + chefärztliche Bewilligung vor Therapiebeginn.",
   },
   {
     name: "SVS",
     fullName: "Sozialversicherung der Selbständigen",
-    reimbursement: "Stand 2026 — bitte direkt erfragen",
-    condition: "In der Regel ärztliche Überweisung erforderlich",
+    reimbursement:
+      "ca. €5,66 (15–20 Min Heilmassage) bis ca. €21,22 (60 Min Lymphdrainage)",
+    condition:
+      "Ärztliche Verordnung + chefärztliche Bewilligung. SVS-Gesundheitshunderter zusätzlich möglich.",
   },
   {
     name: "Privat",
     fullName: "Private Zusatzversicherungen",
     reimbursement: "Bis zu 100 % je nach Tarif",
-    condition: "Tarif-abhängig — Police prüfen",
+    condition: "Tarif-abhängig — Police prüfen.",
   },
 ];
 
