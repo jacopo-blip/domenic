@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/studio", "/api/"],
+        disallow: ["/studio", "/api/", "/gutscheine/danke", "/gutschein-print"],
       },
     ],
     sitemap: "https://heilmasseur-domenic.at/sitemap.xml",

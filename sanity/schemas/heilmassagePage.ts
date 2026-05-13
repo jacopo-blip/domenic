@@ -164,7 +164,7 @@ export const heilmassagePageSchema = defineType({
       type: "text",
       rows: 3,
       initialValue:
-        "Die Praxis liegt im Herzen des 8. Bezirks – einer der ruhigeren, grünen Ecken Wiens, direkt an der U3 und mehreren Straßenbahnlinien.",
+        "Die Praxis liegt im Herzen des 8. Bezirks – einer der ruhigeren, grünen Ecken Wiens, direkt an der U2 und mehreren Straßenbahnlinien.",
       group: "location",
     }),
     defineField({

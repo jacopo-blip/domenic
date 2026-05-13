@@ -174,7 +174,7 @@ export function Contact() {
             </div>
             <button
               type="submit"
-              className="mt-6 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-8 py-3.5 text-base font-bold text-white shadow-lg shadow-[#e8654a]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#e8654a]/35 hover:scale-[1.02]"
+              className="cursor-pointer mt-6 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-8 py-3.5 text-base font-bold text-white shadow-lg shadow-[#e8654a]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#e8654a]/35 hover:scale-[1.02]"
             >
               <Send size={18} />
               Nachricht senden

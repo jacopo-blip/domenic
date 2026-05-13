@@ -16,7 +16,6 @@ import {
   MapPin,
   Quote,
 } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { getAbout, getSettings } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
@@ -122,7 +121,6 @@ export default async function UeberMichPage() {
 
   return (
     <>
-      <Navbar />
       <main>
         {/* ── Hero ──────────────────────────────────────────────────── */}
         <section className="relative bg-[#0d4f4f] pt-24 pb-16 sm:pb-24 overflow-hidden">

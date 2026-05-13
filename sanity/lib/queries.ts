@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { sanityFetch } from "./live";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -15,9 +16,9 @@ export type SanityService = {
 export type SanityPricingItem = {
   _id: string;
   serviceName: string;
-  price30: number;
-  price45: number;
-  price60: number;
+  price30: number | null;
+  price45: number | null;
+  price60: number | null;
   popular: boolean;
   sortOrder: number;
 };
@@ -124,9 +125,88 @@ export type SanityHeilmassagePage = {
   locationHeading: string;
   locationDescription: string;
   transportInfo: { label: string; value: string }[];
-  faqs: { question: string; answer: string }[];
+  faqs: { _key: string; question: string; answer: string }[];
   ctaHeading: string;
   ctaText: string;
+};
+
+export type SanitySportmassagePage = {
+  heroBadge: string;
+  heroHeading: string;
+  heroSubtitle: string;
+  heroImage?: { asset: { _ref: string } };
+  forWhomHeading: string;
+  forWhomDescription: string;
+  conditions: string[];
+  approachHeading: string;
+  approachDescription: string;
+  approachPoints: string[];
+  approachBottomText: string;
+  approachImage?: { asset: { _ref: string } };
+  whatIsHeading: string;
+  whatIsParagraphs: string[];
+  effectsHeading: string;
+  effectsDescription: string;
+  effects: { title: string; description: string }[];
+  locationHeading: string;
+  locationDescription: string;
+  transportInfo: { label: string; value: string }[];
+  costNote: string;
+  faqs: { _key: string; question: string; answer: string }[];
+  ctaHeading: string;
+  ctaText: string;
+};
+
+export type SanityKrankenkasse = {
+  name: string;
+  fullName: string;
+  reimbursement: string;
+  condition: string;
+};
+
+export type SanityPricingPage = {
+  seoTitle: string;
+  seoDescription: string;
+  heroBadge: string;
+  heroHeading: string;
+  heroHeadingAccent: string;
+  heroText: string;
+  tableIntro: string;
+  blockCardsHeading: string;
+  blockCardsText: string;
+  krankenkassenHeading: string;
+  krankenkassenIntro: string;
+  krankenkassen: SanityKrankenkasse[];
+  krankenkassenDisclaimer: string;
+  voucherCtaHeading: string;
+  voucherCtaText: string;
+  faqs: { _key: string; question: string; answer: string }[];
+  ctaHeading: string;
+  ctaText: string;
+};
+
+export type SanityGutscheinePage = {
+  seoTitle: string;
+  seoDescription: string;
+  heroBadge: string;
+  heroHeading: string;
+  heroHeadingAccent: string;
+  heroText: string;
+  blocksEyebrow: string;
+  blocksHeading: string;
+  blocksText: string;
+  blocksDurationLabel: string;
+  customEyebrow: string;
+  customHeading: string;
+  customText: string;
+  customCardTitle: string;
+  customCardSubtext: string;
+  detailsHeading: string;
+  detailsText: string;
+  recipientHelpText: string;
+  paymentHeading: string;
+  paymentText: string;
+  agbNotice: string;
 };
 
 export type SanityBuchenPage = {
@@ -153,11 +233,58 @@ export type SanityDatenschutzPage = {
   sections: { heading: string; content: string; subsections?: { heading: string; content: string }[] }[];
 };
 
+export type SanityVoucherProductType =
+  | "block_5_30"
+  | "block_5_45"
+  | "block_5_60"
+  | "block_10_30"
+  | "block_10_45"
+  | "block_10_60"
+  | "voucher_custom";
+
+export type SanityVoucherStatus =
+  | "paid"
+  | "partially_redeemed"
+  | "fully_redeemed"
+  | "expired"
+  | "cancelled"
+  | "paid_pdf_failed"
+  | "paid_email_failed";
+
+export type SanityVoucher = {
+  _id: string;
+  code: string;
+  stripeSessionId: string;
+  stripePaymentIntentId: string | null;
+  productType: SanityVoucherProductType;
+  sessionsTotal: number | null;
+  sessionsRemaining: number | null;
+  durationMin: number | null;
+  customAmount: number | null;
+  customAmountRemaining: number | null;
+  buyerEmail: string;
+  buyerName: string | null;
+  recipientName: string | null;
+  status: SanityVoucherStatus;
+  redemptions: Array<{
+    _key: string;
+    date: string;
+    sessionsRedeemed?: number;
+    amountRedeemed?: number;
+    note?: string;
+  }> | null;
+  purchasedAt: string;
+  expiresAt: string;
+  pdfAsset: {
+    asset: { _ref: string; url: string };
+  } | null;
+};
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-async function safeFetch<T>(query: string): Promise<T | null> {
+async function safeFetch<T>(query: string, params?: Record<string, unknown>): Promise<T | null> {
   try {
-    const { data } = await sanityFetch({ query });
+    const { data } = await sanityFetch({ query, params });
     return data as T;
   } catch {
     return null;
@@ -233,7 +360,7 @@ export async function getHomePage(): Promise<SanityHomePage | null> {
   );
 }
 
-export async function getHeilmassagePage(): Promise<SanityHeilmassagePage | null> {
+export const getHeilmassagePage = cache(async (): Promise<SanityHeilmassagePage | null> => {
   return safeFetch<SanityHeilmassagePage>(
     `*[_type == "heilmassagePage"][0] {
       heroBadge, heroHeading, heroSubtitle, heroImage,
@@ -242,11 +369,27 @@ export async function getHeilmassagePage(): Promise<SanityHeilmassagePage | null
       whatIsHeading, whatIsParagraphs,
       effectsHeading, effectsDescription, effects[] { title, description },
       locationHeading, locationDescription, transportInfo[] { label, value },
-      faqs[] { question, answer },
+      faqs[] { _key, question, answer },
       ctaHeading, ctaText
     }`
   );
-}
+});
+
+export const getSportmassagePage = cache(async (): Promise<SanitySportmassagePage | null> => {
+  return safeFetch<SanitySportmassagePage>(
+    `*[_type == "sportmassagePage"][0] {
+      heroBadge, heroHeading, heroSubtitle, heroImage,
+      forWhomHeading, forWhomDescription, conditions,
+      approachHeading, approachDescription, approachPoints, approachBottomText, approachImage,
+      whatIsHeading, whatIsParagraphs,
+      effectsHeading, effectsDescription, effects[] { title, description },
+      locationHeading, locationDescription, transportInfo[] { label, value },
+      costNote,
+      faqs[] { _key, question, answer },
+      ctaHeading, ctaText
+    }`
+  );
+});
 
 export async function getBuchenPage(): Promise<SanityBuchenPage | null> {
   return safeFetch<SanityBuchenPage>(
@@ -274,5 +417,52 @@ export async function getDatenschutzPage(): Promise<SanityDatenschutzPage | null
       lastUpdated,
       sections[] { heading, content, subsections[] { heading, content } }
     }`
+  );
+}
+
+export const getPricingPage = cache(async (): Promise<SanityPricingPage | null> => {
+  return safeFetch<SanityPricingPage>(
+    `*[_type == "pricingPage"][0] {
+      seoTitle, seoDescription,
+      heroBadge, heroHeading, heroHeadingAccent, heroText,
+      tableIntro,
+      blockCardsHeading, blockCardsText,
+      krankenkassenHeading, krankenkassenIntro,
+      krankenkassen[] { name, fullName, reimbursement, condition },
+      krankenkassenDisclaimer,
+      voucherCtaHeading, voucherCtaText,
+      faqs[] { _key, question, answer },
+      ctaHeading, ctaText
+    }`
+  );
+});
+
+export const getGutscheinePage = cache(
+  async (): Promise<SanityGutscheinePage | null> => {
+    return safeFetch<SanityGutscheinePage>(
+      `*[_type == "gutscheinePage"][0] {
+        seoTitle, seoDescription,
+        heroBadge, heroHeading, heroHeadingAccent, heroText,
+        blocksEyebrow, blocksHeading, blocksText, blocksDurationLabel,
+        customEyebrow, customHeading, customText, customCardTitle, customCardSubtext,
+        detailsHeading, detailsText, recipientHelpText,
+        paymentHeading, paymentText, agbNotice
+      }`,
+    );
+  },
+);
+
+export async function getVoucherByStripeSession(sessionId: string): Promise<SanityVoucher | null> {
+  return safeFetch<SanityVoucher>(
+    `*[_type == "voucher" && stripeSessionId == $sessionId][0] {
+      _id, code, stripeSessionId, stripePaymentIntentId, productType,
+      sessionsTotal, sessionsRemaining, durationMin,
+      customAmount, customAmountRemaining,
+      buyerEmail, buyerName, recipientName, status,
+      redemptions[] { _key, date, sessionsRedeemed, amountRedeemed, note },
+      purchasedAt, expiresAt,
+      pdfAsset { asset->{ _ref, url } }
+    }`,
+    { sessionId }
   );
 }

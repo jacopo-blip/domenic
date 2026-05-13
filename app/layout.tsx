@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { JsonLd } from "@/components/JsonLd";
 import Script from "next/script";
 import CookieConsentComponent from "@/components/CookieConsent";
 import { SanityLive } from "@/sanity/lib/live";
+import { Navbar } from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,11 +33,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const initialPathname = (await headers()).get("x-pathname") ?? "/";
   return (
     <html
       lang="de"
@@ -94,6 +97,7 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-full flex flex-col">
+        <Navbar initialPathname={initialPathname} />
         {children}
         <SanityLive />
         <Analytics />

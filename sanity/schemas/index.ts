@@ -3,17 +3,24 @@ import { pricingItemSchema } from "./pricingItem";
 import { faqItemSchema } from "./faqItem";
 import { testimonialSchema } from "./testimonial";
 import { aboutSchema } from "./about";
+import { voucherSchema } from "./voucher";
 import { settingsSchema } from "./settings";
 import { homePageSchema } from "./homePage";
 import { heilmassagePageSchema } from "./heilmassagePage";
+import { sportmassagePageSchema } from "./sportmassagePage";
 import { buchenPageSchema } from "./buchenPage";
 import { impressumPageSchema } from "./impressumPage";
 import { datenschutzPageSchema } from "./datenschutzPage";
+import { pricingPageSchema } from "./pricingPage";
+import { gutscheinePageSchema } from "./gutscheinePage";
 
 export const schemaTypes = [
   settingsSchema,
   homePageSchema,
   heilmassagePageSchema,
+  sportmassagePageSchema,
+  pricingPageSchema,
+  gutscheinePageSchema,
   buchenPageSchema,
   impressumPageSchema,
   datenschutzPageSchema,
@@ -22,4 +29,5 @@ export const schemaTypes = [
   pricingItemSchema,
   faqItemSchema,
   testimonialSchema,
+  voucherSchema,
 ];

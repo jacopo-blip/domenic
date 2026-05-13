@@ -5,9 +5,15 @@ import Image from "next/image";
 import * as CookieConsent from "vanilla-cookieconsent";
 import type { SanitySettings } from "@/sanity/lib/queries";
 
-const navLinks = [
-  { label: "Startseite", href: "/" },
+const angebotLinks = [
   { label: "Heilmassage Wien", href: "/heilmassage-wien-1080" },
+  { label: "Sportmassage Wien", href: "/sportmassage-wien" },
+  { label: "Preise", href: "/preise" },
+  { label: "Gutscheine", href: "/gutscheine" },
+];
+
+const praxisLinks = [
+  { label: "Startseite", href: "/" },
   { label: "Über mich", href: "/ueber-mich" },
   { label: "Termin buchen", href: "/buchen" },
   { label: "Impressum", href: "/impressum" },
@@ -21,8 +27,9 @@ export function Footer({ sanitySettings }: { sanitySettings?: SanitySettings | n
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
-          <div>
+        <div className="flex flex-col md:flex-row items-start justify-between gap-10">
+          {/* Brand block */}
+          <div className="max-w-xs">
             <div className="flex items-center gap-2.5">
               <Image
                 src="/images/logo-icon.svg"
@@ -35,7 +42,7 @@ export function Footer({ sanitySettings }: { sanitySettings?: SanitySettings | n
                 Domenic Hacker
               </span>
             </div>
-            <p className="mt-3 text-sm text-white/60 max-w-xs leading-relaxed">
+            <p className="mt-3 text-sm text-white/60 leading-relaxed">
               Diplomierter Heilmasseur in Wien 1080. Heilmassage,
               Lymphdrainage & Klassische Massage. Feldgasse 3/20, 1080 Wien.
             </p>
@@ -50,24 +57,47 @@ export function Footer({ sanitySettings }: { sanitySettings?: SanitySettings | n
             </a>
           </div>
 
-          <div className="flex flex-col gap-6">
-            <nav className="flex flex-wrap gap-x-6 gap-y-2">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          {/* Link columns */}
+          <div className="flex flex-col sm:flex-row gap-10 sm:gap-16">
+            {/* Angebot column */}
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">
+                Angebot
+              </p>
+              <nav className="flex flex-col gap-2.5">
+                {angebotLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+
+            {/* Praxis column */}
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">
+                Praxis
+              </p>
+              <nav className="flex flex-col gap-2.5">
+                {praxisLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
               <button
                 type="button"
                 onClick={() => CookieConsent.showPreferences()}
                 aria-haspopup="dialog"
-                className="text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
+                className="cursor-pointer mt-2.5 text-sm font-semibold text-white/60 hover:text-white transition-colors duration-200"
               >
                 Cookie-Einstellungen
               </button>
