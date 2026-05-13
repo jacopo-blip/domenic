@@ -44,14 +44,18 @@ const DARK_HERO_PATHS = new Set<string>([
   "/sportmassage-wien",
 ]);
 
-export function Navbar() {
+export function Navbar({ initialPathname = "" }: { initialPathname?: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pathname = usePathname();
+  // usePathname() is null during static prerender when a proxy file is present,
+  // so we accept the server-resolved pathname as a stable fallback. Once React
+  // hydrates and the router context is ready, the hook returns the live value.
+  const hookPathname = usePathname();
+  const pathname = hookPathname || initialPathname;
   const isBookingPage = pathname === "/buchen";
   const hasDarkHero = DARK_HERO_PATHS.has(pathname);
   // Text/icon color: dark by default (white-hero pages), white only on dark-hero

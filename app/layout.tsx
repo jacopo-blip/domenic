@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { JsonLd } from "@/components/JsonLd";
@@ -32,11 +33,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const initialPathname = (await headers()).get("x-pathname") ?? "/";
   return (
     <html
       lang="de"
@@ -95,7 +97,7 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-full flex flex-col">
-        <Navbar />
+        <Navbar initialPathname={initialPathname} />
         {children}
         <SanityLive />
         <Analytics />
