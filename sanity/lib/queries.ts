@@ -185,6 +185,30 @@ export type SanityPricingPage = {
   ctaText: string;
 };
 
+export type SanityGutscheinePage = {
+  seoTitle: string;
+  seoDescription: string;
+  heroBadge: string;
+  heroHeading: string;
+  heroHeadingAccent: string;
+  heroText: string;
+  blocksEyebrow: string;
+  blocksHeading: string;
+  blocksText: string;
+  blocksDurationLabel: string;
+  customEyebrow: string;
+  customHeading: string;
+  customText: string;
+  customCardTitle: string;
+  customCardSubtext: string;
+  detailsHeading: string;
+  detailsText: string;
+  recipientHelpText: string;
+  paymentHeading: string;
+  paymentText: string;
+  agbNotice: string;
+};
+
 export type SanityBuchenPage = {
   heading: string;
   headingAccent: string;
@@ -412,6 +436,21 @@ export const getPricingPage = cache(async (): Promise<SanityPricingPage | null> 
     }`
   );
 });
+
+export const getGutscheinePage = cache(
+  async (): Promise<SanityGutscheinePage | null> => {
+    return safeFetch<SanityGutscheinePage>(
+      `*[_type == "gutscheinePage"][0] {
+        seoTitle, seoDescription,
+        heroBadge, heroHeading, heroHeadingAccent, heroText,
+        blocksEyebrow, blocksHeading, blocksText, blocksDurationLabel,
+        customEyebrow, customHeading, customText, customCardTitle, customCardSubtext,
+        detailsHeading, detailsText, recipientHelpText,
+        paymentHeading, paymentText, agbNotice
+      }`,
+    );
+  },
+);
 
 export async function getVoucherByStripeSession(sessionId: string): Promise<SanityVoucher | null> {
   return safeFetch<SanityVoucher>(

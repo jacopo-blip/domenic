@@ -10,7 +10,10 @@ import {
   type Duration,
   type Size,
 } from "@/lib/blockOptions";
-import type { SanityVoucherProductType } from "@/sanity/lib/queries";
+import type {
+  SanityVoucherProductType,
+  SanityGutscheinePage,
+} from "@/sanity/lib/queries";
 
 // Gift-friendly preset amounts (€). Partial redemption is supported in the
 // voucher schema (customAmountRemaining), so leftover credit is not lost.
@@ -37,11 +40,13 @@ export function VoucherProductSelector({
   onSelect,
   customAmount,
   onCustomAmountChange,
+  cms,
 }: {
   selected: SelectedProduct | null;
   onSelect: (product: SelectedProduct) => void;
   customAmount: number;
   onCustomAmountChange: (value: number) => void;
+  cms?: SanityGutscheinePage | null;
 }) {
   // Initial duration: pick up from preselected block if any, else default 60.
   // (In practice the parent skips this step when there is a deep-link preset,
@@ -92,19 +97,20 @@ export function VoucherProductSelector({
       <section>
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
           <p className="text-xs font-bold uppercase tracking-widest text-[#0d4f4f]/70 mb-2">
-            Für sich selbst — Stammkunden-Vorteil
+            {cms?.blocksEyebrow ?? "Für sich selbst — Stammkunden-Vorteil"}
           </p>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0d4f4f] mb-3">
-            Block-Karte kaufen
+            {cms?.blocksHeading ?? "Block-Karte kaufen"}
           </h2>
           <p className="text-[#555] leading-relaxed">
-            Bis zu 12 % sparen. Ideal wenn Sie regelmäßig Behandlungen brauchen.
+            {cms?.blocksText ??
+              "Bis zu 12 % sparen. Ideal wenn Sie regelmäßig Behandlungen brauchen."}
           </p>
         </div>
 
         <div className="flex flex-col items-center mb-8 sm:mb-10">
           <p className="text-xs font-bold uppercase tracking-widest text-[#0d4f4f]/70 mb-3">
-            Behandlungsdauer wählen
+            {cms?.blocksDurationLabel ?? "Behandlungsdauer wählen"}
           </p>
           <div
             role="radiogroup"
@@ -176,6 +182,7 @@ export function VoucherProductSelector({
         onCustomAmountChange={onCustomAmountChange}
         selected={selected?.kind === "custom"}
         onSelectCustom={selectCustom}
+        cms={cms}
       />
     </div>
   );
@@ -260,11 +267,13 @@ function CustomVoucherSection({
   onCustomAmountChange,
   selected,
   onSelectCustom,
+  cms,
 }: {
   customAmount: number;
   onCustomAmountChange: (value: number) => void;
   selected: boolean;
   onSelectCustom: () => void;
+  cms?: SanityGutscheinePage | null;
 }) {
   const validAmount =
     Number.isFinite(customAmount) &&
@@ -275,14 +284,14 @@ function CustomVoucherSection({
     <section>
       <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
         <p className="text-xs font-bold uppercase tracking-widest text-[#f2a93b] mb-2">
-          Zum Verschenken
+          {cms?.customEyebrow ?? "Zum Verschenken"}
         </p>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0d4f4f] mb-3">
-          Einzelgutschein
+          {cms?.customHeading ?? "Einzelgutschein"}
         </h2>
         <p className="text-[#555] leading-relaxed">
-          Frei wählbarer Betrag — perfekt für Geburtstag, Weihnachten oder
-          Muttertag. 3 Jahre gültig, Restguthaben bleibt erhalten.
+          {cms?.customText ??
+            "Frei wählbarer Betrag — perfekt für Geburtstag, Weihnachten oder Muttertag. 3 Jahre gültig, Restguthaben bleibt erhalten."}
         </p>
       </div>
 
@@ -298,9 +307,12 @@ function CustomVoucherSection({
             <Gift size={24} className="text-[#f2a93b]" aria-hidden={true} />
           </div>
           <div>
-            <p className="text-lg font-extrabold">Beliebiger Geschenk-Betrag</p>
+            <p className="text-lg font-extrabold">
+              {cms?.customCardTitle ?? "Beliebiger Geschenk-Betrag"}
+            </p>
             <p className="text-sm text-white/70 leading-relaxed">
-              €{CUSTOM_MIN} bis €{CUSTOM_MAX} · einlösbar auf jede Behandlung
+              €{CUSTOM_MIN} bis €{CUSTOM_MAX} ·{" "}
+              {cms?.customCardSubtext ?? "einlösbar auf jede Behandlung"}
             </p>
           </div>
         </div>
