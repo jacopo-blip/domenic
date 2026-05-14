@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe/client";
-import { getStripePriceId, PRODUCT_DEFINITIONS } from "@/lib/stripe/products";
+import {
+  getStripeProductId,
+  PRODUCT_DEFINITIONS,
+} from "@/lib/stripe/products";
+import { getBlockPricing } from "@/sanity/lib/queries";
+import { getBlockPriceCents } from "@/lib/blockOptions";
+import type { BlockProductKey } from "@/lib/blockOptions";
 import type { SanityVoucherProductType } from "@/sanity/lib/queries";
 
 export const dynamic = "force-dynamic";
@@ -76,17 +82,65 @@ export async function POST(req: Request) {
   const { productType, customAmount, buyerEmail, buyerName, recipientName } = validated;
 
   try {
-    const lineItem =
-      customAmount !== undefined
-        ? {
-            price_data: {
-              currency: "eur",
-              product_data: { name: "Einzelgutschein" },
-              unit_amount: customAmount,
-            },
-            quantity: 1,
-          }
-        : { price: getStripePriceId(productType), quantity: 1 };
+    // Inline-Type da Stripe.Checkout.SessionCreateParams.LineItem nicht
+    // direkt re-exportiert wird; die zwei möglichen Shapes hier erfasst.
+    let lineItem:
+      | { price: string; quantity: number }
+      | {
+          price_data: {
+            currency: "eur";
+            product?: string;
+            product_data?: { name: string };
+            unit_amount: number;
+          };
+          quantity: number;
+        };
+    // Soll-Betrag in cents — wird als session.metadata.expectedAmountCents
+    // an den Webhook weitergereicht, damit dieser nicht gegen hardcoded
+    // PRODUCT_PRICES_EUR validieren muss, sondern gegen den exakten Wert
+    // den dieser Checkout erwartet hat.
+    let expectedAmountCents: number;
+
+    if (customAmount !== undefined) {
+      // Einzelgutschein: price_data inline, Betrag kommt vom Selector
+      lineItem = {
+        price_data: {
+          currency: "eur",
+          product_data: { name: "Einzelgutschein" },
+          unit_amount: customAmount,
+        },
+        quantity: 1,
+      };
+      expectedAmountCents = customAmount;
+    } else {
+      // Block-Karte: Preis aus Sanity, gegen den persistenten Stripe Product
+      // gebucht via price_data inline. STRIPE_PRODUCT_BLOCK_* MUSS gesetzt
+      // sein — kein silent fallback auf STRIPE_PRICE_BLOCK_* mehr, weil das
+      // bei Sanity-Preisänderungen zu Mismatch zwischen unit_amount und
+      // expectedAmountCents führen würde (Webhook lehnt dann jede Zahlung
+      // als price tampering ab → Kunde zahlt, kein Voucher).
+      const blockProductKey = productType as BlockProductKey;
+      const stripeProductId = getStripeProductId(productType);
+      if (!stripeProductId) {
+        console.error(
+          `Missing STRIPE_PRODUCT env var for ${productType} — configure before deploy`,
+        );
+        return NextResponse.json(
+          { error: "Checkout temporarily unavailable" },
+          { status: 503 },
+        );
+      }
+      const pricing = await getBlockPricing();
+      expectedAmountCents = getBlockPriceCents(blockProductKey, pricing);
+      lineItem = {
+        price_data: {
+          currency: "eur",
+          product: stripeProductId,
+          unit_amount: expectedAmountCents,
+        },
+        quantity: 1,
+      };
+    }
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -98,6 +152,7 @@ export async function POST(req: Request) {
         productType,
         buyerName,
         recipientName: recipientName ?? "",
+        expectedAmountCents: String(expectedAmountCents),
       },
       payment_intent_data: {
         metadata: {

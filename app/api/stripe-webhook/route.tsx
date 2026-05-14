@@ -121,30 +121,59 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid productType" }, { status: 400 });
   }
 
-  // Defense in depth: for block products, verify Stripe-charged amount matches expected price.
-  // If a malicious request bypassed /api/checkout validation, this catches it before voucher creation.
+  // Defense in depth: for block products, verify Stripe-charged amount matches the
+  // expected price that /api/checkout recorded when creating the session. This is
+  // resilient to Sanity-driven price changes — checkout writes the price-at-session-
+  // creation-time into session.metadata.expectedAmountCents, webhook validates against
+  // exactly that. Falls back to the legacy hardcoded PRODUCT_PRICES_EUR lookup if
+  // metadata isn't present (e.g., sessions created before this defense was added).
   if (PRODUCT_DEFINITIONS[productType].kind === "block") {
-    const expectedCents = (PRODUCT_PRICES_EUR[productType] ?? 0) * 100;
+    const metadataExpected = session.metadata?.expectedAmountCents;
+    const expectedCents =
+      metadataExpected != null && /^\d+$/.test(metadataExpected)
+        ? Number(metadataExpected)
+        : (PRODUCT_PRICES_EUR[productType] ?? 0) * 100;
     if (session.amount_total !== expectedCents) {
       console.error(
         `Price mismatch for ${productType}: expected ${expectedCents}, got ${session.amount_total}. Session ${sessionId}`
       );
-      // Best-effort alert to Domenic; don't fail webhook (Stripe was already paid)
+      const mismatchVoucher = {
+        code: `MISMATCH-${sessionId.slice(-8)}`,
+        productType,
+        sessionsTotal: null,
+        durationMin: null,
+        customAmount: session.amount_total ? session.amount_total / 100 : null,
+        buyerEmail: session.customer_details?.email ?? "(unknown)",
+        buyerName: "(price mismatch)",
+        recipientName: null,
+        status: "cancelled" as const,
+      };
+      // 1) Persist to Sanity FIRST — durable record in Studio "Probleme"-Liste
+      //    auch wenn Email-Versand danach fehlschlägt. Customer hat schon gezahlt,
+      //    Geld darf nicht in einem console.error verschwinden.
+      if (writeClient) {
+        try {
+          await writeClient.create({
+            _type: "voucher",
+            ...mismatchVoucher,
+            stripeSessionId: sessionId,
+            stripePaymentIntentId:
+              typeof session.payment_intent === "string"
+                ? session.payment_intent
+                : null,
+            purchasedAt: new Date().toISOString(),
+            expiresAt: null,
+          });
+        } catch (persistErr) {
+          console.error("Failed to persist price-mismatch record:", persistErr);
+        }
+      }
+      // 2) Best-effort alert to Domenic
       try {
         const settings = await getSettings();
         const domenicEmail = settings?.email ?? "praxis@heilmasseur-domenic.at";
         await sendDomenicNotification({
-          voucher: {
-            code: "(no voucher created)",
-            productType,
-            sessionsTotal: null,
-            durationMin: null,
-            customAmount: session.amount_total ? session.amount_total / 100 : null,
-            buyerEmail: session.customer_details?.email ?? "(unknown)",
-            buyerName: "(price mismatch)",
-            recipientName: null,
-            status: "cancelled",
-          },
+          voucher: mismatchVoucher,
           domenicEmail,
           isAlert: true,
         });
@@ -210,6 +239,7 @@ export async function POST(req: Request) {
           recipientName: voucherDoc.recipientName,
           purchasedAt: voucherDoc.purchasedAt,
           expiresAt: voucherDoc.expiresAt,
+          purchasedPriceCents: session.amount_total,
         }}
       />
     );

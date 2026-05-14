@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { GutscheineFlow } from "@/components/GutscheineFlow";
-import { getGutscheinePage } from "@/sanity/lib/queries";
+import { getBlockPricing, getGutscheinePage } from "@/sanity/lib/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
   const cms = await getGutscheinePage();
@@ -19,11 +19,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function GutscheinePage() {
-  const cms = await getGutscheinePage();
+  const [cms, pricing] = await Promise.all([
+    getGutscheinePage(),
+    getBlockPricing(),
+  ]);
   return (
     <>
       <main>
-        <GutscheineFlow cms={cms} />
+        <GutscheineFlow cms={cms} pricing={pricing} />
       </main>
       <Footer />
     </>

@@ -10,37 +10,52 @@ import {
   VoucherCheckout,
   type CheckoutFormInput,
 } from "@/components/VoucherCheckout";
-import { PRODUCT_PRICES_EUR } from "@/lib/stripe/products";
-import type { SanityGutscheinePage } from "@/sanity/lib/queries";
+import { getBlockOption, type BlockProductKey } from "@/lib/blockOptions";
+import type {
+  SanityGutscheinePage,
+  SanityBlockPricing,
+} from "@/sanity/lib/queries";
 
 function deriveInitialSelected(
   productPreset: string | null,
+  pricing: SanityBlockPricing | null,
 ): SelectedProduct | null {
   if (!productPreset) return null;
   const blockMatch = /^block_(5|10)_(30|45|60)$/.exec(productPreset);
   if (blockMatch) {
     const size = Number(blockMatch[1]) as 5 | 10;
     const duration = Number(blockMatch[2]) as 30 | 45 | 60;
-    const productType = productPreset as SelectedProduct["productType"];
-    const price = PRODUCT_PRICES_EUR[productType] ?? 0;
-    return { productType, kind: "block", price, size, duration };
+    const opt = getBlockOption(size, duration, pricing);
+    return {
+      productType: opt.productKey as BlockProductKey,
+      kind: "block",
+      price: opt.price,
+      size,
+      duration,
+    };
   }
   return null;
 }
 
-function GutscheineContent({ cms }: { cms: SanityGutscheinePage | null }) {
+function GutscheineContent({
+  cms,
+  pricing,
+}: {
+  cms: SanityGutscheinePage | null;
+  pricing: SanityBlockPricing | null;
+}) {
   const searchParams = useSearchParams();
   const productPreset = searchParams.get("product");
 
   const [selected, setSelected] = useState<SelectedProduct | null>(() =>
-    deriveInitialSelected(productPreset),
+    deriveInitialSelected(productPreset, pricing),
   );
   const [customAmount, setCustomAmount] = useState<number>(50);
   const [buyerEmail, setBuyerEmail] = useState("");
   const [buyerName, setBuyerName] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [step, setStep] = useState<"select" | "details" | "pay">(() =>
-    deriveInitialSelected(productPreset) ? "details" : "select",
+    deriveInitialSelected(productPreset, pricing) ? "details" : "select",
   );
 
   const checkoutInput: CheckoutFormInput | null =
@@ -89,6 +104,7 @@ function GutscheineContent({ cms }: { cms: SanityGutscheinePage | null }) {
               customAmount={customAmount}
               onCustomAmountChange={setCustomAmount}
               cms={cms}
+              pricing={pricing}
             />
           </div>
         </section>
@@ -200,12 +216,14 @@ function GutscheineContent({ cms }: { cms: SanityGutscheinePage | null }) {
 
 export function GutscheineFlow({
   cms,
+  pricing,
 }: {
   cms: SanityGutscheinePage | null;
+  pricing: SanityBlockPricing | null;
 }) {
   return (
     <Suspense fallback={<div className="min-h-screen" />}>
-      <GutscheineContent cms={cms} />
+      <GutscheineContent cms={cms} pricing={pricing} />
     </Suspense>
   );
 }

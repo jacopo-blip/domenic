@@ -13,6 +13,7 @@ import {
 import type {
   SanityVoucherProductType,
   SanityGutscheinePage,
+  SanityBlockPricing,
 } from "@/sanity/lib/queries";
 
 // Gift-friendly preset amounts (€). Partial redemption is supported in the
@@ -41,12 +42,14 @@ export function VoucherProductSelector({
   customAmount,
   onCustomAmountChange,
   cms,
+  pricing,
 }: {
   selected: SelectedProduct | null;
   onSelect: (product: SelectedProduct) => void;
   customAmount: number;
   onCustomAmountChange: (value: number) => void;
   cms?: SanityGutscheinePage | null;
+  pricing?: SanityBlockPricing | null;
 }) {
   // Initial duration: pick up from preselected block if any, else default 60.
   // (In practice the parent skips this step when there is a deep-link preset,
@@ -61,7 +64,11 @@ export function VoucherProductSelector({
     // If a block is currently selected, migrate selection to same size + new duration
     // so toggle and selection never get out of sync.
     if (selected?.kind === "block") {
-      const newOpt = getBlockOption(selected.size as Size, newDuration);
+      const newOpt = getBlockOption(
+        selected.size as Size,
+        newDuration,
+        pricing,
+      );
       onSelect({
         productType: newOpt.productKey,
         kind: "block",
@@ -73,7 +80,7 @@ export function VoucherProductSelector({
   }
 
   function selectBlock(size: Size) {
-    const opt = getBlockOption(size, duration);
+    const opt = getBlockOption(size, duration, pricing);
     onSelect({
       productType: opt.productKey,
       kind: "block",
@@ -146,7 +153,7 @@ export function VoucherProductSelector({
 
         <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
           {SIZES.map((size) => {
-            const opt = getBlockOption(size, duration);
+            const opt = getBlockOption(size, duration, pricing);
             const isSelected =
               selected?.kind === "block" &&
               selected.productType === opt.productKey;
@@ -155,6 +162,7 @@ export function VoucherProductSelector({
                 key={size}
                 size={size}
                 duration={duration}
+                pricing={pricing}
                 selected={isSelected}
                 highlight={size === 10}
                 onSelect={() => selectBlock(size)}
@@ -192,16 +200,18 @@ function BlockSizeCard({
   size,
   duration,
   selected,
+  pricing,
   highlight = false,
   onSelect,
 }: {
   size: Size;
   duration: Duration;
   selected: boolean;
+  pricing?: SanityBlockPricing | null;
   highlight?: boolean;
   onSelect: () => void;
 }) {
-  const opt = getBlockOption(size, duration);
+  const opt = getBlockOption(size, duration, pricing);
   const discount = discountPercent(opt.price, opt.fullPrice);
   const savings = opt.fullPrice - opt.price;
   const perSession = Math.round(opt.price / size);

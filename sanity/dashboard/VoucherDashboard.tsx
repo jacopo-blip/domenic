@@ -1,16 +1,24 @@
 import { useEffect, useState } from "react";
 import { useClient } from "sanity";
 import type { UserComponent } from "sanity/structure";
-import { BLOCK_OPTIONS, type BlockProductKey } from "../../lib/blockOptions";
+import {
+  BLOCK_PRICES_FALLBACK,
+  type BlockProductKey,
+} from "../../lib/blockOptions";
 
 const REFRESH_INTERVAL_MS = 30_000;
 const SOON_DAYS = 30;
 const TIME_ZONE = "Europe/Vienna";
 
+// Approximate per-session value for dashboard display only.
+// Uses fallback prices; if Domenic adjusts prices in Sanity blockPricing,
+// the dashboard's per-session estimate may lag until the next code deploy.
+// Acceptable trade-off since this is an internal Studio view, not customer-facing.
 const PRICE_PER_SESSION: Record<string, number> = (() => {
   const map: Record<string, number> = {};
-  for (const o of BLOCK_OPTIONS) {
-    map[o.productKey] = Math.round(o.price / o.size);
+  for (const [key, { price }] of Object.entries(BLOCK_PRICES_FALLBACK)) {
+    const size = key.startsWith("block_5_") ? 5 : 10;
+    map[key] = Math.round(price / size);
   }
   return map;
 })();

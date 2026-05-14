@@ -15,6 +15,7 @@ import {
   getPricingPage,
   getPricingItems,
   getSettings,
+  getBlockPricing,
 } from "@/sanity/lib/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -42,10 +43,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function PreisePage() {
-  const [page, pricingItems, settings] = await Promise.all([
+  const [page, pricingItems, settings, blockPricing] = await Promise.all([
     getPricingPage(),
     getPricingItems(),
     getSettings(),
+    getBlockPricing(),
   ]);
 
   const heroBadge = page?.heroBadge ?? "Transparente Preise";
@@ -135,6 +137,7 @@ export default async function PreisePage() {
           text={blockText}
           voucherCtaHeading={voucherCtaHeading}
           voucherCtaText={voucherCtaText}
+          pricing={blockPricing}
         />
 
         {/* KRANKENKASSEN */}

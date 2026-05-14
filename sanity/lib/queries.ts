@@ -185,6 +185,21 @@ export type SanityPricingPage = {
   ctaText: string;
 };
 
+export type SanityBlockPricing = {
+  block_5_30_price: number;
+  block_5_30_fullPrice: number;
+  block_5_45_price: number;
+  block_5_45_fullPrice: number;
+  block_5_60_price: number;
+  block_5_60_fullPrice: number;
+  block_10_30_price: number;
+  block_10_30_fullPrice: number;
+  block_10_45_price: number;
+  block_10_45_fullPrice: number;
+  block_10_60_price: number;
+  block_10_60_fullPrice: number;
+};
+
 export type SanityGutscheinePage = {
   seoTitle: string;
   seoDescription: string;
@@ -436,6 +451,21 @@ export const getPricingPage = cache(async (): Promise<SanityPricingPage | null> 
     }`
   );
 });
+
+export const getBlockPricing = cache(
+  async (): Promise<SanityBlockPricing | null> => {
+    return safeFetch<SanityBlockPricing>(
+      `*[_type == "blockPricing"][0] {
+        block_5_30_price, block_5_30_fullPrice,
+        block_5_45_price, block_5_45_fullPrice,
+        block_5_60_price, block_5_60_fullPrice,
+        block_10_30_price, block_10_30_fullPrice,
+        block_10_45_price, block_10_45_fullPrice,
+        block_10_60_price, block_10_60_fullPrice
+      }`,
+    );
+  },
+);
 
 export const getGutscheinePage = cache(
   async (): Promise<SanityGutscheinePage | null> => {
