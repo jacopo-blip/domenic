@@ -58,11 +58,16 @@ function GutscheineContent({
     deriveInitialSelected(productPreset, pricing) ? "details" : "select",
   );
 
-  // Bei Step-Wechsel auf 0 scrollen — sonst landet der User (insbesondere
-  // mobile) im leeren Bereich, weil der nächste Step kürzer ist als der
-  // aktuelle (Selector → Details-Form ist deutlich kompakter).
+  // Bei Step-Wechsel zum Heading des neuen Steps scrollen (unter der
+  // Navbar via scroll-margin-top am Element). Verhindert dass der User
+  // im leeren Bereich landet, weil der nächste Step kürzer ist.
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (step === "select") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const heading = document.getElementById(`step-${step}-heading`);
+    heading?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [step]);
 
   const checkoutInput: CheckoutFormInput | null =
@@ -120,7 +125,10 @@ function GutscheineContent({
       {step === "details" && selected && (
         <section className="bg-white py-16 sm:py-24">
           <div className="mx-auto max-w-2xl px-5 sm:px-8">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0d4f4f] mb-2">
+            <h2
+              id="step-details-heading"
+              className="scroll-mt-20 sm:scroll-mt-24 text-2xl sm:text-3xl font-extrabold text-[#0d4f4f] mb-2"
+            >
               {cms?.detailsHeading ?? "Ihre Daten"}
             </h2>
             <p className="text-[#555] mb-8 leading-relaxed">
@@ -202,7 +210,10 @@ function GutscheineContent({
       {step === "pay" && checkoutInput && (
         <section className="bg-white py-16 sm:py-24">
           <div className="mx-auto max-w-2xl px-5 sm:px-8">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0d4f4f] mb-2">
+            <h2
+              id="step-pay-heading"
+              className="scroll-mt-20 sm:scroll-mt-24 text-2xl sm:text-3xl font-extrabold text-[#0d4f4f] mb-2"
+            >
               {cms?.paymentHeading ?? "Zahlung"}
             </h2>
             <p className="text-[#555] mb-8 leading-relaxed">
