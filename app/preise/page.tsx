@@ -68,10 +68,10 @@ export default async function PreisePage() {
     page?.krankenkassenHeading ?? "Krankenkassen-Rückerstattung";
   const krankenkassenIntro =
     page?.krankenkassenIntro ??
-    "Heilmassage kann je nach Kasse teilweise erstattet werden.";
+    "Heilmassage kann mit ärztlicher Verordnung teilweise erstattet werden. Sportmassage zählt als Wellness-Leistung und ist nicht erstattbar. Die folgenden Werte sind Richtwerte (Stand 2026) — bitte direkt bei Ihrer Kasse erfragen.";
   const krankenkassenDisclaimer =
     page?.krankenkassenDisclaimer ??
-    "Stand 2026, Richtwerte. Bitte direkt bei Ihrer Kasse erfragen.";
+    "Stand 01.01.2026 — Richtwerte aus den Kassen-Vertragstarifen für Wahltherapie. Tatsächliche Erstattung hängt von Behandlungstyp, Dauer und individuellem Versicherungsstatus ab. Heilmassage wird grundsätzlich nur mit gültiger ärztlicher Verordnung erstattet. Sportmassage ist als Wellness-Leistung nicht erstattbar. Bitte vor Behandlungsbeginn direkt bei Ihrer Kasse erfragen.";
 
   const voucherCtaHeading = page?.voucherCtaHeading ?? "Gutscheine verschenken";
   const voucherCtaText =
