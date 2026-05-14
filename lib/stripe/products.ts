@@ -25,6 +25,19 @@ const PRICE_ID_ENV: Record<SanityVoucherProductType, string> = {
   voucher_custom: "STRIPE_PRICE_VOUCHER_CUSTOM",
 };
 
+// Stripe Product IDs (prod_…) per voucher type. Required for the
+// price_data flow where the per-checkout price comes from Sanity.
+// Only block products use this — voucher_custom keeps using price_data
+// with product_data: { name: "Einzelgutschein" } (no persistent Product).
+const PRODUCT_ID_ENV: Partial<Record<SanityVoucherProductType, string>> = {
+  block_5_30: "STRIPE_PRODUCT_BLOCK_5_30",
+  block_5_45: "STRIPE_PRODUCT_BLOCK_5_45",
+  block_5_60: "STRIPE_PRODUCT_BLOCK_5_60",
+  block_10_30: "STRIPE_PRODUCT_BLOCK_10_30",
+  block_10_45: "STRIPE_PRODUCT_BLOCK_10_45",
+  block_10_60: "STRIPE_PRODUCT_BLOCK_10_60",
+};
+
 /**
  * Block product prices in EUR (matches scripts/setup-stripe-products.ts).
  * Used for displaying purchased value on the customer PDF.
@@ -49,6 +62,20 @@ export function getStripePriceId(productType: SanityVoucherProductType): string 
     throw new Error(`Missing env var: ${envName}`);
   }
   return priceId;
+}
+
+// Returns the Stripe Product ID (prod_…) for a block product, or null
+// if the corresponding env var isn't set. Callers should treat null as
+// "fall back to the legacy STRIPE_PRICE_BLOCK_* lookup" — that path
+// stays viable so a deploy doesn't break if the new env vars haven't
+// been populated yet (e.g., on Preview where test-mode Products may
+// not exist yet).
+export function getStripeProductId(
+  productType: SanityVoucherProductType,
+): string | null {
+  const envName = PRODUCT_ID_ENV[productType];
+  if (!envName) return null;
+  return process.env[envName] ?? null;
 }
 
 export function productTypeFromStripeMetadata(

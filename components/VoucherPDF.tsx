@@ -148,12 +148,21 @@ export type VoucherPDFData = Pick<
   | "recipientName"
   | "purchasedAt"
   | "expiresAt"
->;
+> & {
+  // Tatsächlich bezahlter Preis (cents) — vom Webhook aus session.amount_total
+  // gesetzt, damit der PDF-Wert "eingefroren" am Kaufzeitpunkt bleibt und nicht
+  // vom Drift im PRODUCT_PRICES_EUR-Fallback abhängt, wenn Sanity-Preise sich
+  // später ändern. Optional aus Backward-Compat-Gründen.
+  purchasedPriceCents?: number | null;
+};
 
 export function VoucherPDF({ voucher }: { voucher: VoucherPDFData }) {
   const productLabel = PRODUCT_LABELS[voucher.productType] ?? voucher.productType;
   const isCustom = voucher.productType === "voucher_custom";
-  const blockPriceEur = PRODUCT_PRICES_EUR[voucher.productType];
+  const blockPriceEur =
+    typeof voucher.purchasedPriceCents === "number"
+      ? Math.round(voucher.purchasedPriceCents / 100)
+      : PRODUCT_PRICES_EUR[voucher.productType];
 
   const valuePrimary = isCustom
     ? `€ ${voucher.customAmount ?? "—"}`

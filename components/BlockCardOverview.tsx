@@ -10,17 +10,20 @@ import {
   type Duration,
   type Size,
 } from "@/lib/blockOptions";
+import type { SanityBlockPricing } from "@/sanity/lib/queries";
 
 export function BlockCardOverview({
   heading,
   text,
   voucherCtaHeading,
   voucherCtaText,
+  pricing,
 }: {
   heading: string;
   text: string;
   voucherCtaHeading: string;
   voucherCtaText: string;
+  pricing?: SanityBlockPricing | null;
 }) {
   const [duration, setDuration] = useState<Duration>(60);
 
@@ -72,8 +75,8 @@ export function BlockCardOverview({
         </div>
 
         <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
-          <SizeCard size={5} duration={duration} />
-          <SizeCard size={10} duration={duration} highlight />
+          <SizeCard size={5} duration={duration} pricing={pricing} />
+          <SizeCard size={10} duration={duration} pricing={pricing} highlight />
         </div>
 
         {/* Einzelgutschein-CTA */}
@@ -104,13 +107,15 @@ export function BlockCardOverview({
 function SizeCard({
   size,
   duration,
+  pricing,
   highlight = false,
 }: {
   size: Size;
   duration: Duration;
+  pricing?: SanityBlockPricing | null;
   highlight?: boolean;
 }) {
-  const opt = getBlockOption(size, duration);
+  const opt = getBlockOption(size, duration, pricing);
   const discount = discountPercent(opt.price, opt.fullPrice);
   const savings = opt.fullPrice - opt.price;
   const perSession = Math.round(opt.price / size);

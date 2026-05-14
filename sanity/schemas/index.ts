@@ -13,6 +13,7 @@ import { impressumPageSchema } from "./impressumPage";
 import { datenschutzPageSchema } from "./datenschutzPage";
 import { pricingPageSchema } from "./pricingPage";
 import { gutscheinePageSchema } from "./gutscheinePage";
+import { blockPricingSchema } from "./blockPricing";
 
 export const schemaTypes = [
   settingsSchema,
@@ -21,6 +22,7 @@ export const schemaTypes = [
   sportmassagePageSchema,
   pricingPageSchema,
   gutscheinePageSchema,
+  blockPricingSchema,
   buchenPageSchema,
   impressumPageSchema,
   datenschutzPageSchema,
