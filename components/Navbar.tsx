@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X, Check, ChevronDown } from "lucide-react";
+import { Menu, X, Check, ChevronDown, Calendar } from "lucide-react";
 import Image from "next/image";
 
 type NavLink = { kind: "link"; label: string; href: string };
@@ -42,6 +42,7 @@ const DARK_HERO_PATHS = new Set<string>([
   "/ueber-mich",
   "/heilmassage-wien-1080",
   "/sportmassage-wien",
+  "/buchen",
 ]);
 
 export function Navbar({ initialPathname = "" }: { initialPathname?: string }) {
@@ -262,6 +263,7 @@ export function Navbar({ initialPathname = "" }: { initialPathname?: string }) {
                   href="/buchen"
                   className="ml-3 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-[#e8654a]/25 transition-all duration-200 hover:shadow-xl hover:shadow-[#e8654a]/30 motion-safe:hover:scale-105"
                 >
+                  <Calendar size={16} strokeWidth={2.5} aria-hidden={true} />
                   Termin buchen
                 </a>
               )}
@@ -357,8 +359,9 @@ export function Navbar({ initialPathname = "" }: { initialPathname?: string }) {
               <a
                 href="/buchen"
                 onClick={() => setMobileOpen(false)}
-                className="mt-4 inline-flex rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-8 py-3.5 text-lg font-bold text-white shadow-lg shadow-[#e8654a]/25"
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#e8654a] to-[#f2a93b] px-8 py-3.5 text-lg font-bold text-white shadow-lg shadow-[#e8654a]/25"
               >
+                <Calendar size={20} strokeWidth={2.5} aria-hidden={true} />
                 Termin buchen
               </a>
             )}
