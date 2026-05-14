@@ -42,6 +42,7 @@ const DARK_HERO_PATHS = new Set<string>([
   "/ueber-mich",
   "/heilmassage-wien-1080",
   "/sportmassage-wien",
+  "/buchen",
 ]);
 
 export function Navbar({ initialPathname = "" }: { initialPathname?: string }) {
