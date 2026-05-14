@@ -137,22 +137,43 @@ export async function POST(req: Request) {
       console.error(
         `Price mismatch for ${productType}: expected ${expectedCents}, got ${session.amount_total}. Session ${sessionId}`
       );
-      // Best-effort alert to Domenic; don't fail webhook (Stripe was already paid)
+      const mismatchVoucher = {
+        code: `MISMATCH-${sessionId.slice(-8)}`,
+        productType,
+        sessionsTotal: null,
+        durationMin: null,
+        customAmount: session.amount_total ? session.amount_total / 100 : null,
+        buyerEmail: session.customer_details?.email ?? "(unknown)",
+        buyerName: "(price mismatch)",
+        recipientName: null,
+        status: "cancelled" as const,
+      };
+      // 1) Persist to Sanity FIRST — durable record in Studio "Probleme"-Liste
+      //    auch wenn Email-Versand danach fehlschlägt. Customer hat schon gezahlt,
+      //    Geld darf nicht in einem console.error verschwinden.
+      if (writeClient) {
+        try {
+          await writeClient.create({
+            _type: "voucher",
+            ...mismatchVoucher,
+            stripeSessionId: sessionId,
+            stripePaymentIntentId:
+              typeof session.payment_intent === "string"
+                ? session.payment_intent
+                : null,
+            purchasedAt: new Date().toISOString(),
+            expiresAt: null,
+          });
+        } catch (persistErr) {
+          console.error("Failed to persist price-mismatch record:", persistErr);
+        }
+      }
+      // 2) Best-effort alert to Domenic
       try {
         const settings = await getSettings();
         const domenicEmail = settings?.email ?? "praxis@heilmasseur-domenic.at";
         await sendDomenicNotification({
-          voucher: {
-            code: "(no voucher created)",
-            productType,
-            sessionsTotal: null,
-            durationMin: null,
-            customAmount: session.amount_total ? session.amount_total / 100 : null,
-            buyerEmail: session.customer_details?.email ?? "(unknown)",
-            buyerName: "(price mismatch)",
-            recipientName: null,
-            status: "cancelled",
-          },
+          voucher: mismatchVoucher,
           domenicEmail,
           isAlert: true,
         });

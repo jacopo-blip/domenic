@@ -32,7 +32,7 @@ export const blockPricingSchema = defineType({
       title: "5er · 30 Min — Preis (EUR)",
       type: "number",
       initialValue: 259,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block5",
     }),
     defineField({
@@ -41,7 +41,7 @@ export const blockPricingSchema = defineType({
       description: "Durchgestrichener Vergleichspreis. Sollte > Preis sein.",
       type: "number",
       initialValue: 275,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block5",
     }),
     defineField({
@@ -49,7 +49,7 @@ export const blockPricingSchema = defineType({
       title: "5er · 45 Min — Preis (EUR)",
       type: "number",
       initialValue: 329,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block5",
     }),
     defineField({
@@ -57,7 +57,7 @@ export const blockPricingSchema = defineType({
       title: "5er · 45 Min — Statt-Preis (EUR)",
       type: "number",
       initialValue: 350,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block5",
     }),
     defineField({
@@ -65,7 +65,7 @@ export const blockPricingSchema = defineType({
       title: "5er · 60 Min — Preis (EUR)",
       type: "number",
       initialValue: 399,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block5",
     }),
     defineField({
@@ -73,7 +73,7 @@ export const blockPricingSchema = defineType({
       title: "5er · 60 Min — Statt-Preis (EUR)",
       type: "number",
       initialValue: 425,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block5",
     }),
 
@@ -83,7 +83,7 @@ export const blockPricingSchema = defineType({
       title: "10er · 30 Min — Preis (EUR)",
       type: "number",
       initialValue: 489,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block10",
     }),
     defineField({
@@ -91,7 +91,7 @@ export const blockPricingSchema = defineType({
       title: "10er · 30 Min — Statt-Preis (EUR)",
       type: "number",
       initialValue: 550,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block10",
     }),
     defineField({
@@ -99,7 +99,7 @@ export const blockPricingSchema = defineType({
       title: "10er · 45 Min — Preis (EUR)",
       type: "number",
       initialValue: 619,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block10",
     }),
     defineField({
@@ -107,7 +107,7 @@ export const blockPricingSchema = defineType({
       title: "10er · 45 Min — Statt-Preis (EUR)",
       type: "number",
       initialValue: 700,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block10",
     }),
     defineField({
@@ -115,7 +115,7 @@ export const blockPricingSchema = defineType({
       title: "10er · 60 Min — Preis (EUR)",
       type: "number",
       initialValue: 749,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block10",
     }),
     defineField({
@@ -123,7 +123,7 @@ export const blockPricingSchema = defineType({
       title: "10er · 60 Min — Statt-Preis (EUR)",
       type: "number",
       initialValue: 850,
-      validation: (Rule) => Rule.required().min(50).max(5000),
+      validation: (Rule) => Rule.required().integer().min(50).max(5000),
       fieldset: "block10",
     }),
   ],

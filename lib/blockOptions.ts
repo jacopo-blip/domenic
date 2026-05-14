@@ -87,7 +87,9 @@ export function getBlockPriceCents(
   productKey: BlockProductKey,
   pricing: SanityBlockPricing | null | undefined,
 ): number {
-  return priceFromPricing(productKey, pricing).price * 100;
+  // Math.round schützt gegen Float-Artefakte (z.B. 259.45 * 100 = 25945.0000000000004),
+  // die Stripes unit_amount-Integer-Validation auslösen würden.
+  return Math.round(priceFromPricing(productKey, pricing).price * 100);
 }
 
 export function discountPercent(price: number, fullPrice: number): number {

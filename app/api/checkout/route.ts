@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe/client";
 import {
-  getStripePriceId,
   getStripeProductId,
   PRODUCT_DEFINITIONS,
 } from "@/lib/stripe/products";
@@ -114,32 +113,33 @@ export async function POST(req: Request) {
       };
       expectedAmountCents = customAmount;
     } else {
-      // Block-Karte: Preis aus Sanity (fallback auf hardcoded
-      // BLOCK_PRICES_FALLBACK falls CMS noch leer), in price_data inline
-      // gegen den persistenten Stripe Product gebucht. Wenn STRIPE_PRODUCT_BLOCK_*
-      // (noch) nicht gesetzt ist, fallen wir auf den Legacy-Pfad mit
-      // STRIPE_PRICE_BLOCK_* zurück — Preis-Source-of-Truth ist dann Stripe.
+      // Block-Karte: Preis aus Sanity, gegen den persistenten Stripe Product
+      // gebucht via price_data inline. STRIPE_PRODUCT_BLOCK_* MUSS gesetzt
+      // sein — kein silent fallback auf STRIPE_PRICE_BLOCK_* mehr, weil das
+      // bei Sanity-Preisänderungen zu Mismatch zwischen unit_amount und
+      // expectedAmountCents führen würde (Webhook lehnt dann jede Zahlung
+      // als price tampering ab → Kunde zahlt, kein Voucher).
       const blockProductKey = productType as BlockProductKey;
       const stripeProductId = getStripeProductId(productType);
-      if (stripeProductId) {
-        const pricing = await getBlockPricing();
-        expectedAmountCents = getBlockPriceCents(blockProductKey, pricing);
-        lineItem = {
-          price_data: {
-            currency: "eur",
-            product: stripeProductId,
-            unit_amount: expectedAmountCents,
-          },
-          quantity: 1,
-        };
-      } else {
-        const fallbackPriceId = getStripePriceId(productType);
-        const pricing = await getBlockPricing();
-        // Auch im Legacy-Fall den expected-Wert mitsenden — Webhook nutzt
-        // ihn analog. Wenn Sanity leer ist greift der Hardcoded-Fallback.
-        expectedAmountCents = getBlockPriceCents(blockProductKey, pricing);
-        lineItem = { price: fallbackPriceId, quantity: 1 };
+      if (!stripeProductId) {
+        console.error(
+          `Missing STRIPE_PRODUCT env var for ${productType} — configure before deploy`,
+        );
+        return NextResponse.json(
+          { error: "Checkout temporarily unavailable" },
+          { status: 503 },
+        );
       }
+      const pricing = await getBlockPricing();
+      expectedAmountCents = getBlockPriceCents(blockProductKey, pricing);
+      lineItem = {
+        price_data: {
+          currency: "eur",
+          product: stripeProductId,
+          unit_amount: expectedAmountCents,
+        },
+        quantity: 1,
+      };
     }
 
     const session = await stripe.checkout.sessions.create({
