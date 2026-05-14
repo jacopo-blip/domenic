@@ -160,7 +160,12 @@ export function BookingContent({ sanityBuchen, sanitySettings }: BookingContentP
             <iframe
               key={iframeKey}
               src={`${calendlyUrl}${calendlyUrl.includes("?") ? "&" : "?"}hide_gdpr_banner=1&embed_type=Inline&embed_domain=1`}
-              className="w-full border-0 min-h-[900px] sm:min-h-[700px]"
+              // Calendly-Iframe wächst nicht mit dem Inhalt (kein height-postMessage
+              // beim Standard-Embed) — wir setzen eine min-height die auch die
+              // höchste Calendly-View deckt (Datumsauswahl + Service-Intro). Bei
+              // sm-bis-md (iPad) wird die Layout-Spalte vertikal gestapelt → mehr
+              // Höhe nötig als auf lg-Desktop, wo Calendly Side-by-Side rendert.
+              className="w-full border-0 min-h-[900px] sm:min-h-[1100px] lg:min-h-[800px]"
               scrolling="no"
               title="Termin buchen bei Heilmasseur Domenic Hacker"
             />

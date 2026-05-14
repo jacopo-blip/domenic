@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   VoucherProductSelector,
@@ -57,6 +57,13 @@ function GutscheineContent({
   const [step, setStep] = useState<"select" | "details" | "pay">(() =>
     deriveInitialSelected(productPreset, pricing) ? "details" : "select",
   );
+
+  // Bei Step-Wechsel auf 0 scrollen — sonst landet der User (insbesondere
+  // mobile) im leeren Bereich, weil der nächste Step kürzer ist als der
+  // aktuelle (Selector → Details-Form ist deutlich kompakter).
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [step]);
 
   const checkoutInput: CheckoutFormInput | null =
     selected && buyerEmail && buyerName
